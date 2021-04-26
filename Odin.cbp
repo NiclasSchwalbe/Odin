@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Odin"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\..\usr\local\;CMake Files\..\..\..\..\..\..\usr\local\lib\;CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\;CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\Boost-1.75.0\;CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_headers-1.75.0\;CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_serialization-1.75.0\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/niclas/Documents/C++/ChessEngine/Odin"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/niclas/Documents/C++/ChessEngine/Odin"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/niclas/Documents/C++/ChessEngine/Odin"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Odin">
+				<Option output="/Users/niclas/Documents/C++/ChessEngine/Odin/Odin" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/niclas/Documents/C++/ChessEngine/Odin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DBOOST_ALL_NO_LIB"/>
+					<Add option="-DBOOST_SERIALIZATION_DYN_LINK"/>
+					<Add directory="/Users/niclas/Documents/C++/ChessEngine/Odin/Odin/engine"/>
+					<Add directory="/Users/niclas/Documents/C++/ChessEngine/Odin/Odin/uci"/>
+					<Add directory="/usr/local/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 Odin"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Odin/fast">
+				<Option output="/Users/niclas/Documents/C++/ChessEngine/Odin/Odin" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/niclas/Documents/C++/ChessEngine/Odin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DBOOST_ALL_NO_LIB"/>
+					<Add option="-DBOOST_SERIALIZATION_DYN_LINK"/>
+					<Add directory="/Users/niclas/Documents/C++/ChessEngine/Odin/Odin/engine"/>
+					<Add directory="/Users/niclas/Documents/C++/ChessEngine/Odin/Odin/uci"/>
+					<Add directory="/usr/local/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 Odin/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/niclas/Documents/C++/ChessEngine/Odin/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/Odin/engine/Odin.cpp">
+			<Option target="Odin"/>
+		</Unit>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/Odin/engine/Odin.h">
+			<Option target="Odin"/>
+		</Unit>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/Odin/main.cpp">
+			<Option target="Odin"/>
+		</Unit>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/Odin/uci/uci.hpp">
+			<Option target="Odin"/>
+		</Unit>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/../../../../../../usr/local/lib/cmake/BoostDetectToolset-1.75.0.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/../../../../../../usr/local/lib/cmake/Boost-1.75.0/BoostConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\Boost-1.75.0\"/>
+		</Unit>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/../../../../../../usr/local/lib/cmake/Boost-1.75.0/BoostConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\Boost-1.75.0\"/>
+		</Unit>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/../../../../../../usr/local/lib/cmake/boost_headers-1.75.0/boost_headers-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_headers-1.75.0\"/>
+		</Unit>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/../../../../../../usr/local/lib/cmake/boost_headers-1.75.0/boost_headers-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_headers-1.75.0\"/>
+		</Unit>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/../../../../../../usr/local/lib/cmake/boost_serialization-1.75.0/boost_serialization-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_serialization-1.75.0\"/>
+		</Unit>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/../../../../../../usr/local/lib/cmake/boost_serialization-1.75.0/boost_serialization-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_serialization-1.75.0\"/>
+		</Unit>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/../../../../../../usr/local/lib/cmake/boost_serialization-1.75.0/libboost_serialization-variant-mt-shared.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_serialization-1.75.0\"/>
+		</Unit>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/../../../../../../usr/local/lib/cmake/boost_serialization-1.75.0/libboost_serialization-variant-mt-static.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_serialization-1.75.0\"/>
+		</Unit>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/../../../../../../usr/local/lib/cmake/boost_serialization-1.75.0/libboost_serialization-variant-shared.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_serialization-1.75.0\"/>
+		</Unit>
+		<Unit filename="/Users/niclas/Documents/C++/ChessEngine/Odin/../../../../../../usr/local/lib/cmake/boost_serialization-1.75.0/libboost_serialization-variant-static.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\usr\local\lib\cmake\boost_serialization-1.75.0\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

@@ -25,6 +25,7 @@
 /* Begin PBXFileReference section */
 		A528FEA6261A323600FA0890 /* Odin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Odin; sourceTree = BUILT_PRODUCTS_DIR; };
 		A528FEA9261A323600FA0890 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		A528FEB3261A337200FA0890 /* uci.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = uci.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,9 +58,18 @@
 		A528FEA8261A323600FA0890 /* Odin */ = {
 			isa = PBXGroup;
 			children = (
+				A528FEB1261A334F00FA0890 /* uci */,
 				A528FEA9261A323600FA0890 /* main.cpp */,
 			);
 			path = Odin;
+			sourceTree = "<group>";
+		};
+		A528FEB1261A334F00FA0890 /* uci */ = {
+			isa = PBXGroup;
+			children = (
+				A528FEB3261A337200FA0890 /* uci.hpp */,
+			);
+			path = uci;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
