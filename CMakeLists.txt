@@ -5,6 +5,10 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(Odin/engine)
 include_directories(Odin/uci)
+include_directories(Odin/util)
+
+# add our cmake modules under cmake/
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 #AddBOOST
 set(CMAKE_CXX_STANDARD 17)
@@ -21,6 +25,20 @@ message(STATUS "Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
 message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
 message(STATUS "---------------------")
 
+# Include CPM dependency manager
+include(CPM)
+
+# enable testing
+enable_testing()
+
+# Pull doctest using CPM
+cpmaddpackage("gh:onqtam/doctest#2.4.5")
+
+# add the CMake modules for automatic test discovery so we can use
+# doctest_discover_tests() CMake
+set(CMAKE_MODULE_PATH "${doctest_SOURCE_DIR}/scripts/cmake"
+        ${CMAKE_MODULE_PATH})
+
 add_executable(Odin
         Odin/engine/Odin.cpp
         Odin/engine/Odin.h
@@ -28,4 +46,5 @@ add_executable(Odin
         Odin/main.cpp)
 target_link_libraries(Odin PRIVATE Boost::serialization)
 
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native")
+

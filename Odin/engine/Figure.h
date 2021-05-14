@@ -2,8 +2,7 @@
 // Created by Niclas Schwalbe on 06.04.21.
 //
 
-#ifndef ODIN_FIGURE_H
-#define ODIN_FIGURE_H
+#pragma once
 
 class Figure {
     public:
@@ -15,4 +14,3 @@ class Figure {
         int const col;
 };
 
-#endif //ODIN_FIGURE_H

@@ -2,28 +2,27 @@
 // Created by Niclas Schwalbe on 05.04.21.
 //
 
+#pragma once
+
 #include <string>
 #include <vector>
-#include<thread>
-
+#include <thread>
+#include <chrono>
+#include <memory>
 #include "Board.h"
-
-
-#ifndef ODIN_ODIN_H
-#define ODIN_ODIN_H
+#include "Figure.h"
 
 class Odin {
 public:
     long positionsCalculated = 0;
 
-    Board board = Board();
-
+    Board board(std::string("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
     Odin();
-
-    void set_position(const std::string fen, const std::vector<std::string> moves);
+    void set_position(const std::string& fen, const std::vector<std::string>& moves);
     void searchOn();
     void searchOff();
     void search();
+    static void evaluatePosition(Board &board);
 
 private:
     std::thread computingThread{};
@@ -32,8 +31,5 @@ private:
 
     void setUpForCalculations();
     void computeNext();
-
-
 };
 
-#endif //ODIN_ODIN_H

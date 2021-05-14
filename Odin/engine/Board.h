@@ -1,10 +1,12 @@
 //
 // Created by Niclas Schwalbe on 06.04.21.
 //
-#include "../util/Utility.h"
-#ifndef ODIN_BOARD_H
-#define ODIN_BOARD_H
+#pragma once
 
+#include <array>
+#include <string>
+#include "../util/Utility.h"
+#include "Odin.h"
 
 class Board {
 public:
@@ -13,9 +15,14 @@ public:
     bool short_castle_white = false;
     bool short_castle_black = false;
     char toMove = WHITE;
-    char board[8][8] = {0};
-    void set_position(const std::string fen, const std::vector<std::string> moves);
+    double intrinsicValue;
+    std::array<std::array<int, 8>, 8> board;
+    void set_position(const std::string& fen, const std::vector<std::string>& moves);
+
+    Board(const std::string& fen);
+    Board(const std::string&& fen);
+
+private:
+
+
 };
-
-
-#endif //ODIN_BOARD_H

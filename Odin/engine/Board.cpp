@@ -3,9 +3,10 @@
 //
 
 #include "Board.h"
-#include "../util/Utility.h"
+#include "Odin.h"
 
-void Board::set_position(const std::string fen, const std::vector<std::string> moves) {
+
+static void Board::set_position(const std::string& fen, const std::vector<std::string>& moves) {
     int rank = 7;
     int line = 0;
     int field = 0;
@@ -70,7 +71,7 @@ void Board::set_position(const std::string fen, const std::vector<std::string> m
             }
         }
 
-        // set boardstate to initial 0
+        /* set boardstate to initial 0
         // Initialize all castle possibilities
         if (strList.size()>=3)
         {
@@ -83,8 +84,21 @@ void Board::set_position(const std::string fen, const std::vector<std::string> m
             if (strList[2].find('q') != string::npos) state =
                                                               TBoardState_SET_CASTLE_BLACK_QS(state,BLACK_CASTLE_QUEENSIDE);
         }
+         */
     }
 
 
     return;
 }
+
+Board::Board(const std::string& fen) {
+    set_position(fen, "");
+    intrinsicValue = Odin::evaluatePosition(*this);
+
+}
+
+Board::Board(const std::string&& fen){
+    set_position(fen, "");
+    intrinsicValue = Odin::evaluatePosition(*this);
+}
+
