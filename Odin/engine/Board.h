@@ -6,7 +6,6 @@
 #include <array>
 #include <string>
 #include "../util/Utility.h"
-#include "Odin.h"
 
 class Board {
 public:
@@ -20,7 +19,6 @@ public:
     void set_position(const std::string& fen, const std::vector<std::string>& moves);
 
     Board(const std::string& fen);
-    Board(const std::string&& fen);
 
 private:
 

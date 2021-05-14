@@ -5,8 +5,8 @@
 #include "Board.h"
 #include "Odin.h"
 
-
-static void Board::set_position(const std::string& fen, const std::vector<std::string>& moves) {
+void Board::set_position(const std::string& fen, const std::vector<std::string>& moves) {
+    /*
     int rank = 7;
     int line = 0;
     int field = 0;
@@ -84,21 +84,19 @@ static void Board::set_position(const std::string& fen, const std::vector<std::s
             if (strList[2].find('q') != string::npos) state =
                                                               TBoardState_SET_CASTLE_BLACK_QS(state,BLACK_CASTLE_QUEENSIDE);
         }
-         */
+        *//*
+
     }
 
 
     return;
+     */
 }
 
 Board::Board(const std::string& fen) {
-    set_position(fen, "");
-    intrinsicValue = Odin::evaluatePosition(*this);
-
+    std::vector<std::string> vector{};
+    set_position(fen, vector);
+    //intrinsicValue = Odin::evaluatePosition(*this);
 }
 
-Board::Board(const std::string&& fen){
-    set_position(fen, "");
-    intrinsicValue = Odin::evaluatePosition(*this);
-}
 
