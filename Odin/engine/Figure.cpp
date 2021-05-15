@@ -9,11 +9,11 @@ Figure::Figure(int val, int color) {
     this->col = color;
 }
 
-Figure::value(){
-    return (this->color * this->val);
+int Figure::value() const{
+    return (this->col * this->val);
 }
 
-Figure::color(){
-    return this->col();
+int Figure::color() const{
+    return this->col;
 }
 

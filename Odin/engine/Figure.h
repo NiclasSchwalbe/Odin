@@ -1,7 +1,6 @@
 //
 // Created by Niclas Schwalbe on 06.04.21.
 //
-
 #pragma once
 
 class Figure {
@@ -10,7 +9,7 @@ class Figure {
         int value() const;
         int color() const;
     private:
-        int const val;
-        int const col;
+        int val;
+        int col;
 };
 

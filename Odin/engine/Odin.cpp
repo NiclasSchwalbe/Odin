@@ -5,21 +5,25 @@
 #include "Odin.h"
 
 Odin::Odin() {
-    std::thread(&Odin::search, this);
+    //std::thread(&Odin::search, this);
 }
+
+
 
 void Odin::set_position(const std::string& fen, const std::vector<std::string>& moves){
     board.set_position(fen, moves);
 }
+
 
 void Odin::searchOn() {
     searching = true;
     setUpForCalculations();
 }
 
-inline void Odin::searchOff() {
+void Odin::searchOff() {
     searching = false;
 }
+
 
 void Odin::search() {
     using namespace std::chrono_literals;
@@ -34,8 +38,8 @@ void Odin::search() {
 
 }
 
-void Odin::evaluatePosition(Board &board) {
-
+double Odin::evaluatePosition(Board &board) {
+    return 0.0;
 }
 
 void Odin::computeNext() {
@@ -44,7 +48,6 @@ void Odin::computeNext() {
 
 void Odin::setUpForCalculations() {
 }
-
 
 
 

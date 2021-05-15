@@ -3,27 +3,34 @@
 //
 
 #pragma once
-
 #include <string>
 #include <vector>
 #include <thread>
 #include <chrono>
 #include <memory>
+#include "../util/Utility.h"
+
 #include "Board.h"
 #include "Figure.h"
-#include "Utility.h"
+
+static const std::string standardBoardFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 class Odin {
 public:
     long positionsCalculated = 0;
-
-    Board board{standardBoardFen};
     Odin();
+    Board board = Board(standardBoardFen);
     void set_position(const std::string& fen, const std::vector<std::string>& moves);
+
+
     void searchOn();
+
     void searchOff();
     void search();
-    static void evaluatePosition(Board &board);
+
+
+    static double evaluatePosition(Board &board);
+
 
 private:
     std::thread computingThread{};
@@ -32,5 +39,6 @@ private:
 
     void setUpForCalculations();
     void computeNext();
+
 };
 
