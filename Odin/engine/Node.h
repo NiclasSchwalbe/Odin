@@ -3,24 +3,37 @@
 //
 
 
+#pragma once
+
 #include <memory>
 #include <vector>
+#include <optional>
+
 #include "Board.h"
 #include "Odin.h"
+#include "Link.h"
 
-#pragma once
+
+class Link;
 
 class Node {
 public:
-    std::shared_ptr<Node b> parent;
-    std::vector<std::shared_ptr<Node b>> nodes;
-    Board board;
-    double value;
-    double alpha;
-    double beta;
+    std::weak_ptr<Node> parent_;
+    std::vector<Link> moves_;
+    Board board_;
+    double intrinsic_value_;
+    std::optional<double> value_;
+    std::optional<double> alpha_;
+    std::optional<double> beta_;
+    long visits_{0};
+    color color_;
 
-    Node(Board &board, double alpha, double beta, std::shared_ptr<Node> parent);
+    Node(Board &board, std::optional<double> alpha, std::optional<double> beta, std::shared_ptr<Node> parent);
+    Node(Board &&board, std::optional<double> alpha, std::optional<double> beta, std::shared_ptr<Node> parent);
     void addNode(Node d);
+    void updateValueAsChild(double value);
+    void evalNextPosition();
+    void expand();
 
 };
 

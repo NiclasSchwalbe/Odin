@@ -5,26 +5,23 @@
 
 
 #include <string>
-
 #include <vector>
 #include <array>
-#include "Figure.h"
 #include "../util/Utility.h"
 
 class Board {
 public:
 
-    bool long_castle_white = false;
-    bool long_castle_black = false;
-    bool short_castle_white = false;
-    bool short_castle_black = false;
-    char toMove = WHITE;
-    double intrinsicValue;
+    bool long_castle_white_{false};
+    bool long_castle_black_{false};
+    bool short_castle_white_{false};
+    bool short_castle_black_{false};
+    color to_move_{WHITE};
+    double intrinsic_value_;
 
-
-    std::array<std::array<int, 8>, 8> board;
-    void set_position(const std::string& fen, const std::vector<std::string>& moves);
-    Board(const std::string&);
+    std::array<std::array<int, 8>, 8> board_{};
+    void setPosition(const std::string& fen, const std::vector<std::string>& moves);
+    explicit Board(const std::string&);
 
 private:
 

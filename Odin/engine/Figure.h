@@ -6,8 +6,12 @@
 class Figure {
     public:
         Figure(int val, int color);
-        int value() const;
-        int color() const;
+        inline int value() const{
+            return (this->col * this->val);
+        }
+        inline int color() const{
+            return this->col;
+        }
     private:
         int val;
         int col;

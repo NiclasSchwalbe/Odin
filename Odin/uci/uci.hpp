@@ -124,7 +124,7 @@ public:
                     string += " time ";
                     break;
                 case information::nodes                    :
-                    string += " nodes ";
+                    string += " moves_ ";
                     break;
                 case information::principle_variation      :
                     string += " pv ";
@@ -338,7 +338,7 @@ public:
                         iss >> commands[command::moves_to_go];
                     else if (token == "depth")
                         iss >> commands[command::depth];
-                    else if (token == "nodes")
+                    else if (token == "moves_")
                         iss >> commands[command::nodes];
                     else if (token == "mate")
                         iss >> commands[command::mate];

@@ -593,7 +593,7 @@ macro(CPMGetPackage Name)
     endif()
 endmacro()
 
-# export variables available to the caller to the parent scope expects ${CPM_ARGS_NAME} to be set
+# export variables available to the caller to the parent_ scope expects ${CPM_ARGS_NAME} to be set
 macro(cpm_export_variables name)
     set(${name}_SOURCE_DIR
             "${${name}_SOURCE_DIR}"
@@ -733,7 +733,7 @@ function(
 endfunction()
 
 # downloads a previously declared package via FetchContent and exports the variables
-# `${PACKAGE}_SOURCE_DIR` and `${PACKAGE}_BINARY_DIR` to the parent scope
+# `${PACKAGE}_SOURCE_DIR` and `${PACKAGE}_BINARY_DIR` to the parent_ scope
 function(cpm_fetch_package PACKAGE)
     if(${CPM_DRY_RUN})
         message(STATUS "${CPM_INDENT} package ${PACKAGE} not fetched (dry run)")

@@ -40,10 +40,21 @@ set(CMAKE_MODULE_PATH "${doctest_SOURCE_DIR}/scripts/cmake"
         ${CMAKE_MODULE_PATH})
 
 add_executable(Odin
-        Odin/engine/Odin.cpp
+        Odin/engine/Odin.cc
+        Odin/main.cc
+        Odin/engine/Board.cc
+        Odin/engine/Figure.cc
+        Odin/util/Utility.cc
+        Odin/engine/Node.cc
+        Odin/engine/Link.cc
         Odin/engine/Odin.h
-        Odin/uci/uci.hpp
-        Odin/main.cpp)
+        Odin/engine/Boardh
+        Odin/engine/Figureh
+        Odin/util/Utility.h
+        Odin/engine/Node.h
+        Odin/engine/Link.h
+        )
+
 target_link_libraries(Odin PRIVATE Boost::serialization)
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native")

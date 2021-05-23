@@ -3,39 +3,44 @@
 //
 
 #pragma once
+#include <memory>
 #include <string>
 #include <vector>
 #include <thread>
-#include <chrono>
-#include <memory>
-#include "../util/Utility.h"
-
 #include "Board.h"
-#include "Figure.h"
+#include "Node.h"
 
-static const std::string standardBoardFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+namespace OdinConstants {
+    static const std::string standardBoardFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    static const double cpuct = 1.0;
+}
+
+class Node;
 
 class Odin {
 public:
-    long positionsCalculated = 0;
     Odin();
-    Board board = Board(standardBoardFen);
-    void set_position(const std::string& fen, const std::vector<std::string>& moves);
 
+    long positions_calculated_{0};
+    std::shared_ptr<Node> start_node_;
 
-    void searchOn();
+    inline void searchOn() {
+        searching_ = true;
+        setUpForCalculations();
+    }
 
-    void searchOff();
+    inline void searchOff() {
+        searching_ = false;
+    }
+
     void search();
-
-
+    void setPosition(const std::string& fen, const std::vector<std::string>& moves);
     static double evaluatePosition(Board &board);
 
-
 private:
-    std::thread computingThread{};
-    bool searching = false;
-    bool inChess = true;
+    std::thread computingThread_{};
+    bool searching_{false};
+    bool in_chess_{true};
 
     void setUpForCalculations();
     void computeNext();

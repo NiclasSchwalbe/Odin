@@ -6,12 +6,9 @@
 #pragma once
 #include <vector>
 #include <string>
-#include <cstdint>
 #include "../engine/Figure.h"
 
-constexpr std::int8_t WHITE = 1;
-constexpr std::int8_t BLACK = 0;
-//static const std::string standardBoardFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+enum color { BLACK = 0, WHITE = 1};
 
 const Figure BPAWN(1, BLACK);
 const Figure BKNIGHT(2, BLACK);
