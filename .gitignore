@@ -5,3 +5,4 @@ git pull origin master
 .idea
 _deps
 build/
+vs

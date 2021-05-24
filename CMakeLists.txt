@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.17)
 project(Odin)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED YES)
+set(CMAKE_CXX_EXTENSIONS NO)
 
 include_directories(Odin/engine)
 include_directories(Odin/uci)
@@ -11,10 +13,12 @@ include_directories(Odin/util)
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 #AddBOOST
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED YES)
-set(CMAKE_CXX_EXTENSIONS NO)
 
+if(WIN32)
+SET(BOOST_ROOT "C:/Program Files (x86)/boost/boost_1_74_0")
+include_directories(${BOOST_ROOT})
+include_directories(${BOOST_ROOT}/stage/lib)
+endif()
 
 find_package(Boost 1.74.0 REQUIRED serialization)
 

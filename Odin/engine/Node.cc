@@ -27,6 +27,7 @@ Node::Node(Board &&board, std::optional<double> alpha, std::optional<double> bet
           color_(board.to_move_),
           intrinsic_value_(board.intrinsic_value_){}
 
+/*
 void Node::updateValueAsChild(double val) {
     std::shared_ptr<Node> parent(parent_);
     if (!value_.has_value()) {
@@ -67,9 +68,12 @@ void Node::evalNextPosition() {
             move.ptr->evalNextPosition();
             return;
         }
-        if(score < )
+       
     }
 
 
 
 }
+*/
+
+

@@ -38,7 +38,7 @@ double Odin::evaluatePosition(Board &board) {
 }
 
 void Odin::computeNext() {
-    start_node_->evalNextPosition();
+    //start_node_->evalNextPosition();
 }
 
 void Odin::setUpForCalculations() {
