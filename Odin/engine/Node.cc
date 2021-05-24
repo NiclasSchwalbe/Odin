@@ -2,6 +2,7 @@
 // Created by Niclas Schwalbe on 11.05.21.
 //
 
+#include <cmath>
 #include "Node.h"
 
 Node::Node(Board &board, std::optional<double> alpha, std::optional<double> beta, std::shared_ptr<Node> parent)
@@ -58,5 +59,17 @@ void Node::evalNextPosition() {
         return;
     }
     visits_++;
+
+    double score = -10;
+    std::shared_ptr<Node> max = nullptr;
+    for(auto move : moves_){
+        if(move.ptr->visits_ == 0){
+            move.ptr->evalNextPosition();
+            return;
+        }
+        if(score < )
+    }
+
+
 
 }
