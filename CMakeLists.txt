@@ -15,11 +15,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS NO)
 
-if(WIN32)
-SET(BOOST_ROOT "C:/Program Files (x86)/boost/boost_1_75_0/")
-endif (WIN32)
 
-find_package(Boost 1.75.0 REQUIRED serialization)
+find_package(Boost 1.74.0 REQUIRED serialization)
 
 #ENDBOOST
 
