@@ -1,0 +1,7 @@
+Odin.cbp
+cmake-build-debug
+CMakeFiles
+git pull origin master
+.idea
+_deps
+build/
