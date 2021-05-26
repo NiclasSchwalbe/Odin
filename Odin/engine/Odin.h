@@ -3,12 +3,15 @@
 //
 
 #pragma once
+#include <list>
 #include <memory>
 #include <string>
 #include <vector>
 #include <thread>
 #include "Board.h"
 #include "Node.h"
+#include "Figure.h"
+#include <functional>
 
 namespace OdinConstants {
     static const std::string standardBoardFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -33,9 +36,11 @@ public:
         searching_ = false;
     }
 
+    void generateAllMoves(std::vector<std::tuple<int, int, Figure>> &moves, Board& board);
     void search();
     void setPosition(const std::string& fen, const std::vector<std::string>& moves);
     static double evaluatePosition(Board &board);
+
 
 private:
     std::thread computingThread_{};
@@ -44,6 +49,48 @@ private:
 
     void setUpForCalculations();
     void computeNext();
+
+    Board makeMove(const Board &b, std::tuple<int, int, Figure>);
+
+    bool isInCheck(const Board &board, color);
+
+    void generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>>& moves, Board& board);
+    void generateAllKnightMoves(std::vector<std::tuple<int, int, Figure>>& moves, Board& board);
+    void generateAllBishopMoves(std::vector<std::tuple<int, int, Figure>>& moves, Board& board);
+    void generateAllRookMoves(std::vector<std::tuple<int, int, Figure>>& moves, Board& board);
+    void generateAllQueenMoves(std::vector<std::tuple<int, int, Figure>>&, Board& board);
+    void generateAllKingMoves(std::vector<std::tuple<int, int, Figure>>&, Board& board);
+
+    void generateAllPawnMovesWithWhite(std::list<std::tuple<int, int, Figure>> &pawn_moves, Board &board);
+    void generateAllPawnMovesWithBlack(std::list<std::tuple<int, int, Figure>> &pawn_moves, Board &board);
+
+    inline bool hasAnyFigure(const Board& board, const int rank, const int line) const{
+        return board.board_[rank][line] == 0;
+    }
+
+    inline bool hasBlackFigure(const Board& board, const int rank, const int line) const{
+        return board.board_[rank][line] < 0;
+    }
+
+    inline bool hasWhiteFigure(const Board& board, const int rank, const int line) const{
+        return board.board_[rank][line] < 0;
+    }
+
+    /*
+     * This method checks if the given move, does not make the king takeable, ensures the King is still protected.
+     */
+    bool checkIfMoveIsIllegalDueCheck(const Board &b, std::tuple<int, int, Figure> move);
+
+    /*
+     * This currys checkIfMoveIsIllegalDueCheck(const Board &b, std::tuple<int, int, Figure> move);
+     */
+    inline std::function<bool(std::tuple<int, int, Figure>)> checkIfMoveIsIllegalDueCheck(Board& b){
+        return [b,this](std::tuple<int, int, Figure> move) -> bool {
+            return checkIfMoveIsIllegalDueCheck(b, move);
+        };
+    }
+
+
 
 };
 

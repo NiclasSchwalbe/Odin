@@ -10,6 +10,7 @@
 
 enum color { BLACK = 0, WHITE = 1};
 
+const Figure EMPTY(0, BLACK);
 const Figure BPAWN(1, BLACK);
 const Figure BKNIGHT(2, BLACK);
 const Figure BBISHOP(3, BLACK);

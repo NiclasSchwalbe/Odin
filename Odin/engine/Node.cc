@@ -27,7 +27,7 @@ Node::Node(Board &&board, std::optional<double> alpha, std::optional<double> bet
           color_(board.to_move_),
           intrinsic_value_(board.intrinsic_value_){}
 
-/*
+
 void Node::updateValueAsChild(double val) {
     std::shared_ptr<Node> parent(parent_);
     if (!value_.has_value()) {
@@ -61,19 +61,38 @@ void Node::evalNextPosition() {
     }
     visits_++;
 
-    double score = -10;
-    std::shared_ptr<Node> max = nullptr;
+    double mscore = -10;
+    Link max = moves_[0];
     for(auto move : moves_){
         if(move.ptr->visits_ == 0){
-            move.ptr->evalNextPosition();
-            return;
+            max = move;
+            break;
         }
-       
+        /*
+        * Calculate childs value, actually this should always be value_
+        * If score is bigger, update score
+        */
+        double child_value;
+        if(move.ptr->value_.has_value()){
+            child_value = move.ptr->value_.value();
+        } else {
+            child_value = move.ptr->intrinsic_value_;
+        }
+        double score = (child_value + OdinConstants::cpuct * sqrt(log2(visits_)/move.ptr->visits_));
+        if(score > mscore){
+            mscore = score;
+            max = move;
+        }
     }
 
-
+    //Now max has highest score and will therefore be explored
+    max.ptr->evalNextPosition();
 
 }
-*/
+
+void Node::expand() {
+    std::vector<std::string> moves;
+
+}
 
 
