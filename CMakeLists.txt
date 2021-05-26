@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 3.17)
 project(Odin)
 
+include(ProcessorCount)
+ProcessorCount(N)
+if(NOT N EQUAL 0)
+    set(CTEST_BUILD_FLAGS -j${N})
+    set(ctest_test_args ${ctest_test_args} PARALLEL_LEVEL ${N})
+endif()
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS NO)
@@ -66,4 +73,4 @@ add_executable(Odin
 target_link_libraries(Odin PRIVATE Boost::serialization)
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native")
-
+set(MAKEFLAGS "-j $N")

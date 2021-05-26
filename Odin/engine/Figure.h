@@ -8,12 +8,12 @@ enum class Color;
 
 class Figure {
     public:
-        Figure::Figure(int val, int color) {
+        Figure(int val, int color) {
             val_ = val;
             col_ = color;
         }
 
-        Figure::Figure(int val, Color color) {
+        Figure(int val, Color color) {
             val_ = val;
             col_ = static_cast<int>(color);
         }
