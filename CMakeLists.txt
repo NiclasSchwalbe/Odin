@@ -8,6 +8,8 @@ if(NOT N EQUAL 0)
     set(ctest_test_args ${ctest_test_args} PARALLEL_LEVEL ${N})
 endif()
 
+message("Parallelizing with ${N} Cores")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS NO)
