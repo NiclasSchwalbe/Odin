@@ -16,7 +16,7 @@ public:
     bool long_castle_black_{false};
     bool short_castle_white_{false};
     bool short_castle_black_{false};
-    color to_move_{WHITE};
+    Color to_move_{Color::WHITE};
     double intrinsic_value_;
 
     std::array<std::array<int, 8>, 8> board_{};

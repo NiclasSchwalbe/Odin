@@ -8,21 +8,21 @@
 #include <string>
 #include "../engine/Figure.h"
 
-enum color { BLACK = 0, WHITE = 1};
+enum class Color { BLACK = -1, WHITE = 1};
 
-const Figure EMPTY(0, BLACK);
-const Figure BPAWN(1, BLACK);
-const Figure BKNIGHT(2, BLACK);
-const Figure BBISHOP(3, BLACK);
-const Figure BROOK(4, BLACK);
-const Figure BQUEEN(5, BLACK);
-const Figure BKING(6, BLACK);
-const Figure WPAWN(1, WHITE);
-const Figure WKNIGHT(2, WHITE);
-const Figure WBISHOP(3, WHITE);
-const Figure WROOK(4, WHITE);
-const Figure WQUEEN(5, WHITE);
-const Figure WKING(6, WHITE);
+const Figure EMPTY(0, Color::WHITE);
+const Figure BPAWN(1, Color::BLACK);
+const Figure BKNIGHT(2, Color::BLACK);
+const Figure BBISHOP(3, Color::BLACK);
+const Figure BROOK(4, Color::BLACK);
+const Figure BQUEEN(5, Color::BLACK);
+const Figure BKING(6, Color::BLACK);
+const Figure WPAWN(1, Color::WHITE);
+const Figure WKNIGHT(2, Color::WHITE);
+const Figure WBISHOP(3, Color::WHITE);
+const Figure WROOK(4, Color::WHITE);
+const Figure WQUEEN(5, Color::WHITE);
+const Figure WKING(6, Color::WHITE);
 
 std::vector<std::string> splitString(std::string s, char limiter);
 

@@ -5,7 +5,6 @@
 #include "Utility.h"
 
 
-
 std::vector<std::string> splitString(std::string s, char limiter) {
     std::vector<std::string> tokens;
     std::string token;

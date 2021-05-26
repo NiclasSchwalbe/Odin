@@ -26,7 +26,7 @@ public:
     std::optional<double> alpha_;
     std::optional<double> beta_;
     long visits_{0};
-    color color_;
+    Color color_;
 
     Node(Board &board, std::optional<double> alpha, std::optional<double> beta, std::shared_ptr<Node> parent);
     Node(Board &&board, std::optional<double> alpha, std::optional<double> beta, std::shared_ptr<Node> parent);

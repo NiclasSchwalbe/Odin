@@ -65,7 +65,7 @@ Board Odin::makeMove(const Board &b, std::tuple<int, int, Figure> t) {
    return new_b;
 }
 
-void Odin::generateAllMoves(std::vector<std::tuple<int, int, Figure>>& moves, Board& board) {
+void Odin::generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>>& moves, Board& board) {
 
     generateAllPawnMoves(moves, board);
     /*generateAllKnightMoves(moves, board);
@@ -81,6 +81,10 @@ bool Odin::checkIfMoveIsIllegalDueCheck(const Board &b, std::tuple<int, int, Fig
     return isInCheck(new_board, b.to_move_);
 }
 
+bool Odin::isInCheck(const Board& b, Color c) {
+    return true;
+}
+
 void Odin::generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>> &moves, Board& board) {
 
     std::list<std::tuple<int, int, Figure>> pawn_moves;
@@ -88,12 +92,12 @@ void Odin::generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>> &moves
     int field{7};
 
     switch (board.to_move_) {
-        case BLACK:
-            generateAllPawnMovesWithBlack(pawn_moves, board);
-            break;
-        case WHITE:
-            generateAllPawnMovesWithWhite(pawn_moves, board);
-            break;
+    case Color::BLACK:
+        generateAllPawnMovesWithBlack(pawn_moves, board);
+        break;
+    case Color::WHITE:
+        generateAllPawnMovesWithWhite(pawn_moves, board);
+        break;
     }
 
     pawn_moves.erase(std::remove_if(pawn_moves.begin(), pawn_moves.end(), checkIfMoveIsIllegalDueCheck(board)), pawn_moves.end());
@@ -114,10 +118,7 @@ void Odin::generateAllPawnMovesWithWhite(std::list<std::tuple<int, int, Figure>>
             if(hasAnyFigure(board, rank + 1, line)){
                 int new_field {field+8};
                 if(rank == 6){
-                    pawn_moves.push_back(std::make_tuple(field, new_field, WKNIGHT));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, WBISHOP));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, WROOK));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, WQUEEN));
+                    generatePawnPromotion(pawn_moves, field, new_field);
                 } else {
                     pawn_moves.push_back(std::make_tuple(field, new_field, EMPTY));
                 }
@@ -133,10 +134,7 @@ void Odin::generateAllPawnMovesWithWhite(std::list<std::tuple<int, int, Figure>>
             if(0 <= left && left < 8 && hasBlackFigure(board, rank + 1, left)){
                 int new_field {field+7};
                 if(rank == 6){
-                    pawn_moves.push_back(std::make_tuple(field, new_field, WKNIGHT));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, WBISHOP));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, WROOK));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, WQUEEN));
+                    generatePawnPromotion(pawn_moves, field, new_field);
                 } else {
                     pawn_moves.push_back(std::make_tuple(field, new_field, EMPTY));
                 }
@@ -144,10 +142,7 @@ void Odin::generateAllPawnMovesWithWhite(std::list<std::tuple<int, int, Figure>>
             if(0 <= right && right < 8 &&hasBlackFigure(board, rank + 1, right)){
                 int new_field {field+9};
                 if(rank == 6){
-                    pawn_moves.push_back(std::make_tuple(field, new_field, WKNIGHT));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, WBISHOP));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, WROOK));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, WQUEEN));
+                    generatePawnPromotion(pawn_moves, field, new_field);
                 } else {
                     pawn_moves.push_back(std::make_tuple(field, new_field, EMPTY));
                 }
@@ -170,10 +165,7 @@ void Odin::generateAllPawnMovesWithBlack(std::list<std::tuple<int, int, Figure>>
             if(hasAnyFigure(board, rank - 1, line)){
                 int new_field {field-8};
                 if(rank == 6){
-                    pawn_moves.push_back(std::make_tuple(field, new_field, BKNIGHT));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, BBISHOP));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, BROOK));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, BQUEEN));
+                    generatePawnPromotion(pawn_moves, field, new_field);
                 } else {
                     pawn_moves.push_back(std::make_tuple(field, new_field, EMPTY));
                 }
@@ -189,10 +181,7 @@ void Odin::generateAllPawnMovesWithBlack(std::list<std::tuple<int, int, Figure>>
             if(0 <= left && left < 8 && hasWhiteFigure(board, rank + 1, left)){
                 int new_field {field-7};
                 if(rank == 6){
-                    pawn_moves.push_back(std::make_tuple(field, new_field, BKNIGHT));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, BBISHOP));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, BROOK));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, BQUEEN));
+
                 } else {
                     pawn_moves.push_back(std::make_tuple(field, new_field, EMPTY));
                 }
@@ -200,10 +189,7 @@ void Odin::generateAllPawnMovesWithBlack(std::list<std::tuple<int, int, Figure>>
             if(0 <= right && right < 8 && hasWhiteFigure(board, rank + 1, right)){
                 int new_field {field-9};
                 if(rank == 6){
-                    pawn_moves.push_back(std::make_tuple(field, new_field, BKNIGHT));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, BBISHOP));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, BROOK));
-                    pawn_moves.push_back(std::make_tuple(field, new_field, BQUEEN));
+                    generatePawnPromotion(pawn_moves, field, new_field);
                 } else {
                     pawn_moves.push_back(std::make_tuple(field, new_field, EMPTY));
                 }

@@ -2,18 +2,29 @@
 // Created by Niclas Schwalbe on 06.04.21.
 //
 #pragma once
+#include <../util/Utility.h>
+
+enum class Color;
 
 class Figure {
     public:
-        Figure(int val, int color);
+        Figure::Figure(int val, int color) {
+            val_ = val;
+            col_ = color;
+        }
+
+        Figure::Figure(int val, Color color) {
+            val_ = val;
+            col_ = static_cast<int>(color);
+        }
         inline int value() const{
-            return (this->col * this->val);
+            return (col_ * val_);
         }
         inline int color() const{
-            return this->col;
+            return col_;
         }
     private:
-        int val;
-        int col;
+        int val_;
+        int col_;
 };
 

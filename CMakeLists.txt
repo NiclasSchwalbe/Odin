@@ -49,7 +49,6 @@ add_executable(Odin
         Odin/engine/Odin.cc
         Odin/main.cc
         Odin/engine/Board.cc
-        Odin/engine/Figure.cc
         Odin/util/Utility.cc
         Odin/engine/Node.cc
         Odin/engine/Link.cc

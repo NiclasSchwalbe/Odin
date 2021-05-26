@@ -33,6 +33,7 @@ void Board::setPosition(const std::string& fen, const std::vector<std::string>& 
                 break;
             case 'k':
                 board_[rank][line] = BKING.value();
+                break;
             case 'P':
                 board_[rank][line] = WPAWN.value();
                 break;
@@ -67,9 +68,9 @@ void Board::setPosition(const std::string& fen, const std::vector<std::string>& 
         if (strList.size()>=2)
         {
             if (strList[1] == "w"){
-                to_move_ = WHITE;
+                to_move_ = Color::WHITE;
             } else if (strList[1] == "b") {
-                to_move_ = BLACK;
+                to_move_ = Color::BLACK;
             }
         }
         //set boardstate to initial 0

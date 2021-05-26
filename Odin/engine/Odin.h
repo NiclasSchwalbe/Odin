@@ -8,10 +8,10 @@
 #include <string>
 #include <vector>
 #include <thread>
+#include <functional>
 #include "Board.h"
 #include "Node.h"
 #include "Figure.h"
-#include <functional>
 
 namespace OdinConstants {
     static const std::string standardBoardFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -36,7 +36,7 @@ public:
         searching_ = false;
     }
 
-    void generateAllMoves(std::vector<std::tuple<int, int, Figure>> &moves, Board& board);
+    void generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>> &moves, Board& board);
     void search();
     void setPosition(const std::string& fen, const std::vector<std::string>& moves);
     static double evaluatePosition(Board &board);
@@ -52,7 +52,7 @@ private:
 
     Board makeMove(const Board &b, std::tuple<int, int, Figure>);
 
-    bool isInCheck(const Board &board, color);
+    bool isInCheck(const Board &board, Color);
 
     void generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>>& moves, Board& board);
     void generateAllKnightMoves(std::vector<std::tuple<int, int, Figure>>& moves, Board& board);
@@ -88,6 +88,13 @@ private:
         return [b,this](std::tuple<int, int, Figure> move) -> bool {
             return checkIfMoveIsIllegalDueCheck(b, move);
         };
+    }
+
+    inline void generatePawnPromotion(std::list<std::tuple<int, int, Figure>> &seq, int field, int new_field) {
+        seq.push_back(std::make_tuple(field, new_field, BKNIGHT));
+        seq.push_back(std::make_tuple(field, new_field, BBISHOP));
+        seq.push_back(std::make_tuple(field, new_field, BROOK));
+        seq.push_back(std::make_tuple(field, new_field, BQUEEN));
     }
 
 
