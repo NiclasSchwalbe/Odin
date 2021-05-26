@@ -15,7 +15,7 @@
 
 namespace OdinConstants {
     static const std::string standardBoardFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-    static const double cpuct = 1.0;
+    static const double cpuct = 2.0f;
 }
 
 class Node;

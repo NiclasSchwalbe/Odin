@@ -14,7 +14,7 @@ void Board::setPosition(const std::string& fen, const std::vector<std::string>& 
 
     std::vector<std::string> strList = splitString(fen, ' ');
 
-    for (int i = 0; field < 64 && i < strList[0].length(); i++)
+    for (int i = 0; field < 64 && i < strList[0].length(); i++) 
     {
         switch (strList[0].at(i)) {
             case 'p':
