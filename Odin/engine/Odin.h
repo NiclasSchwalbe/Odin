@@ -35,8 +35,8 @@ public:
     inline void searchOff() {
         searching_ = false;
     }
-
-    void generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>> &moves, Board& board);
+    void generateAllMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board);
+    void generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>> &moves, const Board& board);
     void search();
     void setPosition(const std::string& fen, const std::vector<std::string>& moves);
     static double evaluatePosition(Board &board);
@@ -52,28 +52,31 @@ private:
 
     Board makeMove(const Board &b, std::tuple<int, int, Figure>);
 
-    bool isInCheck(const Board &board, Color);
+    bool isInCheck(const Board &board);
 
-    void generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>>& moves, Board& board);
-    void generateAllKnightMoves(std::vector<std::tuple<int, int, Figure>>& moves, Board& board);
-    void generateAllBishopMoves(std::vector<std::tuple<int, int, Figure>>& moves, Board& board);
-    void generateAllRookMoves(std::vector<std::tuple<int, int, Figure>>& moves, Board& board);
-    void generateAllQueenMoves(std::vector<std::tuple<int, int, Figure>>&, Board& board);
-    void generateAllKingMoves(std::vector<std::tuple<int, int, Figure>>&, Board& board);
+    void generateAllPawnMoves(std::list<std::tuple<int, int, Figure>>& moves, const Board & board);
+    void generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board);
+    void generateAllLegalPawnMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board & board);
 
-    void generateAllPawnMovesWithWhite(std::list<std::tuple<int, int, Figure>> &pawn_moves, Board &board);
-    void generateAllPawnMovesWithBlack(std::list<std::tuple<int, int, Figure>> &pawn_moves, Board &board);
+    void generateAllKnightMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board);
+    void generateAllBishopMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board);
+    void generateAllRookMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board);
+    void generateAllQueenMoves(std::vector<std::tuple<int, int, Figure>>&, const Board& board);
+    void generateAllKingMoves(std::vector<std::tuple<int, int, Figure>>&, const Board& board);
+
+    void generateAllPawnMovesWithWhite(std::list<std::tuple<int, int, Figure>> &pawn_moves, const Board & board);
+    void generateAllPawnMovesWithBlack(std::list<std::tuple<int, int, Figure>> &pawn_moves, const Board & board);
 
     inline bool hasAnyFigure(const Board& board, const int rank, const int line) const{
-        return board.board_[rank][line] == 0;
+        return board[rank][line] == 0;
     }
 
     inline bool hasBlackFigure(const Board& board, const int rank, const int line) const{
-        return board.board_[rank][line] < 0;
+        return board[rank][line] < 0;
     }
 
     inline bool hasWhiteFigure(const Board& board, const int rank, const int line) const{
-        return board.board_[rank][line] < 0;
+        return board[rank][line] < 0;
     }
 
     /*
@@ -84,7 +87,7 @@ private:
     /*
      * This currys checkIfMoveIsIllegalDueCheck(const Board &b, std::tuple<int, int, Figure> move);
      */
-    inline std::function<bool(std::tuple<int, int, Figure>)> checkIfMoveIsIllegalDueCheck(Board& b){
+    inline std::function<bool(std::tuple<int, int, Figure>)> checkIfMoveIsIllegalDueCheck(const Board& b){
         return [b,this](std::tuple<int, int, Figure> move) -> bool {
             return checkIfMoveIsIllegalDueCheck(b, move);
         };

@@ -4,6 +4,7 @@
 
 #include "Board.h"
 #include "Odin.h"
+#include "BoardIterator.h"
 
 void Board::setPosition(const std::string& fen, const std::vector<std::string>& moves) {
 
@@ -102,5 +103,10 @@ Board::Board(const std::string& fen) {
     intrinsic_value_ = Odin::evaluatePosition(*this);
 }
 
-
+BoardIterator Board::begin() const{
+    return BoardIterator(0, this);
+}
+BoardIterator Board::end() const{
+    return BoardIterator(63, this);
+}
 

@@ -9,6 +9,8 @@
 #include <array>
 #include "../util/Utility.h"
 
+class BoardIterator; 
+
 class Board {
 public:
 
@@ -25,6 +27,11 @@ public:
     Board(const Board &b) {
         *this = b;
     }
+
+    std::array<int, 8> operator[](int i) const { return board_[i]; }
+
+    BoardIterator begin() const;
+    BoardIterator end() const;
 
 private:
 

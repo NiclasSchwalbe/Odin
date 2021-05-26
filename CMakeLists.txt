@@ -8,6 +8,8 @@ set(CMAKE_CXX_EXTENSIONS NO)
 include_directories(Odin/engine)
 include_directories(Odin/uci)
 include_directories(Odin/util)
+include_directories(Odin/util/iters)
+
 
 # add our cmake modules under cmake/
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
@@ -22,14 +24,14 @@ endif()
 
 find_package(Boost 1.74.0 REQUIRED serialization)
 
-#ENDBOOST
-
 message(STATUS "---------------------")
 message(STATUS "Boost_FOUND: ${Boost_FOUND}")
 message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
 message(STATUS "Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
 message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
 message(STATUS "---------------------")
+
+#EndBoost
 
 # Include CPM dependency manager
 include(CPM)
@@ -58,6 +60,7 @@ add_executable(Odin
         Odin/util/Utility.h
         Odin/engine/Node.h
         Odin/engine/Link.h
+        Odin/util/iters/BoardIterator.h
         )
 
 target_link_libraries(Odin PRIVATE Boost::serialization)
