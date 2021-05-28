@@ -11,7 +11,7 @@
 #include <functional>
 #include "Board.h"
 #include "Node.h"
-#include "Figure.h"
+#include "Utility.h"
 
 namespace OdinConstants {
     static const std::string standardBoardFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";

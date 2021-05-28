@@ -7,18 +7,19 @@
 #include <string>
 #include <vector>
 #include <array>
-#include "../util/Utility.h"
-
-class BoardIterator; 
+#include "Utility.h"
+#include "BoardIterator.h"
 
 class Board {
 public:
+
 
     bool long_castle_white_{false};
     bool long_castle_black_{false};
     bool short_castle_white_{false};
     bool short_castle_black_{false};
     Color to_move_{Color::WHITE};
+
     double intrinsic_value_;
 
     std::array<std::array<int, 8>, 8> board_{};

@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 #include "Node.h"
+#include "Figure.h"
 
 class Node;
 

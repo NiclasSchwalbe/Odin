@@ -1,7 +1,10 @@
 Odin.cbp
-cmake-build-debug
 CMakeFiles
 .idea
 _deps
 build/
 .vs
+bugfixing
+cpm-package-lock.cmake
+CPM_modules
+cmake-build-*

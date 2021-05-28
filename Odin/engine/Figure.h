@@ -2,7 +2,6 @@
 // Created by Niclas Schwalbe on 06.04.21.
 //
 #pragma once
-#include <../util/Utility.h>
 
 enum class Color;
 

@@ -1,7 +1,8 @@
 #pragma once
 
 #include <iterator>
-#include "../engine/Board.h"
+
+class Board;
 
 class BoardIterator {
 private:
@@ -10,18 +11,13 @@ private:
     
 public:
 
-   BoardIterator(int value, const Board* b) :  field_(value),
-                                         board_{b}
+   BoardIterator(int value, const Board* b) :
+            field_{value},
+            board_{b}
    {}
-    int operator*() const { 
-        return (*board_)[field_ / 8][field_ % 8]; 
-    }
-    bool operator==(const BoardIterator& other) const { 
-        return (board_ == other.board_) && (field_ == other.field_); 
-    }
-    bool operator!=(const BoardIterator& other) const { 
-        return !(*this == other); 
-    }
+    int operator*() const;
+    bool operator==(const BoardIterator& other) const;
+    bool operator!=(const BoardIterator& other) const;
 
     BoardIterator& operator++() {
         ++field_;

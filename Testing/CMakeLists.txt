@@ -1,0 +1,11 @@
+include(CTEST)
+include(doctest)
+
+function(addTest testname)
+add_executable(${testname} ${testname}.cpp)
+target_compile_features(${testname} PRIVATE cxx_std_17)
+target_link_libraries(${testname} PUBLIC Engine PRIVATE doctest::doctest)
+DOCTEST_DISCOVER_TESTS(${testname})
+endfunction()
+
+ADD_SUBDIRECTORY(fentesting)
