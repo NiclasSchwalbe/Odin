@@ -23,9 +23,11 @@ include_directories(Odin/util/iters)
 # add our cmake modules under cmake/
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
-#AddBOOST
+# Include CPM dependency manager
+include(CPM)
 
-if(WIN32)
+
+if(WIN64)
 SET(BOOST_ROOT "C:/Program Files (x86)/boost/boost_1_74_0")
 include_directories(${BOOST_ROOT})
 include_directories(${BOOST_ROOT}/stage/lib)
@@ -42,25 +44,12 @@ message(STATUS "---------------------")
 
 #EndBoost
 
-# Include CPM dependency manager
-include(CPM)
-
-# enable testing
-enable_testing()
-
-# Pull doctest using CPM
-cpmaddpackage("gh:onqtam/doctest#2.4.5")
-
-# add the CMake modules for automatic test discovery so we can use
-# doctest_discover_tests() CMake
-set(CMAKE_MODULE_PATH "${doctest_SOURCE_DIR}/scripts/cmake"
-        ${CMAKE_MODULE_PATH})
-
 add_executable(Odin
         Odin/engine/Odin.cc
         Odin/main.cc
         Odin/engine/Board.cc
         Odin/util/Utility.cc
+        Odin/util/iters/BoardIterator.cc
         Odin/engine/Node.cc
         Odin/engine/Link.cc
         Odin/engine/Odin.h
@@ -74,5 +63,21 @@ add_executable(Odin
 
 target_link_libraries(Odin PRIVATE Boost::serialization)
 
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native")
-set(MAKEFLAGS "-j $N")
+if(UNIX)
+set(CMAKE_CXX_FLAGS "-O3 -march=native")
+endif(UNIX)
+
+#Make Tests
+#enable testing
+enable_testing()
+
+# Pull doctest using CPM
+cpmaddpackage("gh:onqtam/doctest#2.4.5")
+
+# add the CMake modules for automatic test discovery so we can use
+# doctest_discover_tests() CMake
+set(CMAKE_MODULE_PATH "${doctest_SOURCE_DIR}/scripts/cmake"
+        ${CMAKE_MODULE_PATH})
+
+
+add_subdirectory(Testing)
