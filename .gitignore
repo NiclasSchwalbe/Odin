@@ -8,3 +8,5 @@ bugfixing
 cpm-package-lock.cmake
 CPM_modules
 cmake-build-*
+CMakeSettings.json
+CTestTestfile.cmake
