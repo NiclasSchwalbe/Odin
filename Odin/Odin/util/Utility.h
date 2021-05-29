@@ -1,12 +1,13 @@
 //
 // Created by Niclas Schwalbe on 06.04.21.
+//
+
 
 #pragma once
 #include <vector>
 #include <string>
 #include "../engine/Figure.h"
 
-class Board;
 enum class Color { BLACK = -1, WHITE = 1};
 
 const Figure EMPTY(0, Color::WHITE);
@@ -24,5 +25,4 @@ const Figure WQUEEN(5, Color::WHITE);
 const Figure WKING(6, Color::WHITE);
 
 std::vector<std::string> splitString(std::string s, char limiter);
-void printBoard(const Board&);
 

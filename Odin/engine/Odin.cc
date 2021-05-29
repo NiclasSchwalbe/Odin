@@ -10,7 +10,6 @@
 
 #include "Odin.h"
 #include "Utility.h"
-#include "BoardIterator.h"
 
 
 Odin::Odin() :
@@ -51,7 +50,7 @@ void Odin::setUpForCalculations() {
 
 }
 
-Board Odin::makeMove(const Board& b, std::tuple<int, int, Figure> t) {
+Board makeMove(const Board& b, std::tuple<int, int, Figure> t) {
 	Board new_b{ b };
 
 	int temp = new_b[std::get<0>(t) / 8][std::get<0>(t) % 8];
@@ -67,7 +66,7 @@ Board Odin::makeMove(const Board& b, std::tuple<int, int, Figure> t) {
 	return new_b;
 }
 
-void Odin::generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board) {
+void generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board) {
 
 	generateAllLegalPawnMoves(moves, board);
 	/*generateAllKnightMoves(moves, board);
@@ -79,7 +78,7 @@ void Odin::generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>>& move
 }
 
 
-void Odin::generateAllMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board) {
+void generateAllMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board) {
 
 	generateAllPawnMoves(moves, board);
 	/*generateAllKnightMoves(moves, board);
@@ -90,12 +89,12 @@ void Odin::generateAllMoves(std::vector<std::tuple<int, int, Figure>>& moves, co
 
 }
 
-bool Odin::checkIfMoveIsIllegalDueCheck(const Board& b, std::tuple<int, int, Figure> move) {
+bool checkIfMoveIsIllegalDueCheck(const Board& b, std::tuple<int, int, Figure> move) {
 	Board new_board = makeMove(b, move);
 	return isInCheck(new_board);
 }
 
-bool Odin::isInCheck(const Board& b) {
+bool isInCheck(const Board& b) {
 	std::vector<std::tuple<int, int, Figure>> moves;
 	generateAllMoves(moves, b);
 
@@ -121,7 +120,7 @@ bool Odin::isInCheck(const Board& b) {
 
 }
 
-void Odin::generateAllPawnMoves(std::list<std::tuple<int, int, Figure>>& pawn_moves, const Board& board) {
+void generateAllPawnMoves(std::list<std::tuple<int, int, Figure>>& pawn_moves, const Board& board) {
 
 	int field{ 7 };
 
@@ -135,7 +134,7 @@ void Odin::generateAllPawnMoves(std::list<std::tuple<int, int, Figure>>& pawn_mo
 	}
 }
 
-void Odin::generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board) {
+void generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board) {
 
 	int field{ 7 };
 
@@ -155,7 +154,7 @@ void Odin::generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>>& moves
 	}
 }
 
-void Odin::generateAllLegalPawnMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board) {
+void generateAllLegalPawnMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board) {
 
 	std::list<std::tuple<int, int, Figure>> pawn_moves;
 	generateAllPawnMoves(pawn_moves, board);
@@ -167,7 +166,7 @@ void Odin::generateAllLegalPawnMoves(std::vector<std::tuple<int, int, Figure>>& 
 
 }
 
-void Odin::generateAllPawnMovesWithWhite(std::list<std::tuple<int, int, Figure>>& pawn_moves, const Board& board) {
+void generateAllPawnMovesWithWhite(std::list<std::tuple<int, int, Figure>>& pawn_moves, const Board& board) {
 	int field = -1;
 	for (int rank{ 1 }; rank < 7; rank++) {
 		for (int line{ 0 }; line < 8; line++) {
@@ -178,7 +177,7 @@ void Odin::generateAllPawnMovesWithWhite(std::list<std::tuple<int, int, Figure>>
 				continue;
 			}
 
-			if (hasAnyFigure(board, rank + 1, line)) {
+			if (hasNoFigure(board, rank + 1, line)) {
 				int new_field{ field + 8 };
 				if (rank == 6) {
 					generatePawnPromotion(pawn_moves, field, new_field);
@@ -188,7 +187,7 @@ void Odin::generateAllPawnMovesWithWhite(std::list<std::tuple<int, int, Figure>>
 				}
 			}
 
-			if (rank == 1 && hasAnyFigure(board, rank + 2, line)) {
+			if (rank == 1 && hasNoFigure(board, rank + 2, line)) {
 				pawn_moves.push_back(std::make_tuple(field, field + 16, EMPTY));
 			}
 
@@ -217,7 +216,7 @@ void Odin::generateAllPawnMovesWithWhite(std::list<std::tuple<int, int, Figure>>
 	}
 }
 
-void Odin::generateAllPawnMovesWithBlack(std::list<std::tuple<int, int, Figure>>& pawn_moves, const Board& board) {
+void generateAllPawnMovesWithBlack(std::list<std::tuple<int, int, Figure>>& pawn_moves, const Board& board) {
 	int field_num = -1;
 	int rank = 0;
 	int line = 0;
@@ -229,7 +228,7 @@ void Odin::generateAllPawnMovesWithBlack(std::list<std::tuple<int, int, Figure>>
 			continue;
 		}
 
-		if (hasAnyFigure(board, rank - 1, line)) {
+		if (hasNoFigure(board, rank - 1, line)) {
 			int new_field{ field_num - 8 };
 			if (rank == 6) {
 				generatePawnPromotion(pawn_moves, field_num, new_field);
@@ -239,7 +238,7 @@ void Odin::generateAllPawnMovesWithBlack(std::list<std::tuple<int, int, Figure>>
 			}
 		}
 
-		if (rank == 1 && hasAnyFigure(board, rank - 2, line)) {
+		if (rank == 1 && hasNoFigure(board, rank - 2, line)) {
 			pawn_moves.push_back(std::make_tuple(field_num, field_num + 16, EMPTY));
 		}
 

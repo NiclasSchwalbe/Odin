@@ -7,7 +7,9 @@
 
 #include "engine/Odin.h"
 #include "uci/uci.hpp"
+#include "Utility.h"
 
+/*
 int main(int argc, const char *argv[]) {
     Odin odin;
     uci uci;
@@ -30,4 +32,10 @@ int main(int argc, const char *argv[]) {
     uci.launch();
 
 
+}
+ */
+
+int main(){
+  Board b("8/3k4/8/8/8/8/3K4/8 w - - 0 1");
+  printBoard(b);
 }

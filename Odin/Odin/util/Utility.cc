@@ -1,9 +1,9 @@
 //
 // Created by Niclas Schwalbe on 06.04.21.
 //
-#include <iostream>
+
 #include "Utility.h"
-#include "Board.h"
+
 
 std::vector<std::string> splitString(std::string s, char limiter) {
     std::vector<std::string> tokens;
@@ -11,7 +11,7 @@ std::vector<std::string> splitString(std::string s, char limiter) {
 
 
     for (const auto c: s) {
-        if (c != limiter)
+        if (c == limiter)
             token += c;
         else {
             if (token.length() != 0) {
@@ -28,11 +28,3 @@ std::vector<std::string> splitString(std::string s, char limiter) {
     return tokens;
 }
 
-void printBoard(const Board& board){
-  for(int i = 0; i < 8; i++){
-    for(int j = 0; j < 8; j++){
-      std::cout << board[i][j] << ' ';
-    }
-    std::cout << std::endl;
-  }
-}

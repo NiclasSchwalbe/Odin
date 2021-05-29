@@ -42,13 +42,10 @@ message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
 message(STATUS "---------------------")
 
 #EndBoost
-
-add_executable(Odin
+set(SRCS
         Odin/engine/Odin.cc
-        Odin/main.cc
         Odin/engine/Board.cc
         Odin/util/Utility.cc
-        Odin/util/iters/BoardIterator.cc
         Odin/engine/Node.cc
         Odin/engine/Link.cc
         Odin/engine/Odin.h
@@ -57,27 +54,12 @@ add_executable(Odin
         Odin/util/Utility.h
         Odin/engine/Node.h
         Odin/engine/Link.h
-        Odin/util/iters/BoardIterator.h)
+)
 
-add_library(Engine
-        Odin/engine/Odin.cc
-        Odin/main.cc
-        Odin/engine/Board.cc
-        Odin/util/Utility.cc
-        Odin/util/iters/BoardIterator.cc
-        Odin/engine/Node.cc
-        Odin/engine/Link.cc
-        Odin/engine/Odin.h
-        Odin/engine/Board.h
-        Odin/engine/Figure.h
-        Odin/util/Utility.h
-        Odin/engine/Node.h
-        Odin/engine/Link.h
-        Odin/util/iters/BoardIterator.h)
+add_executable(Odin Odin/main.cc)
 
-
-target_link_libraries(Engine PRIVATE Boost::serialization)
-target_link_libraries(Odin PRIVATE Boost::serialization)
+add_library(Engine ${SRCS})
+target_link_libraries(Odin PRIVATE Boost::serialization Engine)
 
 if(UNIX)
 set(CMAKE_CXX_FLAGS "-O3 -march=native")
