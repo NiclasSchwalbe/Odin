@@ -73,17 +73,17 @@ void Board::setPosition(const std::string &fen,
     }
   }
 
-  if (strList.size() >= 4){
+  if (strList.size() >=4){
     if(strList[3].find('-') == std::string::npos){
-        char line = strList[2][0] - 'a';
-        char rank = strList[2][0] - '1';
+        char line = strList[3][0] - 'a';
+        char rank = strList[3][1] - '1';
         en_passant_field_ = line + rank * 8;
     }
   }
 
   if (strList.size() >= 5){
-    if(strList[3] != "-"){
-      fifty_move_rule_info_ = std::stoi(strList[3]);
+    if(strList[4] != "-"){
+      fifty_move_rule_info_ = std::stoi(strList[4]);
     } else {
       fifty_move_rule_info_ = -1;
     }

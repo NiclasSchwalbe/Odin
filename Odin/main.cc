@@ -34,7 +34,7 @@ int main(int argc, const char *argv[]) {
 
 }
  */
-
+#include <string>
 int main(){
   Board b("8/3k4/8/8/8/8/3K4/8 w - - 0 1");
   printBoard(b);

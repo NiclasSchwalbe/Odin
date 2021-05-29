@@ -29,3 +29,14 @@ TEST_CASE("Testing KINGS ONLY") {
     }
   }
 }
+
+TEST_CASE("Testing Castling and more...") {
+  Board b("rnbqkbnr/ppp1pppp/8/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 1");
+  REQUIRE(b.to_move_ == Color::WHITE);
+  REQUIRE(b.en_passant_field_ == 43);
+  REQUIRE(b.long_castle_black_ == true);
+  REQUIRE(b.long_castle_white_ == true);
+  REQUIRE(b.short_castle_black_== true);
+  REQUIRE(b.short_castle_white_== true);
+}
+
