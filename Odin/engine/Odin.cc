@@ -57,6 +57,7 @@ Board makeMove(const Board &b, std::tuple<int, int, Figure> t) {
   } else {
     new_b[std::get<1>(t) / 8][std::get<1>(t) % 8] = std::get<2>(t).value();
   }
+  new_b.to_move_ = b.to_move_ == Color::WHITE ? Color::BLACK : Color::WHITE;
 
   return new_b;
 }
