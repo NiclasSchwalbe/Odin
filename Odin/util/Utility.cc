@@ -31,7 +31,7 @@ std::vector<std::string> splitString(std::string s, char limiter) {
 void printBoard(const Board& board){
   for(int i = 0; i < 8; i++){
     for(int j = 0; j < 8; j++){
-      std::cout << board[i][j] << ' ';
+      std::cout << board[7 - i][j] << ' ';
     }
     std::cout << std::endl;
   }

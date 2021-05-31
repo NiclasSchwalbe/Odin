@@ -40,13 +40,16 @@ void Board::setPosition(const std::string &fen,
         break;
       case 'K':board_[rank][line] = WKING.value();
         break;
-      case '/':rank--;
+      case '/':
+        rank--;
         line = 0;
-        break;
+        continue;
       default:
-        line += c - '0';
-        field += c - '0';
+        line += c - '1';
+        field += c - '1';
     }
+    line++;
+    field++;
 
   }
   if (strList.size() >= 2) {
@@ -63,10 +66,10 @@ void Board::setPosition(const std::string &fen,
       short_castle_white_ = true;
     }
     if (strList[2].find('Q') != std::string::npos) {
-      short_castle_black_ = true;
+      long_castle_white_ = true;
     }
     if (strList[2].find('k') != std::string::npos) {
-      long_castle_white_ = true;
+      short_castle_black_ = true;
     }
     if (strList[2].find('q') != std::string::npos) {
       long_castle_black_ = true;

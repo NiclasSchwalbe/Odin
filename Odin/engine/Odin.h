@@ -35,8 +35,7 @@ public:
     inline void searchOff() {
         searching_ = false;
     }
-    void generateAllMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board);
-    void generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>> &moves, const Board& board);
+
     void search();
     void setPosition(const std::string& fen, const std::vector<std::string>& moves);
     static double evaluatePosition(Board &board);
@@ -51,21 +50,25 @@ private:
     void computeNext();
 
 
-
-
 };
 
 Board makeMove(const Board &b, std::tuple<int, int, Figure>);
 
 bool isInCheck(const Board &board);
 
-void generateAllPawnMoves(std::list<std::tuple<int, int, Figure>>& moves, const Board & board);
-void generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board);
-void generateAllLegalPawnMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board & board);
+void generateAllMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board);
+void generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>> &moves, const Board& board);
+void extractLegalMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board & board,
+                       std::function<void(std::list<std::tuple<int, int, Figure>>&, const Board &)> generator);
 
-void generateAllKnightMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board);
-void generateAllBishopMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board);
-void generateAllRookMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board);
+/*
+ * AsList Suffix is necessary, otherwise it will not be understood by std::function.... weird template stuff
+ */
+void generateAllPawnMovesAsList(std::list<std::tuple<int, int, Figure>>& pawn_moves, const Board & board);
+void generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>>& , const Board& board);
+void generateAllKnightMoves(std::vector<std::tuple<int, int, Figure>>& , const Board& board);
+void generateAllBishopMoves(std::vector<std::tuple<int, int, Figure>>& , const Board& board);
+void generateAllRookMoves(std::vector<std::tuple<int, int, Figure>>& , const Board& board);
 void generateAllQueenMoves(std::vector<std::tuple<int, int, Figure>>&, const Board& board);
 void generateAllKingMoves(std::vector<std::tuple<int, int, Figure>>&, const Board& board);
 

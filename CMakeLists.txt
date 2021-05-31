@@ -54,7 +54,7 @@ set(SRCS
         Odin/util/Utility.h
         Odin/engine/Node.h
         Odin/engine/Link.h
-)
+        Odin/engine/pawnlogic.cpp)
 
 add_executable(Odin Odin/main.cc)
 

@@ -9,3 +9,4 @@ DOCTEST_DISCOVER_TESTS(${testname})
 endfunction()
 
 ADD_SUBDIRECTORY(fentesting)
+ADD_SUBDIRECTORY(moves)
