@@ -37,10 +37,5 @@ int main(int argc, const char *argv[]) {
 #include <iostream>
 #include <string>
 int main(){
-  Board b("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1");
-  std::vector<std::tuple<int, int, Figure>> moves{};
-  generateAllPawnMoves(std::move(moves), b);
-  Board c{makeMove(b, moves[9])};
-  Board comparison{"rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1"};
-  std::cout << (c == comparison) << std::endl;
+
 }
