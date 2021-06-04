@@ -36,6 +36,7 @@ int main(int argc, const char *argv[]) {
  */
 #include <iostream>
 #include <string>
+<<<<<<< HEAD
 #include "Board.h"
 int main() {
 
@@ -44,4 +45,8 @@ int main() {
   generateAllKnightMoves(moves, b);
   std::cout << moves.size() << std::endl;
   std::cout << b;
+=======
+int main(){
+
+>>>>>>> 3ffd4a8f58045bb61f49b66da21ccff834157d7b
 }
