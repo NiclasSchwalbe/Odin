@@ -1,1 +1,2 @@
 ADDTEST(pawnmoves)
+ADDTEST(knightmoves)

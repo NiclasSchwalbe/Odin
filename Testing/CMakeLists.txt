@@ -2,7 +2,7 @@ include(CTEST)
 include(doctest)
 
 function(addTest testname)
-add_executable(${testname} ${testname}.cpp)
+add_executable(${testname} ${testname}.cc)
 target_compile_features(${testname} PRIVATE cxx_std_17)
 target_link_libraries(${testname} PUBLIC Engine PRIVATE doctest::doctest)
 DOCTEST_DISCOVER_TESTS(${testname})

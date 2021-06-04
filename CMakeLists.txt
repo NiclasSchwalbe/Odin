@@ -48,13 +48,15 @@ set(SRCS
         Odin/util/Utility.cc
         Odin/engine/Node.cc
         Odin/engine/Link.cc
+        Odin/engine/pawnlogic.cc
+        Odin/engine/knightlogic.cc
         Odin/engine/Odin.h
         Odin/engine/Board.h
         Odin/engine/Figure.h
         Odin/util/Utility.h
         Odin/engine/Node.h
         Odin/engine/Link.h
-        Odin/engine/pawnlogic.cpp)
+)
 
 add_executable(Odin Odin/main.cc)
 
