@@ -36,17 +36,10 @@ int main(int argc, const char *argv[]) {
  */
 #include <iostream>
 #include <string>
-<<<<<<< HEAD
-#include "Board.h"
-int main() {
 
-  Board b{"8/8/3P1p2/2P3n1/4N3/2P3p1/3r1P2/8 w - - 0 1"};
-  std::vector<std::tuple<int, int, Figure>> moves{};
-  generateAllKnightMoves(moves, b);
-  std::cout << moves.size() << std::endl;
-  std::cout << b;
-=======
-int main(){
-
->>>>>>> 3ffd4a8f58045bb61f49b66da21ccff834157d7b
+int main(){ 
+    Board b{"8/8/8/3B4/8/8/8/8 w - - 0 1"}; 
+    std::vector<std::tuple<int, int, Figure>> moves{};
+    generateAllBishopMoves(moves, b);
+    std::cout << (moves.size()) << std::endl;
 }
