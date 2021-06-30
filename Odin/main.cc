@@ -38,8 +38,15 @@ int main(int argc, const char *argv[]) {
 #include <string>
 
 int main(){ 
-    Board b{"8/8/8/3B4/8/8/8/8 w - - 0 1"}; 
+    Board b{"rnbqkbn1/ppppppp1/8/3r3p/7P/P7/1PPPPPP1/RNBQKBNR w KQq - 0 1"};
+    int sum{0};
+    for (auto field : b) {
+      if (field != 0) {
+        sum++;
+      }
+    }
+    std::cout << sum << std::endl;
     std::vector<std::tuple<int, int, Figure>> moves{};
-    generateAllBishopMoves(moves, b);
+    generateAllRookMoves(moves, b);
     std::cout << (moves.size()) << std::endl;
 }

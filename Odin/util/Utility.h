@@ -9,20 +9,24 @@
 class Board;
 enum class Color { BLACK = -1, WHITE = 1};
 
-const Figure EMPTY(0, Color::WHITE);
-const Figure BPAWN(1, Color::BLACK);
-const Figure BKNIGHT(2, Color::BLACK);
-const Figure BBISHOP(3, Color::BLACK);
-const Figure BROOK(4, Color::BLACK);
-const Figure BQUEEN(5, Color::BLACK);
-const Figure BKING(6, Color::BLACK);
-const Figure WPAWN(1, Color::WHITE);
-const Figure WKNIGHT(2, Color::WHITE);
-const Figure WBISHOP(3, Color::WHITE);
-const Figure WROOK(4, Color::WHITE);
-const Figure WQUEEN(5, Color::WHITE);
-const Figure WKING(6, Color::WHITE);
+constexpr Figure EMPTY(0, Color::WHITE);
+constexpr Figure BPAWN(1, Color::BLACK);
+constexpr Figure BKNIGHT(2, Color::BLACK);
+constexpr Figure BBISHOP(3, Color::BLACK);
+constexpr Figure BROOK(4, Color::BLACK);
+constexpr Figure BQUEEN(5, Color::BLACK);
+constexpr Figure BKING(6, Color::BLACK);
+constexpr Figure WPAWN(1, Color::WHITE);
+constexpr Figure WKNIGHT(2, Color::WHITE);
+constexpr Figure WBISHOP(3, Color::WHITE);
+constexpr Figure WROOK(4, Color::WHITE);
+constexpr Figure WQUEEN(5, Color::WHITE);
+constexpr Figure WKING(6, Color::WHITE);
 
 std::vector<std::string> splitString(std::string s, char limiter);
 void printBoard(const Board&);
+
+inline bool inBounds(int x, int y) {
+  return x < 8 && x >= 0 && y < 8 && y >= 0;
+}
 

@@ -1,3 +1,5 @@
 ADDTEST(pawnmoves)
 ADDTEST(knightmoves)
 ADDTEST(bishopmoves)
+ADDTEST(rookmoves)
+ADDTEST(queenmoves)

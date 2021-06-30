@@ -49,3 +49,22 @@ void generateAllRookMoves(std::vector<std::tuple<int, int, Figure>>& moves,
     }
   }
 }
+
+void generateAllQueenMoves(std::vector<std::tuple<int, int, Figure>>& moves,
+                          const Board& board) {
+  auto piece = board.to_move_ == Color::WHITE ? WQUEEN : WQUEEN;
+  for (int i = 0; i < 8; i++) {
+    for (int j = 0; j < 8; j++) {
+      if (board[i][j] == piece.value()) {
+        generateMoves<1, 1>(moves, board, i, j);
+        generateMoves<1, -1>(moves, board, i, j);
+        generateMoves<-1, -1>(moves, board, i, j);
+        generateMoves<-1, 1>(moves, board, i, j);
+        generateMoves<1, 0>(moves, board, i, j);
+        generateMoves<0, -1>(moves, board, i, j);
+        generateMoves<-1, 0>(moves, board, i, j);
+        generateMoves<0, 1>(moves, board, i, j);
+      }
+    }
+  }
+}

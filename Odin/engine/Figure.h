@@ -6,24 +6,30 @@
 enum class Color;
 
 class Figure {
-    public:
-        Figure(int val, int color) {
-            val_ = val;
-            col_ = color;
-        }
+ public:
+  constexpr Figure(int val, int color) : val_{val}, col_{color} {}
 
-        Figure(int val, Color color) {
-            val_ = val;
-            col_ = static_cast<int>(color);
-        }
-        inline int value() const{
-            return (col_ * val_);
-        }
-        inline int color() const{
-            return col_;
-        }
-    private:
-        int val_;
-        int col_;
+  constexpr Figure(int val, Color color)
+      : val_{val}, col_{static_cast<int>(color)} {}
+
+  constexpr Figure(const Figure&& f) : val_{f.val_}, col_{f.col_} {}
+
+  constexpr Figure(const Figure& f) : val_{f.val_}, col_{f.col_} {}
+
+  constexpr void operator=(const Figure&& f) {
+    val_ = f.val_;
+    col_ = f.col_;
+  }
+
+  constexpr void operator=(const Figure& f) {
+    val_ = f.val_;
+    col_ = f.col_;
+  }
+
+  constexpr int value() const { return (col_ * val_); }
+  constexpr int color() const { return col_; }
+
+ private:
+  int val_;
+  int col_;
 };
-
