@@ -59,12 +59,11 @@ bool isInCheck(const Board &board);
 void generateAllMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board);
 void generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>> &moves, const Board& board);
 void extractLegalMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board & board,
-                       std::function<void(std::list<std::tuple<int, int, Figure>>&, const Board &)> generator);
+                       std::function<void(std::vector<std::tuple<int, int, Figure>>&, const Board &)> generator);
 
 /*
  * AsList Suffix is necessary, otherwise it will not be understood by std::function.... weird template stuff
  */
-void generateAllPawnMovesAsList(std::list<std::tuple<int, int, Figure>>& pawn_moves, const Board & board);
 void generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>>& , const Board& board);
 void generateAllKnightMoves(std::vector<std::tuple<int, int, Figure>>& , const Board& board);
 void generateAllBishopMoves(std::vector<std::tuple<int, int, Figure>>& , const Board& board);

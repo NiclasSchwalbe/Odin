@@ -3,18 +3,6 @@
 //
 #include "Odin.h"
 
-void generateAllPawnMovesAsList(std::list<std::tuple<int, int, Figure>> &pawn_moves, const Board &board) {
-
-  int field{7};
-
-  switch (board.to_move_) {
-    case Color::BLACK: generateAllPawnMovesWithBlack(pawn_moves, board);
-      break;
-    case Color::WHITE: generateAllPawnMovesWithWhite(pawn_moves, board);
-      break;
-  }
-}
-
 void generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>> &moves, const Board &board) {
 
   int field{7};

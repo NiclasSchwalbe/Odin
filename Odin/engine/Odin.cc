@@ -64,37 +64,34 @@ Board makeMove(const Board &b, std::tuple<int, int, Figure> t) {
 
 void generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>> &moves, const Board &board) {
 
-  extractLegalMoves(moves, board, generateAllPawnMovesAsList);
-  /*generateAllLegalKnightMoves(moves, board);
-  generateAllBishopMoves(moves, board);
-  generateAllRookMoves(moves,board);
-  generateAllQueenMoves(moves, board);
-  generateAllKingMoves(moves, board);*/
-
+  extractLegalMoves(moves, board, generateAllMoves);
+ 
 }
 
 void generateAllMoves(std::vector<std::tuple<int, int, Figure>> &moves, const Board &board) {
 
   generateAllPawnMoves(moves, board);
-  /*generateAllKnightMoves(moves, board);
+  generateAllKnightMoves(moves, board);
   generateAllBishopMoves(moves, board);
   generateAllRookMoves(moves,board);
   generateAllQueenMoves(moves, board);
-  generateAllKingMoves(moves, board);*/
+  generateAllKingMoves(moves, board);
 
 }
 
 void extractLegalMoves(std::vector<std::tuple<int, int, Figure>> &moves,
                        const Board &board,
-                       std::function<void(std::list<std::tuple<int, int, Figure>> &, const Board &)> generator) {
+                       std::function<void(std::vector<std::tuple<int, int, Figure>> &, const Board &)> generator) {
 
-  std::list<std::tuple<int, int, Figure>> new_moves;
+  std::vector<std::tuple<int, int, Figure>> new_moves;
   generator(new_moves, board);
   new_moves.erase(std::remove_if(new_moves.begin(), new_moves.end(), checkIfMoveIsIllegalDueCheck(board)),
                   new_moves.end());
 
-  for (auto t : new_moves) {
-    moves.push_back(t);
+  for (auto& t : new_moves) {
+    if (!checkIfMoveIsIllegalDueCheck(board, t)) {
+      moves.push_back(t);
+    }
   }
 
 }

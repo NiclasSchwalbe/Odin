@@ -51,6 +51,7 @@ set(SRCS
         Odin/engine/pawnlogic.cc
         Odin/engine/knightlogic.cc
         Odin/engine/longrangepiecelogic.cc
+        Odin/engine/kinglogic.cc
         Odin/engine/Odin.h
         Odin/engine/Board.h
         Odin/engine/Figure.h
