@@ -5,6 +5,12 @@
 
 enum class Color;
 
+/*
+* Figure is a constexpr. This ensures evaluations, as fast as possible.
+* It just represents a piece on the board.
+* NOTE:
+* value() does not return something akin to worth, but the representation value on the board.
+*/
 class Figure {
  public:
   constexpr Figure(int val, int color) : val_{val}, col_{color} {}

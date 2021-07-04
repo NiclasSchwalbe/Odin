@@ -54,10 +54,18 @@ private:
 
 Board makeMove(const Board &b, std::tuple<int, int, Figure>);
 
+/*
+ * Checks if king could be "captured" in the next move and would therefore be in
+ * check.
+ */
 bool isInCheck(const Board &board);
 
 void generateAllMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board);
 void generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>> &moves, const Board& board);
+/*
+ * filters all Moves which would be illegal, because color would check itself or
+ * not escape a check
+ */
 void extractLegalMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board & board,
                        std::function<void(std::vector<std::tuple<int, int, Figure>>&, const Board &)> generator);
 
@@ -75,21 +83,21 @@ void generateAllPawnMovesWithWhite(std::list<std::tuple<int, int, Figure>> &pawn
 void generateAllPawnMovesWithBlack(std::list<std::tuple<int, int, Figure>> &pawn_moves, const Board & board);
 
 inline bool hasNoFigure(const Board& board, const int rank, const int line) {
-  if (rank < 0 || rank >= 8 || line < 0 || line >= 8) {
+  if (inBounds(rank, line)) {
     return false;
   }  
   return board[rank][line] == 0;
 }
 
 inline bool hasBlackFigure(const Board& board, const int rank, const int line) {
-  if (rank < 0 || rank >= 8 || line < 0 || line >= 8) {
+  if (inBounds(rank, line)) {
     return false;
   }
   return board[rank][line] < 0;
 }
 
 inline bool hasWhiteFigure(const Board& board, const int rank, const int line) {
-  if (rank < 0 || rank >= 8 || line < 0 || line >= 8) {
+  if (inBounds(rank, line)) {
      return false;
   }
   return board[rank][line] > 0;

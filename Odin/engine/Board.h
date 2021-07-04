@@ -23,7 +23,8 @@ class Board {
     BoardIterator(pointer ptr, const Board *b) : m_ptr(ptr), board_{b} {}
 
     reference operator*() const { return (*board_)(m_ptr); }
-    // pointer operator->() { return  (*board_)(m_ptr); }
+    
+    
     BoardIterator &operator++() {
       m_ptr++;
       return *this;
@@ -66,34 +67,11 @@ class Board {
   std::array<int, 8> &operator[](int i) { return board_[i]; }
   int &operator()(int i) { return board_[i / 8][i % 8]; }
   const int &operator()(int i) const { return board_[i / 8][i % 8]; }
-  bool operator==(const Board &b) const {
-    for (int i = 0; i < 64; i++) {
-      if (b(i) != this->operator()(i)) {
-        return false;
-      }
-    }
-    if (b.to_move_ != this->to_move_ ||
-        b.en_passant_field_ != this->en_passant_field_) {
-      return false;
-    }
 
-    if (b.long_castle_black_ != this->long_castle_black_ ||
-        b.long_castle_white_ != this->long_castle_white_) {
-      return false;
-    }
+  
+  bool operator==(const Board &b) const;
 
-    if (b.short_castle_black_ != this->short_castle_black_ ||
-        b.short_castle_white_ != this->short_castle_white_) {
-      return false;
-    }
-
-    if (b.fifty_move_rule_info_ != this->fifty_move_rule_info_) {
-      return false;
-    }
-
-    return true;
-  }
-
+  //allows to print a Board
   friend std::ostream &operator<<(std::ostream &os, Board const& b) {
     std::string output{}; 
     for (int i = 0; i < 8; i++) {

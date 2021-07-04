@@ -27,15 +27,19 @@ Node::Node(Board&& board, std::optional<double> alpha, std::optional<double> bet
 	color_(board.to_move_),
 	intrinsic_value_(board.intrinsic_value_) {}
 
-
+/*
+* Recursively feeds new values up the tree.
+* It is using a min-max principle.
+*/
 void Node::updateValueAsChild(double val) {
-	std::shared_ptr<Node> parent(parent_);
+  std::shared_ptr<Node> parent{parent_};
 	if (!value_.has_value()) {
 		value_ = val;
 		parent->updateValueAsChild(val);
 		return;
 	}
 	switch (color_) {
+	//Black is minimizing, white is maximizing
 	case Color::BLACK:
 		if (val > value_) {
 			value_ = val;
@@ -51,11 +55,13 @@ void Node::updateValueAsChild(double val) {
 	}
 }
 
-
+/*
+* Finds next position recusively and 
+*/
 void Node::evalNextPosition() {
 	if (moves_.size() == 0) {
 		expand();
-		std::shared_ptr<Node> parent(parent_);
+        std::shared_ptr<Node> parent{parent_};
 		parent->updateValueAsChild(intrinsic_value_);
 		return;
 	}

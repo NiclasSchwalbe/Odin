@@ -1,6 +1,9 @@
 
 #include "Odin.h"
 
+/*
+* Generates a king step in any direction. Where dX, dY is the directrion.
+*/
 template <int dX, int dY>
 void generateOneSteps(int i, int j,
                       std::vector<std::tuple<int, int, Figure>>& moves,
@@ -18,16 +21,27 @@ void generateOneSteps(int i, int j,
     moves.push_back(std::make_tuple((8 * i + j), (8 * toi + toj), EMPTY));
   }
 }
-
+/*
+* Generates all castling moves. If the king is in check after the castling, the move will be generated and can be filtered out later.
+* However, if the king would be in check while crossing, the move would not be added.
+*/
 void generateAllCastling(int i, int j,
                          std::vector<std::tuple<int, int, Figure>>& moves,
                          const Board& board) {
+  //check if King is at original position.  
   if (!((board.to_move_ == Color::BLACK && i == 7 && j == 4) ||
         (board.to_move_ == Color::WHITE && i == 0 && j == 4))) {
     return;
   }
 
   switch (board.to_move_) {
+    /*
+    * If the side still has castling sides, the space between king and rook is free, the rook still is at original position
+    * and the king could not be captured while moving to its desired position. 
+    */
+
+
+    //case WHITE
     case Color::WHITE:
       if (board.long_castle_white_ &&
           !checkIfMoveIsIllegalDueCheck(board, std::make_tuple(4, 3, EMPTY)) &&
@@ -45,6 +59,7 @@ void generateAllCastling(int i, int j,
         moves.push_back(std::make_tuple(4, 5, EMPTY));
       }
       break;
+    //case BLACK
     default:
       if (board.long_castle_black_ &&
           !checkIfMoveIsIllegalDueCheck(board, std::make_tuple(60, 59, EMPTY)) &&

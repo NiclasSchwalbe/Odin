@@ -1,5 +1,10 @@
 #include "Odin.h"
 
+/*
+* Generates long range piece moves. Where dX, dY is the direction the piece is going to.
+* A rook and a rook need 4 directions
+* A queen needs 6 directions
+*/
 template <int dX, int dY>
 void generateMoves(std::vector<std::tuple<int, int, Figure>>& moves,
                    const Board& board, int x, int y) {
