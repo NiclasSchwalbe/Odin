@@ -8,6 +8,7 @@
 #include <list>
 #include <optional>
 #include <tuple>
+#include <cstdlib>
 
 #include "Utility.h"
 
@@ -47,46 +48,56 @@ void Odin::computeNext() { start_node_->evalNextPosition(); }
 
 void Odin::setUpForCalculations() {}
 
-Board makeMove(const Board &b, std::tuple<int, int, Figure> t) {
+Board makeMove(const Board &old_b, std::tuple<int, int, Figure> t) {
   // copy Board
-  Board new_b{b};
+  Board new_b{old_b};
+  const auto from_field{std::get<0>(t)};
+  const auto to_field{std::get<1>(t)};
+  const auto promotion{std::get<2>(t)};
 
   // value of the piece to be moved.
-  int temp = new_b(std::get<0>(t));
-  new_b(std::get<0>(t)) = EMPTY.value();
+  int temp = new_b(from_field);
+  new_b(from_field) = EMPTY.value();
 
   // is the move an en passant?
-  auto pawn = b.to_move_ == Color::WHITE ? WPAWN : BPAWN;
-  if (new_b(std::get<0>(t)) == pawn.value() &&
-      new_b.en_passant_field_ == std::get<1>(t)) {
-    new_b(std::get<1>(t) - 8) = EMPTY.value();
+  auto pawn = old_b.to_move_ == Color::WHITE ? WPAWN : BPAWN;
+  if (old_b(from_field) == pawn.value() && old_b.en_passant_field_ == to_field) {
+      if(old_b.to_move_ == Color::WHITE){
+        new_b(to_field - 8) = EMPTY.value();
+      } else {
+        new_b(to_field + 8) = EMPTY.value();
+      }
   }
 
   // is it pawn move with 2 steps, if yes set en_passant
-  if (new_b(std::get<0>(t)) == pawn.value() &&
-      abs(std::get<0>(t) - std::get<1>(t)) == 16) {
+  if (old_b(from_field) == pawn.value() &&
+      abs(from_field - to_field) == 16) {
     new_b.en_passant_field_ = new_b.to_move_ == Color::WHITE
-                                  ? std::get<0>(t) + 8
-                                  : std::get<0>(t) - 8;
+                                  ? from_field + 8
+                                  : to_field - 8;
   } else {
     new_b.en_passant_field_ = -1;
   }
 
-  //is move a castle, then set rook
-  auto king = b.to_move_ == Color::WHITE ? WKING : BKING;
-  if (new_b(std::get<0>(t)) == king.value()) {
-    //TODO: 
+  //if move is castle, then set rook
+  auto king = old_b.to_move_ == Color::WHITE ? WKING : BKING;
+  if (old_b(from_field) == king.value() && abs(from_field - to_field) == 2) {
+    if(from_field%8 < 5){
+      new_b((from_field/8)*8 + 4) = king.color()*WROOK.value();
+    } else {
+      new_b((from_field/8)*8 + 6) = king.color()*WROOK.value();
+    }
   }
 
   //Set new position, promote pawn if necessary
-  if (std::get<2>(t).value() == 0) {
-    new_b(std::get<1>(t)) = temp;
+  if (promotion.value() == 0) {
+    new_b(to_field) = temp;
   } else {
-    new_b(std::get<1>(t)) = std::get<2>(t).value();
+    new_b(to_field) = promotion.value();
   }
 
   // change color
-  new_b.to_move_ = b.to_move_ == Color::WHITE ? Color::BLACK : Color::WHITE;
+  new_b.to_move_ = old_b.to_move_ == Color::WHITE ? Color::BLACK : Color::WHITE;
 
   return new_b;
 }

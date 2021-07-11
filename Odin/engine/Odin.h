@@ -117,7 +117,7 @@ inline std::function<bool(std::tuple<int, int, Figure>)> checkIfMoveIsIllegalDue
   };
 }
 
-inline void generatePawnPromotion(std::list<std::tuple<int, int, Figure>> &seq, int field, int new_field) {
+inline void generatePawnPromotion(std::list<std::tuple<int, int, Figure>> &seq, const int field, const int new_field) {
   seq.push_back(std::make_tuple(field, new_field, BKNIGHT));
   seq.push_back(std::make_tuple(field, new_field, BBISHOP));
   seq.push_back(std::make_tuple(field, new_field, BROOK));

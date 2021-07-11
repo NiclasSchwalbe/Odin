@@ -7,7 +7,7 @@
 */
 template <int dX, int dY>
 void generateMoves(std::vector<std::tuple<int, int, Figure>>& moves,
-                   const Board& board, int x, int y) {
+                   const Board& board, const int x, const int y) {
   int tox = x;
   int toy = y;
   for (int i = 0; i < 8 && inBounds(tox + dX, toy + dY); i++) {

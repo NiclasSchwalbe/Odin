@@ -5,7 +5,7 @@
 * Generates a king step in any direction. Where dX, dY is the directrion.
 */
 template <int dX, int dY>
-void generateOneSteps(int i, int j,
+void generateOneSteps(const int i, const int j,
                       std::vector<std::tuple<int, int, Figure>>& moves,
                       const Board& board) {
  

@@ -3,11 +3,11 @@
 #include "Odin.h"
 
 //adds Knight move if moveable
-inline void addIfMoveable(std::vector<std::tuple<int, int, Figure>>& moves, int fromi,
-    int fromj, int toi, int toj, const Board& b) {
+inline void addIfMoveable(std::vector<std::tuple<int, int, Figure>>& moves, const int fromi,
+    const int fromj, const int toi, const int toj, const Board& b) {
 
     int opposite = b.to_move_ == Color::WHITE ? -1 : 1; 
-    if (inBounds(toi, toj)) {
+    if (!inBounds(toi, toj)) {
     return;
     }
     if (opposite * b[toi][toj] >= 0) {
