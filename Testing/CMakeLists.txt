@@ -10,3 +10,4 @@ endfunction()
 
 ADD_SUBDIRECTORY(fentesting)
 ADD_SUBDIRECTORY(moves)
+ADD_SUBDIRECTORY(test_move_generation)

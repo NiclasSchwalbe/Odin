@@ -79,13 +79,22 @@ Board makeMove(const Board &old_b, std::tuple<int, int, Figure> t) {
     new_b.en_passant_field_ = -1;
   }
 
-  //if move is castle, then set rook
+  //if move is castle, then set rook and remove castling rights
   auto king = old_b.to_move_ == Color::WHITE ? WKING : BKING;
   if (old_b(from_field) == king.value() && abs(from_field - to_field) == 2) {
-    if(from_field%8 < 5){
-      new_b((from_field/8)*8 + 4) = king.color()*WROOK.value();
+    if(to_field%8 < 5){
+      new_b((from_field / 8) * 8) = EMPTY.value(); 
+      new_b((from_field/8)*8 + 3) = king.color()*WROOK.value();
     } else {
-      new_b((from_field/8)*8 + 6) = king.color()*WROOK.value();
+      new_b((from_field / 8) * 8 + 7) = EMPTY.value();   
+      new_b((from_field/8)*8 + 5) = king.color()*WROOK.value();
+    }
+    if (old_b.to_move_ == Color::WHITE) {
+      new_b.long_castle_white_ = false;
+      new_b.short_castle_white_ = false;
+    } else {
+      new_b.long_castle_black_ = false;
+      new_b.short_castle_black_ = false;
     }
   }
 
