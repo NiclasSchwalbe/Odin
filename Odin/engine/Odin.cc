@@ -74,7 +74,7 @@ Board makeMove(const Board &old_b, std::tuple<int, int, Figure> t) {
       abs(from_field - to_field) == 16) {
     new_b.en_passant_field_ = new_b.to_move_ == Color::WHITE
                                   ? from_field + 8
-                                  : to_field - 8;
+                                  : from_field - 8;
   } else {
     new_b.en_passant_field_ = -1;
   }

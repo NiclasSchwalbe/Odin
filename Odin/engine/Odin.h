@@ -83,21 +83,21 @@ void generateAllPawnMovesWithWhite(std::list<std::tuple<int, int, Figure>> &pawn
 void generateAllPawnMovesWithBlack(std::list<std::tuple<int, int, Figure>> &pawn_moves, const Board & board);
 
 inline bool hasNoFigure(const Board& board, const int rank, const int line) {
-  if (inBounds(rank, line)) {
+  if (!inBounds(rank, line)) {
     return false;
   }  
   return board[rank][line] == 0;
 }
 
 inline bool hasBlackFigure(const Board& board, const int rank, const int line) {
-  if (inBounds(rank, line)) {
+  if (!inBounds(rank, line)) {
     return false;
   }
   return board[rank][line] < 0;
 }
 
 inline bool hasWhiteFigure(const Board& board, const int rank, const int line) {
-  if (inBounds(rank, line)) {
+  if (!inBounds(rank, line)) {
      return false;
   }
   return board[rank][line] > 0;

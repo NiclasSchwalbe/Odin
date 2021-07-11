@@ -20,6 +20,8 @@ TEST_CASE("Testing Standardboard Fen - PawnMoves") {
     REQUIRE(moves.size() == 16);
     Board c{ makeMove(b,moves[9]) };
     Board comparison{ "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1" };
+    comparison.en_passant_field_ = 20;
+
     REQUIRE(c == comparison);
 }
 
@@ -30,6 +32,7 @@ TEST_CASE("TEST MOVES BLACK - PawnMoves") {
     REQUIRE(moves.size() == 16);
     Board c{ makeMove(b, moves[9]) };
     Board comparison{ "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1" };
+    comparison.en_passant_field_ = 44;
     REQUIRE(c == comparison);
 }
 
