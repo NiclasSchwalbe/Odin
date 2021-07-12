@@ -34,6 +34,7 @@ int main(int argc, const char *argv[]) {
 
 }
  */
+
 #include <iostream>
 #include <string>
 #include "Odin.h"
@@ -56,3 +57,31 @@ int main(){
       //sleep_for(seconds(2));
     }
 }
+
+
+/*
+#include <chrono>
+#include <iostream>
+#include <string>
+#include <thread>
+
+#include "Odin.h"
+
+int main() {
+
+  Odin odin{};
+  Board board{"3k4/1Q6/4K3/8/8/8/8/8 w - - 0 1"};
+  odin.setPosition(board);
+  odin.searchOn();
+  for (int i = 0; i < 100; i++) {
+    std::cout << board;
+    odin.search();
+    std::tuple<int, int, Figure> move = odin.bestMove();
+    if (std::get<1>(move) == -1) {
+      return 0;
+    }
+    board = makeMove(board, move);
+    odin.setPosition(board);
+  }
+}
+*/

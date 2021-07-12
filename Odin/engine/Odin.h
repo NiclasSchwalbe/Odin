@@ -66,7 +66,7 @@ Board makeMove(const Board &b, std::tuple<int, int, Figure>);
  * Checks if king could be "captured" in the next move and would therefore be in
  * check.
  */
-bool isInCheck(const Board &board);
+bool isCheck(const Board &board, Color to_be_checked);
 
 void generateAllMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board);
 void generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>> &moves, const Board& board);
@@ -132,3 +132,5 @@ inline void generatePawnPromotion(std::list<std::tuple<int, int, Figure>> &seq, 
   seq.push_back(std::make_tuple(field, new_field, BQUEEN));
 }
 
+bool isCheckMate(const Board& b);
+bool isStaleMate(const Board& b);

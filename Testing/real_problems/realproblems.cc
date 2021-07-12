@@ -46,7 +46,7 @@ TEST_CASE("Test Real Problem - Odin 0.0 - Problem 1 Partproblem 2") {
   Board c1 = makeMove(initial_board, moves[0]);
   CHECK(comparison == c1);
 }
-*/
+
 TEST_CASE("Test Real Problem - Odin 0.0 - Problem 2") {
   Board initial_board{
       "3k4/8/8/8/8/r7/1B6/7K w - - 0 1"};
@@ -59,4 +59,28 @@ TEST_CASE("Test Real Problem - Odin 0.0 - Problem 2") {
   std::tuple<int, int, Figure> move = odin.bestMove();
   CHECK(std::get<1>(move) == 8);
   
+}
+*/
+
+
+TEST_CASE("Test Real Problem - Odin 0.0 - Problem 3") {
+  //find checkmate in 1  
+  Board initial_board{"3k4/1Q6/4K3/8/8/8/8/8 w - - 0 1"};
+  std::vector<std::tuple<int, int, Figure>> moves{};
+  generateAllLegalMoves(moves, initial_board);
+  Odin odin{};
+  odin.setPosition(initial_board);
+  odin.searchOn();
+  odin.search();
+  std::tuple<int, int, Figure> move = odin.bestMove();
+  CHECK(std::get<0>(move) == 48);
+  CHECK(std::get<1>(move) == 56);
+}
+
+
+
+TEST_CASE("Test Real Problem - Odin 0.0 - Problem 3 - Partproblem 1") {
+  //find checkmate in 1  
+  Board initial_board{"1Q1k4/8/4K3/8/8/8/8/8 b - - 0 1"};
+  CHECK(isCheckMate(initial_board));
 }

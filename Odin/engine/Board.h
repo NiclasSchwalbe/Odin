@@ -60,6 +60,7 @@ class Board {
   std::array<std::array<int, 8>, 8> board_{};
   void setPosition(const std::string &fen,
                    const std::vector<std::string> &moves);
+  void reeval();
   explicit Board(const std::string &);
   Board(const Board &b);
 

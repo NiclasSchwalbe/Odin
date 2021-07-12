@@ -14,8 +14,11 @@ Node::Node(const Board& board, std::optional<double> alpha,
       parent_(parent),
       value_(std::nullopt),
       color_(board.to_move_),
-      moves_(),
-      intrinsic_value_(board.intrinsic_value_) {}
+      moves_()
+{
+  board_.reeval();
+  intrinsic_value_ = board_.intrinsic_value_;
+}
 
 Node::Node(const Board&& board, std::optional<double> alpha,
            std::optional<double> beta, Node* parent)
@@ -24,8 +27,11 @@ Node::Node(const Board&& board, std::optional<double> alpha,
       alpha_(alpha),
       parent_(parent),
       value_(std::nullopt),
-      color_(board.to_move_),
-      intrinsic_value_(board.intrinsic_value_) {}
+      color_(board.to_move_)
+{
+  board_.reeval();
+  intrinsic_value_ = board_.intrinsic_value_;
+}
 
 /*
  * Recursively feeds new values up the tree.
@@ -61,7 +67,7 @@ void Node::updateValueAsChild(double val) {
  * Finds next position recusively and
  */
 void Node::evalNextPosition() {
-  if (moves_.size() == 0) {
+  if (moves_.size() == 0 && !end_node_) {
     expand();
     if (parent_ != nullptr) {
       parent_->updateValueAsChild(intrinsic_value_);
@@ -69,6 +75,12 @@ void Node::evalNextPosition() {
     return;
   }
   visits_++;
+  if (end_node_) {
+    if (parent_ != nullptr) {
+      parent_->updateValueAsChild(intrinsic_value_);
+    }
+    return;
+  }  
 
   double mscore = moves_[0].ptr->value();
   Link opt = moves_[0];
@@ -124,6 +136,9 @@ void Node::evalNextPosition() {
 void Node::expand() {
   std::vector<std::tuple<int, int, Figure>> moves;
   generateAllLegalMoves(moves, board_);
+  if (moves.size() == 0) {
+    end_node_ = true;
+  }
   for (auto& move : moves) {
     moves_.push_back(
         Link{std::make_shared<Node>(makeMove(board_, move), std::nullopt,

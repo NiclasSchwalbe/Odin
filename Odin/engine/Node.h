@@ -27,6 +27,7 @@ public:
     std::optional<double> beta_;
     long visits_{0};
     Color color_;
+    bool end_node_{false};
 
     Node(const Board &board, std::optional<double> alpha, std::optional<double> beta, Node* parent);
     Node(const Board &&board, std::optional<double> alpha, std::optional<double> beta, Node* parent);

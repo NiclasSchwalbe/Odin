@@ -34,18 +34,26 @@ void Odin::setPosition(const std::string &fen,
 void Odin::search() {
   using namespace std::chrono_literals;
 
-  while (in_chess_ && positions_calculated_++ < 8000) {
+  while (in_chess_ && positions_calculated_++ < 10000) {
     while (!searching_) {
       std::this_thread::sleep_for(500ms);
     }
     computeNext();
-    positions_calculated_++;
   }
 }
 
 // calculates intrisic value of a position
 double Odin::evaluatePosition(const Board &board) {
   double val{0};
+
+  if (isCheckMate(board)) {
+    return board.to_move_ == Color::WHITE ? -100 : 100;
+  }
+
+  if (isStaleMate(board)) {
+    return 0;
+  }
+
   for (int i{0}; i < 64; i++) {
     switch (board(i)) {
       case EMPTY.value():
@@ -65,9 +73,6 @@ double Odin::evaluatePosition(const Board &board) {
       case WQUEEN.value():
         val += 9;
         break;
-      case WKING.value():
-        val += 100;
-        break;
       case BPAWN.value():
         val -= 1;
         break;
@@ -82,9 +87,6 @@ double Odin::evaluatePosition(const Board &board) {
         break;
       case BQUEEN.value():
         val -= 9;
-        break;
-      case BKING.value():
-        val -= 100;
         break;
     }
   }
@@ -182,7 +184,7 @@ Board makeMove(const Board &old_b, std::tuple<int, int, Figure> t) {
 
   // change color
   new_b.to_move_ = old_b.to_move_ == Color::WHITE ? Color::BLACK : Color::WHITE;
-  
+
   return new_b;
 }
 
@@ -219,29 +221,54 @@ void extractLegalMoves(
 bool checkIfMoveIsIllegalDueCheck(const Board &b,
                                   std::tuple<int, int, Figure> move) {
   Board new_board = makeMove(b, move);
-  return isInCheck(new_board);
+  return isCheck(new_board, b.to_move_);
 }
 
-bool isInCheck(const Board &b) {
+bool isCheck(const Board &b, Color color_to_be_checked) {
   std::vector<std::tuple<int, int, Figure>> moves;
-  generateAllMoves(moves, b);
+  if (b.to_move_ == color_to_be_checked) {
+    Board passTurn{b};
+    passTurn.to_move_ =
+        b.to_move_ == Color::WHITE ? Color::BLACK : Color::WHITE;
+    return isCheck(passTurn, color_to_be_checked);
+  } else {
+    generateAllMoves(moves, b);
 
-  int field_num{0};
+    int field_num{0};
 
-  auto figure = b.to_move_ == Color::WHITE ? BKING : WKING;
+    auto figure = b.to_move_ == Color::WHITE ? BKING : WKING;
 
-  for (auto p : b) {
-    if (p == figure.value()) {
-      break;
+    for (auto p : b) {
+      if (p == figure.value()) {
+        break;
+      }
+      field_num++;
     }
-    field_num++;
-  }
 
-  for (auto [from, to, f] : moves) {
-    if (to == field_num) {
-      return true;
+    for (auto [from, to, f] : moves) {
+      if (to == field_num) {
+        return true;
+      }
     }
-  }
 
-  return false;
+    return false;
+  }
+}
+
+bool isCheckMate(const Board &board) {
+  if (!isCheck(board, board.to_move_)) {
+    return false;
+  }
+  std::vector<std::tuple<int, int, Figure>> vec{};
+  generateAllLegalMoves(vec, board);
+  return vec.size() == 0;
+}
+
+bool isStaleMate(const Board &board) {
+  if (isCheck(board, board.to_move_)) {
+    return false;
+  }
+  std::vector<std::tuple<int, int, Figure>> vec{};
+  generateAllLegalMoves(vec, board);
+  return vec.size() == 0;
 }

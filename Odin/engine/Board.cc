@@ -7,7 +7,6 @@
 
 Board::Board(const Board& b){
   *this = b;
-  intrinsic_value_ = Odin::evaluatePosition(*this);
 }
 
 /*
@@ -136,6 +135,8 @@ bool Board::operator==(const Board &b) const {
 
   return true;
 }
+
+void Board::reeval() { intrinsic_value_ = Odin::evaluatePosition(*this); }
 
 Board::BoardIterator Board::begin() const { return Board::BoardIterator(0, this); }
 Board::BoardIterator Board::end() const { return Board::BoardIterator(64, this); }
