@@ -260,6 +260,7 @@ bool isCheckMate(const Board &board) {
     return false;
   }
   std::vector<std::tuple<int, int, Figure>> vec{};
+  //TODO: Make smarter; findLegalMove()
   generateAllLegalMoves(vec, board);
   return vec.size() == 0;
 }
@@ -269,6 +270,7 @@ bool isStaleMate(const Board &board) {
     return false;
   }
   std::vector<std::tuple<int, int, Figure>> vec{};
+  //TODO: Make smarter; findLegalMove()
   generateAllLegalMoves(vec, board);
   return vec.size() == 0;
 }
