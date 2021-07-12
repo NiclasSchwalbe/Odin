@@ -32,13 +32,21 @@ public:
         setUpForCalculations();
     }
 
+
     inline void searchOff() {
         searching_ = false;
     }
 
     void search();
     void setPosition(const std::string& fen, const std::vector<std::string>& moves);
-    static double evaluatePosition(Board &board);
+    inline void setPosition(const Board& board) { 
+        start_node_ =
+          std::make_shared<Node>(board,std::nullopt, std::nullopt, nullptr);
+      positions_calculated_ = 0;
+    }
+    static double evaluatePosition(const Board &board);
+
+    std::tuple<int, int, Figure> bestMove() const;
 
 
 private:

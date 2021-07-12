@@ -5,6 +5,11 @@
 #include "Board.h"
 #include "Odin.h"
 
+Board::Board(const Board& b){
+  *this = b;
+  intrinsic_value_ = Odin::evaluatePosition(*this);
+}
+
 /*
 * This method generates a board using a fen.
 */

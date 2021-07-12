@@ -5,18 +5,20 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cstdlib>
 #include <list>
 #include <optional>
 #include <tuple>
-#include <cstdlib>
 
 #include "Utility.h"
 
 Odin::Odin()
     : start_node_(new Node(Board(OdinConstants::standardBoardFen), std::nullopt,
                            std::nullopt, nullptr)) {
+  /*
   computingThread_ = std::thread(&Odin::search, this);
   computingThread_.detach();
+  */
 }
 
 // prepares for new evaluatiuons
@@ -25,13 +27,14 @@ void Odin::setPosition(const std::string &fen,
   start_node_ =
       std::make_shared<Node>(Board(fen), std::nullopt, std::nullopt, nullptr);
   start_node_->board_.setPosition(fen, moves);
+  positions_calculated_ = 0;
 }
 
 // computes next best move
 void Odin::search() {
   using namespace std::chrono_literals;
 
-  while (in_chess_) {
+  while (in_chess_ && positions_calculated_++ < 8000) {
     while (!searching_) {
       std::this_thread::sleep_for(500ms);
     }
@@ -41,12 +44,85 @@ void Odin::search() {
 }
 
 // calculates intrisic value of a position
-double Odin::evaluatePosition(Board &board) { return 0.0; }
+double Odin::evaluatePosition(const Board &board) {
+  double val{0};
+  for (int i{0}; i < 64; i++) {
+    switch (board(i)) {
+      case EMPTY.value():
+        continue;
+      case WPAWN.value():
+        val += 1;
+        break;
+      case WKNIGHT.value():
+        val += 3.0;
+        break;
+      case WBISHOP.value():
+        val += 3.15;
+        break;
+      case WROOK.value():
+        val += 5;
+        break;
+      case WQUEEN.value():
+        val += 9;
+        break;
+      case WKING.value():
+        val += 100;
+        break;
+      case BPAWN.value():
+        val -= 1;
+        break;
+      case BKNIGHT.value():
+        val -= 3.0;
+        break;
+      case BBISHOP.value():
+        val -= 3.15;
+        break;
+      case BROOK.value():
+        val -= 5;
+        break;
+      case BQUEEN.value():
+        val -= 9;
+        break;
+      case BKING.value():
+        val -= 100;
+        break;
+    }
+  }
+  return val;
+}
 
 // computes new field and feeds it up
 void Odin::computeNext() { start_node_->evalNextPosition(); }
 
 void Odin::setUpForCalculations() {}
+
+std::tuple<int, int, Figure> Odin::bestMove() const {
+  if (start_node_->moves_.size() == 0) {
+    return std::make_tuple(-1, -1, EMPTY);
+  }
+  auto best_value{start_node_->moves_[0].ptr->value()};
+  std::tuple<int, int, Figure> move = start_node_->moves_[0].move;
+  switch (start_node_->board_.to_move_) {
+    case Color::WHITE:
+      for (const auto &link : start_node_->moves_) {
+        if (link.ptr->value() > best_value) {
+          move = link.move;
+          best_value = link.ptr->value();
+        }
+        continue;
+      }
+      break;
+    case Color::BLACK:
+      for (const auto &link : start_node_->moves_) {
+        if (link.ptr->value() < best_value) {
+          move = link.move;
+          best_value = link.ptr->value();
+        }
+        continue;
+      }
+  }
+  return move;
+}
 
 Board makeMove(const Board &old_b, std::tuple<int, int, Figure> t) {
   // copy Board
@@ -61,33 +137,32 @@ Board makeMove(const Board &old_b, std::tuple<int, int, Figure> t) {
 
   // is the move an en passant?
   auto pawn = old_b.to_move_ == Color::WHITE ? WPAWN : BPAWN;
-  if (old_b(from_field) == pawn.value() && old_b.en_passant_field_ == to_field) {
-      if(old_b.to_move_ == Color::WHITE){
-        new_b(to_field - 8) = EMPTY.value();
-      } else {
-        new_b(to_field + 8) = EMPTY.value();
-      }
+  if (old_b(from_field) == pawn.value() &&
+      old_b.en_passant_field_ == to_field) {
+    if (old_b.to_move_ == Color::WHITE) {
+      new_b(to_field - 8) = EMPTY.value();
+    } else {
+      new_b(to_field + 8) = EMPTY.value();
+    }
   }
 
   // is it pawn move with 2 steps, if yes set en_passant
-  if (old_b(from_field) == pawn.value() &&
-      abs(from_field - to_field) == 16) {
-    new_b.en_passant_field_ = new_b.to_move_ == Color::WHITE
-                                  ? from_field + 8
-                                  : from_field - 8;
+  if (old_b(from_field) == pawn.value() && abs(from_field - to_field) == 16) {
+    new_b.en_passant_field_ =
+        new_b.to_move_ == Color::WHITE ? from_field + 8 : from_field - 8;
   } else {
     new_b.en_passant_field_ = -1;
   }
 
-  //if move is castle, then set rook and remove castling rights
+  // if move is castle, then set rook and remove castling rights
   auto king = old_b.to_move_ == Color::WHITE ? WKING : BKING;
   if (old_b(from_field) == king.value() && abs(from_field - to_field) == 2) {
-    if(to_field%8 < 5){
-      new_b((from_field / 8) * 8) = EMPTY.value(); 
-      new_b((from_field/8)*8 + 3) = king.color()*WROOK.value();
+    if (to_field % 8 < 5) {
+      new_b((from_field / 8) * 8) = EMPTY.value();
+      new_b((from_field / 8) * 8 + 3) = king.color() * WROOK.value();
     } else {
-      new_b((from_field / 8) * 8 + 7) = EMPTY.value();   
-      new_b((from_field/8)*8 + 5) = king.color()*WROOK.value();
+      new_b((from_field / 8) * 8 + 7) = EMPTY.value();
+      new_b((from_field / 8) * 8 + 5) = king.color() * WROOK.value();
     }
     if (old_b.to_move_ == Color::WHITE) {
       new_b.long_castle_white_ = false;
@@ -98,7 +173,7 @@ Board makeMove(const Board &old_b, std::tuple<int, int, Figure> t) {
     }
   }
 
-  //Set new position, promote pawn if necessary
+  // Set new position, promote pawn if necessary
   if (promotion.value() == 0) {
     new_b(to_field) = temp;
   } else {
@@ -107,7 +182,7 @@ Board makeMove(const Board &old_b, std::tuple<int, int, Figure> t) {
 
   // change color
   new_b.to_move_ = old_b.to_move_ == Color::WHITE ? Color::BLACK : Color::WHITE;
-
+  
   return new_b;
 }
 
@@ -133,9 +208,6 @@ void extractLegalMoves(
         generator) {
   std::vector<std::tuple<int, int, Figure>> new_moves;
   generator(new_moves, board);
-  new_moves.erase(std::remove_if(new_moves.begin(), new_moves.end(),
-                                 checkIfMoveIsIllegalDueCheck(board)),
-                  new_moves.end());
 
   for (auto &t : new_moves) {
     if (!checkIfMoveIsIllegalDueCheck(board, t)) {

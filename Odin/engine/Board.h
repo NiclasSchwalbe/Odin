@@ -61,7 +61,7 @@ class Board {
   void setPosition(const std::string &fen,
                    const std::vector<std::string> &moves);
   explicit Board(const std::string &);
-  Board(const Board &b) { *this = b; }
+  Board(const Board &b);
 
   const std::array<int, 8> &operator[](int i) const { return board_[i]; }
   std::array<int, 8> &operator[](int i) { return board_[i]; }

@@ -36,7 +36,23 @@ int main(int argc, const char *argv[]) {
  */
 #include <iostream>
 #include <string>
+#include "Odin.h"
+#include <thread>
+#include <chrono>
+
 
 int main(){ 
-
+    using namespace std::this_thread; // sleep_for, sleep_until
+    using namespace std::chrono; // nanoseconds, system_clock, seconds
+    Odin odin{};
+    Board board{OdinConstants::standardBoardFen};
+    odin.searchOn();
+    for (int i = 0; i < 100; i++) {
+      std::cout << board;
+      odin.search();
+      std::tuple<int, int, Figure> move = odin.bestMove();
+      board = makeMove(board, move);
+      odin.setPosition(board);
+      //sleep_for(seconds(2));
+    }
 }

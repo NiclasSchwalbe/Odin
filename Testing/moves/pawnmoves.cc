@@ -60,8 +60,8 @@ TEST_CASE("TEST Capture Black - PawnMoves") {
   generateAllPawnMoves(moves, b);
   REQUIRE(moves.size() == 17);
   MESSAGE("Size correct");
-  Board c{makeMove(b, moves[2])};
-  Board c2{makeMove(b, moves[1])};
+  Board c{makeMove(b, moves[1])};
+  Board c2{makeMove(b, moves[2])};
   Board comparison{
       "rnbqkbnr/ppp1pppp/8/8/2p1R2P/8/PPPPPPP1/RNBQKB2 w Qkq - 0 1"};
   Board comparison2{

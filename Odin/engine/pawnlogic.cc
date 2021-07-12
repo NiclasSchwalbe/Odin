@@ -108,7 +108,7 @@ void generateAllPawnMovesWithBlack(std::list<std::tuple<int, int, Figure>> &pawn
     int right = line + 1;
 
     if (0 <= left && left < 8 && hasWhiteFigure(board, rank - 1, left)) {
-      int new_field{field_num - 7};
+      int new_field{field_num - 9};
       if (rank == 1) {
         generatePawnPromotion(pawn_moves, field_num, new_field);
       } else {
@@ -116,7 +116,7 @@ void generateAllPawnMovesWithBlack(std::list<std::tuple<int, int, Figure>> &pawn
       }
     }
     if (0 <= right && right < 8 && hasWhiteFigure(board, rank - 1, right)) {
-      int new_field{field_num - 9};
+      int new_field{field_num - 7};
       if (rank == 1) {
         generatePawnPromotion(pawn_moves, field_num, new_field);
       } else {
