@@ -6,7 +6,7 @@
 * A queen needs 6 directions
 */
 template <int dX, int dY>
-void generateMoves(std::vector<std::tuple<int, int, Figure>>& moves,
+void LONGRANGEPIECEMOVES::generateMoves(std::vector<std::tuple<int, int, Figure>>& moves,
                    const Board& board, const int y, const int x) {
   int tox = x;
   int toy = y;
@@ -17,7 +17,7 @@ void generateMoves(std::vector<std::tuple<int, int, Figure>>& moves,
       moves.push_back(std::make_tuple((8 * y + x), (8 * toy + tox), EMPTY));
       continue;
     } else if (board[toy][tox] * (static_cast<int>(board.to_move_)) <=
-               EMPTY.value()) {
+        EMPTY.value()) {
       moves.push_back(std::make_tuple((8 * y + x), (8 * toy + tox), EMPTY));
       break;
     }
@@ -25,50 +25,52 @@ void generateMoves(std::vector<std::tuple<int, int, Figure>>& moves,
   }
 }
 
-void generateAllBishopMoves(std::vector<std::tuple<int, int, Figure>>& moves,
+
+
+void LONGRANGEPIECEMOVES::generateAllBishopMoves(std::vector<std::tuple<int, int, Figure>>& moves,
                             const Board& board) {
   auto piece = board.to_move_ == Color::WHITE ? WBISHOP : BBISHOP;
   for (int y = 0; y < 8; y++) {
     for (int x = 0; x < 8; x++) {
       if (board[y][x] == piece.value()) {
-        generateMoves<1, 1>(moves, board, y, x);
-        generateMoves<1, -1>(moves, board, y, x);
-        generateMoves<-1, -1>(moves, board, y, x);
-        generateMoves<-1, 1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<1, 1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<1, -1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<-1, -1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<-1, 1>(moves, board, y, x);
       }
     }
   }
 }
 
-void generateAllRookMoves(std::vector<std::tuple<int, int, Figure>>& moves,
+void LONGRANGEPIECEMOVES::generateAllRookMoves(std::vector<std::tuple<int, int, Figure>>& moves,
                           const Board& board) {
   auto piece = board.to_move_ == Color::WHITE ? WROOK : BROOK;
   for (int y = 0; y < 8; y++) {
     for (int x = 0; x < 8; x++) {
       if (board[y][x] == piece.value()) {
-        generateMoves<1, 0>(moves, board, y, x);
-        generateMoves<0, -1>(moves, board, y, x);
-        generateMoves<-1, 0>(moves, board, y, x);
-        generateMoves<0, 1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<1, 0>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<0, -1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<-1, 0>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<0, 1>(moves, board, y, x);
       }
     }
   }
 }
 
-void generateAllQueenMoves(std::vector<std::tuple<int, int, Figure>>& moves,
+void LONGRANGEPIECEMOVES::generateAllQueenMoves(std::vector<std::tuple<int, int, Figure>>& moves,
                           const Board& board) {
   auto piece = board.to_move_ == Color::WHITE ? WQUEEN : BQUEEN;
   for (int y = 0; y < 8; y++) {
     for (int x = 0; x < 8; x++) {
       if (board[y][x] == piece.value()) {
-        generateMoves<1, 1>(moves, board, y, x);
-        generateMoves<1, -1>(moves, board, y, x);
-        generateMoves<-1, -1>(moves, board, y, x);
-        generateMoves<-1, 1>(moves, board, y, x);
-        generateMoves<1, 0>(moves, board, y, x);
-        generateMoves<0, -1>(moves, board, y, x);
-        generateMoves<-1, 0>(moves, board, y, x);
-        generateMoves<0, 1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<1, 1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<1, -1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<-1, -1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<-1, 1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<1, 0>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<0, -1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<-1, 0>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<0, 1>(moves, board, y, x);
       }
     }
   }

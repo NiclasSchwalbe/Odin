@@ -11,13 +11,13 @@
 TEST_CASE("TEST Rook MOVES I") {
   Board b{"rnbqkbn1/ppppppp1/8/3r3p/7P/P7/1PPPPPP1/RNBQKBNR w KQq - 0 1"};
   std::vector<std::tuple<int, int, Figure>> moves{};
-  generateAllRookMoves(moves, b);
+  LONGRANGEPIECEMOVES::generateAllRookMoves(moves, b);
   CHECK_MESSAGE(moves.size() == 3, "There should be 3 moves available");
 }
 
 TEST_CASE("TEST Rook MOVES II") {
   Board b{"rnbqkbn1/ppppppp1/8/3r3p/7P/P7/1PPPPPP1/RNBQKBNR b KQq - 0 1"};
   std::vector<std::tuple<int, int, Figure>> moves{};
-  generateAllRookMoves(moves, b);
+  LONGRANGEPIECEMOVES::generateAllRookMoves(moves, b);
   CHECK_MESSAGE(moves.size() == 10, "There should be 10 moves available");
 }

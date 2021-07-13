@@ -16,7 +16,7 @@
 TEST_CASE("Testing Standardboard Fen - PawnMoves") {
     Board b(OdinConstants::standardBoardFen);
     std::vector<std::tuple<int, int, Figure>> moves{};
-    generateAllPawnMoves(moves, b);
+    PAWNMOVES::generateAllPawnMoves(moves, b);
     REQUIRE(moves.size() == 16);
     Board c{ makeMove(b,moves[9]) };
     Board comparison{ "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1" };
@@ -28,7 +28,7 @@ TEST_CASE("Testing Standardboard Fen - PawnMoves") {
 TEST_CASE("TEST MOVES BLACK - PawnMoves") {
     Board b("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1");
     std::vector<std::tuple<int, int, Figure>> moves{};
-    generateAllPawnMoves(moves, b);
+    PAWNMOVES::generateAllPawnMoves(moves, b);
     REQUIRE(moves.size() == 16);
     Board c{ makeMove(b, moves[9]) };
     Board comparison{ "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1" };
@@ -40,7 +40,7 @@ TEST_CASE("TEST Capture White - PawnMoves") {
     Board b("rnbqkbnr/ppp1p1pp/8/3p1p2/4P3/P7/1PPP1PPP/RNBQKBNR w KQkq - 0 1");
     MESSAGE("First board initialized"); 
     std::vector<std::tuple<int, int, Figure>> moves{};
-    generateAllPawnMoves(moves, b);
+    PAWNMOVES::generateAllPawnMoves(moves, b);
     CHECK_MESSAGE(moves.size() == 16, "Sizes do not match");
     Board c{ makeMove(b, moves[15]) };
     Board comparison{ "rnbqkbnr/ppp1p1pp/8/3p1P2/8/P7/1PPP1PPP/RNBQKBNR b KQkq - 0 1" };
@@ -57,7 +57,7 @@ TEST_CASE("TEST Capture White - PawnMoves") {
 TEST_CASE("TEST Capture Black - PawnMoves") {
   Board b("rnbqkbnr/ppp1pppp/8/3p4/2N1R2P/8/PPPPPPP1/RNBQKB2 b Qkq - 0 1");
   std::vector<std::tuple<int, int, Figure>> moves{};
-  generateAllPawnMoves(moves, b);
+  PAWNMOVES::generateAllPawnMoves(moves, b);
   REQUIRE(moves.size() == 17);
   MESSAGE("Size correct");
   Board c{makeMove(b, moves[1])};

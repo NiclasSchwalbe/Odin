@@ -60,8 +60,11 @@ private:
 
 };
 
-Board makeMove(const Board &b, std::tuple<int, int, Figure>);
+/* //////////////////////////////////////////////////
+ * Move Generation
+ *///////////////////////////////////////////////////
 
+Board makeMove(const Board &b, std::tuple<int, int, Figure>);
 /*
  * Checks if king could be "captured" in the next move and would therefore be in
  * check.
@@ -77,18 +80,47 @@ void generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>> &moves, con
 void extractLegalMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board & board,
                        std::function<void(std::vector<std::tuple<int, int, Figure>>&, const Board &)> generator);
 
-/*
- * AsList Suffix is necessary, otherwise it will not be understood by std::function.... weird template stuff
- */
+namespace PAWNMOVES {
+void generateAllPawnMovesWithWhite(std::vector<std::tuple<int, int, Figure>> &pawn_moves, const Board &board, int field_num);
+void generateAllPawnMovesWithBlack(std::vector<std::tuple<int, int, Figure>> &pawn_moves, const Board &board, int field_num);
 void generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>>& , const Board& board);
-void generateAllKnightMoves(std::vector<std::tuple<int, int, Figure>>& , const Board& board);
+}
+namespace KNIGHTMOVES {
+void addIfMoveable(std::vector<std::tuple<int, int, Figure>>& moves, const int fromi, const int fromj, const int toi, const int toj, const Board& b);
+void generateAllKnightMoves(std::vector<std::tuple<int, int, Figure>> &, const Board &board);
+}
+namespace LONGRANGEPIECEMOVES {
+template <int dX, int dY> void generateMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board, const int y, const int x);
 void generateAllBishopMoves(std::vector<std::tuple<int, int, Figure>>& , const Board& board);
 void generateAllRookMoves(std::vector<std::tuple<int, int, Figure>>& , const Board& board);
 void generateAllQueenMoves(std::vector<std::tuple<int, int, Figure>>&, const Board& board);
-void generateAllKingMoves(std::vector<std::tuple<int, int, Figure>>&, const Board& board);
+}
 
-void generateAllPawnMovesWithWhite(std::list<std::tuple<int, int, Figure>> &pawn_moves, const Board & board);
-void generateAllPawnMovesWithBlack(std::list<std::tuple<int, int, Figure>> &pawn_moves, const Board & board);
+namespace KINGMOVES {
+/*
+* Generates a king step in any direction. Where dX, dY is the directrion.
+ * For some weird reason, I do not fully understand: generateOneSteps needs to be header defined.
+*/
+template<int dX, int dY>
+void generateOneSteps(const int i, const int j,
+                                 std::vector<std::tuple<int, int, Figure>> &moves,
+                                 const Board &board) {
+
+  int toi = i + dX;
+  int toj = j + dY;
+  if (!inBounds(toi, toj)) {
+    return;
+  }
+  if (board[toi][toj] == EMPTY.value()) {
+    moves.push_back(std::make_tuple((8 * i + j), (8 * toi + toj), EMPTY));
+  } else if (board[toi][toj] * (static_cast<int>(board.to_move_)) <=
+      EMPTY.value()) {
+    moves.push_back(std::make_tuple((8 * i + j), (8 * toi + toj), EMPTY));
+  }
+}
+void generateAllCastling(int i, int j, std::vector<std::tuple<int, int, Figure>> &moves, const Board &board);
+void generateAllKingMoves(std::vector<std::tuple<int, int, Figure>>&, const Board& board);
+}
 
 inline bool hasNoFigure(const Board& board, const int rank, const int line) {
   if (!inBounds(rank, line)) {
@@ -123,13 +155,6 @@ inline std::function<bool(std::tuple<int, int, Figure>)> checkIfMoveIsIllegalDue
   return [b](std::tuple<int, int, Figure> move) -> bool {
     return checkIfMoveIsIllegalDueCheck(b, move);
   };
-}
-
-inline void generatePawnPromotion(std::list<std::tuple<int, int, Figure>> &seq, const int field, const int new_field) {
-  seq.push_back(std::make_tuple(field, new_field, BKNIGHT));
-  seq.push_back(std::make_tuple(field, new_field, BBISHOP));
-  seq.push_back(std::make_tuple(field, new_field, BROOK));
-  seq.push_back(std::make_tuple(field, new_field, BQUEEN));
 }
 
 bool isCheckMate(const Board& b);
