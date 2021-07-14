@@ -48,7 +48,7 @@ int main(){
     Odin odin{};
     Board board{OdinConstants::standardBoardFen};
     odin.searchOn();
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 80; i++) {
       std::cout << board;
       odin.search();
       std::tuple<int, int, Figure> move = odin.bestMove();

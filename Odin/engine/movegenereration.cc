@@ -170,8 +170,8 @@ bool checkIfMoveIsIllegalDueCheck(const Board &b,
 
 
 
-bool hasMoveToField(const Board &board, int to_field) {
-  auto color = board.to_move_ == Color::WHITE ? 1 : -1;
+bool hasMoveToField(const Board &old_b, int to_field) {
+  auto color = old_b.to_move_ == Color::WHITE ? 1 : -1;
   int x = to_field % 8;
   int y = to_field / 8;
   Figure pawn{WPAWN.value(), color};
@@ -180,6 +180,8 @@ bool hasMoveToField(const Board &board, int to_field) {
   Figure rook{WROOK.value(), color};
   Figure queen{WQUEEN.value(), color};
   Figure king{WKING.value(), color};
+  Board board{old_b};
+  board.to_move_ = (board.to_move_ == Color::WHITE) ? Color::BLACK : Color::WHITE;
 
   std::vector<std::tuple<int, int, Figure>> knightmoves;
   KNIGHTMOVES::addIfMoveable(knightmoves, y, x, y - 2, x + 1, board);
@@ -237,8 +239,8 @@ bool hasMoveToField(const Board &board, int to_field) {
     }
   }
 
-  switch (board.to_move_) {
-    case Color::WHITE: return (inBounds(x-1,y-1) && board[y-1][x-1] == pawn.value()) || (inBounds(x-1,y-1) && board[y-1][x+1] == pawn.value());
+  switch (old_b.to_move_) {
+    case Color::WHITE: return (inBounds(x-1,y-1) && board[y-1][x-1] == pawn.value()) || (inBounds(x+1,y-1) && board[y-1][x+1] == pawn.value());
     case Color::BLACK: return (inBounds(x-1,y+1) && board[y+1][x-1] == pawn.value()) || (inBounds(x+1,y+1) && board[y+1][x+1] == pawn.value());
   }
 
@@ -265,7 +267,7 @@ bool isCheck(const Board &b, Color color_to_be_checked) {
       field_num++;
     }
 
-    return !hasMoveToField(b, field_num);
+    return hasMoveToField(b, field_num);
   }
 }
 

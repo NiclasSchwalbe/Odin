@@ -35,7 +35,7 @@ void KINGMOVES::generateAllCastling(int j, int i,
           board[0][5] == EMPTY.value() &&
           board[0][6] == EMPTY.value() &&
           board[0][7] == WROOK.value()) {
-        moves.push_back(std::make_tuple(4, 5, EMPTY));
+        moves.push_back(std::make_tuple(4, 6, EMPTY));
       }
       break;
       //case BLACK
@@ -46,14 +46,14 @@ void KINGMOVES::generateAllCastling(int j, int i,
           board[7][2] == EMPTY.value() &&
           board[7][3] == EMPTY.value() &&
           board[7][0] == BROOK.value()) {
-        moves.push_back(std::make_tuple(60, 59, EMPTY));
+        moves.push_back(std::make_tuple(60, 58, EMPTY));
       }
       if (board.short_castle_black_ &&
           !checkIfMoveIsIllegalDueCheck(board, std::make_tuple(60, 61, EMPTY)) &&
           board[7][5] == EMPTY.value() &&
           board[7][6] == EMPTY.value() &&
           board[7][7] == BROOK.value()) {
-        moves.push_back(std::make_tuple(60, 61, EMPTY));
+        moves.push_back(std::make_tuple(60, 62, EMPTY));
       }
   }
 }
