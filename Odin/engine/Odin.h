@@ -102,12 +102,12 @@ namespace KINGMOVES {
  * For some weird reason, I do not fully understand: generateOneSteps needs to be header defined.
 */
 template<int dX, int dY>
-void generateOneSteps(const int i, const int j,
+void generateOneSteps(const int j, const int i,
                                  std::vector<std::tuple<int, int, Figure>> &moves,
                                  const Board &board) {
 
-  int toi = i + dX;
-  int toj = j + dY;
+  int toi = i + dY;
+  int toj = j + dX;
   if (!inBounds(toi, toj)) {
     return;
   }

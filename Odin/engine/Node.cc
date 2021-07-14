@@ -16,8 +16,6 @@ Node::Node(const Board& board, std::optional<double> alpha,
       color_(board.to_move_),
       moves_()
 {
-  board_.reeval();
-  intrinsic_value_ = board_.intrinsic_value_;
 }
 
 Node::Node(const Board&& board, std::optional<double> alpha,
@@ -29,8 +27,6 @@ Node::Node(const Board&& board, std::optional<double> alpha,
       value_(std::nullopt),
       color_(board.to_move_)
 {
-  board_.reeval();
-  intrinsic_value_ = board_.intrinsic_value_;
 }
 
 /*
@@ -138,7 +134,11 @@ void Node::expand() {
   generateAllLegalMoves(moves, board_);
   if (moves.size() == 0) {
     end_node_ = true;
+    board_.is_end_position = true;
   }
+  board_.is_end_position = false;
+  board_.reeval();
+  intrinsic_value_ = board_.intrinsic_value_;
   for (auto& move : moves) {
     moves_.push_back(
         Link{std::make_shared<Node>(makeMove(board_, move), std::nullopt,

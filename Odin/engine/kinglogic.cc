@@ -5,7 +5,7 @@
 * Generates all castling moves. If the king is in check after the castling, the move will be generated and can be filtered out later.
 * However, if the king would be in check while crossing, the move would not be added.
 */
-void KINGMOVES::generateAllCastling(int i, int j,
+void KINGMOVES::generateAllCastling(int j, int i,
                          std::vector<std::tuple<int, int, Figure>> &moves,
                          const Board &board) {
   //check if King is at original position.
@@ -66,15 +66,15 @@ void KINGMOVES::generateAllKingMoves(std::vector<std::tuple<int, int, Figure>> &
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
       if (board[i][j] == piece.value()) {
-        KINGMOVES::generateOneSteps<1, 0>(i, j, moves, board);
-        KINGMOVES::generateOneSteps<1, 1>(i, j, moves, board);
-        KINGMOVES::generateOneSteps<1, -1>(i, j, moves, board);
-        KINGMOVES::generateOneSteps<-1, 0>(i, j, moves, board);
-        KINGMOVES::generateOneSteps<-1, -1>(i, j, moves, board);
-        KINGMOVES::generateOneSteps<-1, 0>(i, j, moves, board);
-        KINGMOVES::generateOneSteps<0, -1>(i, j, moves, board);
-        KINGMOVES::generateOneSteps<0, 1>(i, j, moves, board);
-        KINGMOVES::generateAllCastling(i, j, moves, board);
+        KINGMOVES::generateOneSteps<1, 0>(j, i, moves, board);
+        KINGMOVES::generateOneSteps<1, 1>(j, i, moves, board);
+        KINGMOVES::generateOneSteps<1, -1>(j, i, moves, board);
+        KINGMOVES::generateOneSteps<-1, 0>(j, i, moves, board);
+        KINGMOVES::generateOneSteps<-1, -1>(j, i, moves, board);
+        KINGMOVES::generateOneSteps<-1, 1>(j, i, moves, board);
+        KINGMOVES::generateOneSteps<0, -1>(j, i, moves, board);
+        KINGMOVES::generateOneSteps<0, 1>(j, i, moves, board);
+        KINGMOVES::generateAllCastling(j, i, moves, board);
         break;
       }
     }

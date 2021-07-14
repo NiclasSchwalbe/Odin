@@ -7,7 +7,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
+#include <optional>
 #include "Utility.h"
 
 class Board {
@@ -16,12 +16,14 @@ class Board {
   /*
    * Board Data
    */
+    
   bool long_castle_white_{false};
   bool long_castle_black_{false};
   bool short_castle_white_{false};
   bool short_castle_black_{false};
   int en_passant_field_{-1};
   int fifty_move_rule_info_{0};
+  std::optional<bool> is_end_position;
 
   Color to_move_{Color::WHITE};
   double intrinsic_value_;
@@ -60,7 +62,7 @@ class Board {
       }
       output += "\n";
     }
-    return (os << output) << std::endl;
+    return (os << output) <<  "To Move: " << (b.to_move_ == Color::WHITE ? "WHITE" : "BLACK") << std::endl;
   }
 
   struct BoardIterator {

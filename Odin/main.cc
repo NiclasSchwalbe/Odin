@@ -53,6 +53,8 @@ int main(){
       odin.search();
       std::tuple<int, int, Figure> move = odin.bestMove();
       board = makeMove(board, move);
+      std::cout << "Move played:" << std::get<0>(move) << "-"
+                << std::get<1>(move) << std::endl;
       odin.setPosition(board);
       //sleep_for(seconds(2));
     }

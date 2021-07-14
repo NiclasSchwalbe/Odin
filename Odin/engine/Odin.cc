@@ -39,6 +39,7 @@ void Odin::search() {
       std::this_thread::sleep_for(500ms);
     }
     computeNext();
+    std::cout << positions_calculated_ << "\r";
   }
 }
 

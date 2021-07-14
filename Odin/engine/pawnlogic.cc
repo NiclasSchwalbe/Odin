@@ -27,7 +27,7 @@ void PAWNMOVES::generateAllPawnMovesWithWhite(std::vector<std::tuple<int, int, F
     }
   }
 
-  if (rank == 1 && hasNoFigure(board, rank + 2, line)) {
+  if (rank == 1 && hasNoFigure(board, rank + 2, line) && hasNoFigure(board, rank + 1, line)) {
     pawn_moves.push_back(std::make_tuple(field_num, field_num + 16, EMPTY));
   }
 
@@ -67,7 +67,7 @@ void PAWNMOVES::generateAllPawnMovesWithBlack(std::vector<std::tuple<int, int, F
     }
   }
 
-  if (rank == 6 && hasNoFigure(board, rank - 2, line)) {
+  if (rank == 6 && hasNoFigure(board, rank - 2, line) && hasNoFigure(board, rank - 1, line)) {
     pawn_moves.push_back(std::make_tuple(field_num, field_num - 16, EMPTY));
   }
 
