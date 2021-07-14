@@ -71,7 +71,11 @@ Board makeMove(const Board &b, std::tuple<int, int, Figure>);
  */
 bool isCheck(const Board &board, Color to_be_checked);
 
+//all moves disregardingCheck
 void generateAllMoves(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board);
+//Checks if any move, can reach this field
+bool hasMoveToField(std::vector<std::tuple<int, int, Figure>>& moves, const Board& board, int to_field);
+//all moves regarding check
 void generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>> &moves, const Board& board);
 /*
  * filters all Moves which would be illegal, because color would check itself or

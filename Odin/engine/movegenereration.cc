@@ -168,6 +168,83 @@ bool checkIfMoveIsIllegalDueCheck(const Board &b,
   return isCheck(new_board, b.to_move_);
 }
 
+
+
+bool hasMoveToField(const Board &board, int to_field) {
+  auto opposite = board.to_move_ == Color::WHITE ? -1 : 1;
+  int x = to_field % 8;
+  int y = to_field / 8;
+  Figure pawn{opposite, WPAWN.value()};
+  Figure knight{opposite, WKNIGHT.value()};
+  Figure bishop{opposite, WBISHOP.value()};
+  Figure rook{opposite, WROOK.value()};
+  Figure queen{opposite, WQUEEN.value()};
+  Figure king{opposite, WKING.value()};
+
+  std::vector<std::tuple<int, int, Figure>> knightmoves;
+  KNIGHTMOVES::addIfMoveable(knightmoves, y, x, y - 2, x + 1, board);
+  KNIGHTMOVES::addIfMoveable(knightmoves, y, x, y - 2, x - 1, board);
+  KNIGHTMOVES::addIfMoveable(knightmoves, y, x, y + 2, x + 1, board);
+  KNIGHTMOVES::addIfMoveable(knightmoves, y, x, y + 2, x - 1, board);
+  KNIGHTMOVES::addIfMoveable(knightmoves, y, x, y - 1, x + 2, board);
+  KNIGHTMOVES::addIfMoveable(knightmoves, y, x, y - 1, x - 2, board);
+  KNIGHTMOVES::addIfMoveable(knightmoves, y, x, y + 1, x + 2, board);
+  KNIGHTMOVES::addIfMoveable(knightmoves, y, x, y + 1, x - 2, board);
+
+  for(auto& [from, to, E] : knightmoves){
+    if(to == knight.value()){
+      return true;
+    }
+  }
+
+  std::vector<std::tuple<int, int, Figure>> bishopmoves;
+  LONGRANGEPIECEMOVES::generateMoves<1, 1>(bishopmoves, board, y, x);
+  LONGRANGEPIECEMOVES::generateMoves<1, -1>(bishopmoves, board, y, x);
+  LONGRANGEPIECEMOVES::generateMoves<-1, -1>(bishopmoves, board, y, x);
+  LONGRANGEPIECEMOVES::generateMoves<-1, 1>(bishopmoves, board, y, x);
+
+  for(auto& [from, to, E] : bishopmoves){
+    if(to == bishop.value() || to == queen.value()){
+      return true;
+    }
+  }
+
+  std::vector<std::tuple<int, int, Figure>> rookmoves;
+  LONGRANGEPIECEMOVES::generateMoves<1, 0>(rookmoves, board, y, x);
+  LONGRANGEPIECEMOVES::generateMoves<0, -1>(rookmoves, board, y, x);
+  LONGRANGEPIECEMOVES::generateMoves<-1, 0>(rookmoves, board, y, x);
+  LONGRANGEPIECEMOVES::generateMoves<0, 1>(rookmoves, board, y, x);
+
+  for(auto& [from, to, E] : rookmoves){
+    if(to == rook.value() || to == queen.value()){
+      return true;
+    }
+  }
+
+  std::vector<std::tuple<int, int, Figure>> kingmoves;
+  KINGMOVES::generateOneSteps<1, 0>(x, y, kingmoves, board);
+  KINGMOVES::generateOneSteps<1, 1>(x, y, kingmoves, board);
+  KINGMOVES::generateOneSteps<1, -1>(x, y, kingmoves, board);
+  KINGMOVES::generateOneSteps<-1, 0>(x, y, kingmoves, board);
+  KINGMOVES::generateOneSteps<-1, -1>(x, y, kingmoves, board);
+  KINGMOVES::generateOneSteps<-1, 1>(x, y, kingmoves, board);
+  KINGMOVES::generateOneSteps<0, -1>(x, y, kingmoves, board);
+  KINGMOVES::generateOneSteps<0, 1>(x, y, kingmoves, board);
+
+  for(auto& [from, to, E] : kingmoves){
+    if(to == king.value()){
+      return true;
+    }
+  }
+
+  switch (board.to_move_) {
+    case Color::WHITE: return board[y+1][x-1] == pawn.value() || board[y+1][x+1] == pawn.value();
+    case Color::BLACK: return board[y-1][x-1] == pawn.value() || board[y-1][x+1] == pawn.value();
+  }
+
+
+}
+
 bool isCheck(const Board &b, Color color_to_be_checked) {
   std::vector<std::tuple<int, int, Figure>> moves;
   if (b.to_move_ == color_to_be_checked) {
@@ -176,6 +253,7 @@ bool isCheck(const Board &b, Color color_to_be_checked) {
         b.to_move_ == Color::WHITE ? Color::BLACK : Color::WHITE;
     return isCheck(passTurn, color_to_be_checked);
   } else {
+    //TODO:: Make smarter
     generateAllMoves(moves, b);
 
     int field_num{0};
