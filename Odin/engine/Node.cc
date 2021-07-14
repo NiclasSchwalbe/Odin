@@ -138,7 +138,9 @@ void Node::expand() {
   generateAllLegalMoves(moves, board_);
   if (moves.size() == 0) {
     end_node_ = true;
+    board_.is_end_position = true;
   }
+  board_.is_end_position = false;
   for (auto& move : moves) {
     moves_.push_back(
         Link{std::make_shared<Node>(makeMove(board_, move), std::nullopt,

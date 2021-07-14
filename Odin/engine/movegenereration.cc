@@ -90,6 +90,7 @@ void generateAllMoves(std::vector<std::tuple<int, int, Figure>> &moves,
 
       switch (board.to_move_) {
         case Color::WHITE: PAWNMOVES::generateAllPawnMovesWithWhite(moves, board, fieldnum);
+                           break;
         case Color::BLACK: PAWNMOVES::generateAllPawnMovesWithBlack(moves, board, fieldnum);
       }
 
@@ -121,12 +122,12 @@ void generateAllMoves(std::vector<std::tuple<int, int, Figure>> &moves,
     } else if (val == queen.value()) {
 
       LONGRANGEPIECEMOVES::generateMoves<1, 1>(moves, board, y, x);
+      LONGRANGEPIECEMOVES::generateMoves<1, 0>(moves, board, y, x);
       LONGRANGEPIECEMOVES::generateMoves<1, -1>(moves, board, y, x);
       LONGRANGEPIECEMOVES::generateMoves<-1, -1>(moves, board, y, x);
-      LONGRANGEPIECEMOVES::generateMoves<-1, 1>(moves, board, y, x);
-      LONGRANGEPIECEMOVES::generateMoves<1, 0>(moves, board, y, x);
-      LONGRANGEPIECEMOVES::generateMoves<0, -1>(moves, board, y, x);
       LONGRANGEPIECEMOVES::generateMoves<-1, 0>(moves, board, y, x);
+      LONGRANGEPIECEMOVES::generateMoves<-1, 1>(moves, board, y, x);
+      LONGRANGEPIECEMOVES::generateMoves<0, -1>(moves, board, y, x);
       LONGRANGEPIECEMOVES::generateMoves<0, 1>(moves, board, y, x);
 
     } else if (val == king.value()) {
@@ -137,7 +138,7 @@ void generateAllMoves(std::vector<std::tuple<int, int, Figure>> &moves,
       KINGMOVES::generateOneSteps<1, -1>(x, y, moves, board);
       KINGMOVES::generateOneSteps<-1, 0>(x, y, moves, board);
       KINGMOVES::generateOneSteps<-1, -1>(x, y, moves, board);
-      KINGMOVES::generateOneSteps<-1, 0>(x, y, moves, board);
+      KINGMOVES::generateOneSteps<-1, 1>(x, y, moves, board);
       KINGMOVES::generateOneSteps<0, -1>(x, y, moves, board);
       KINGMOVES::generateOneSteps<0, 1>(x, y, moves, board);
       KINGMOVES::generateAllCastling(x, y, moves, board);
@@ -202,8 +203,13 @@ bool isCheckMate(const Board &board) {
   if (!isCheck(board, board.to_move_)) {
     return false;
   }
+
+  //smarter way
+  if (board.is_end_position.has_value()) {
+    return board.is_end_position.value();
+  }  
+  //else Bruteforce
   std::vector<std::tuple<int, int, Figure>> vec{};
-  //TODO: Make smarter; findLegalMove()
   generateAllLegalMoves(vec, board);
   return vec.size() == 0;
 }
@@ -212,8 +218,12 @@ bool isStaleMate(const Board &board) {
   if (isCheck(board, board.to_move_)) {
     return false;
   }
+  //smarter way
+  if (board.is_end_position.has_value()) {
+    return board.is_end_position.value();
+  }  
+  //else Brutforce
   std::vector<std::tuple<int, int, Figure>> vec{};
-  //TODO: Make smarter; findLegalMove()
   generateAllLegalMoves(vec, board);
   return vec.size() == 0;
 }
