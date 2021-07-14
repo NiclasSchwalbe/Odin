@@ -171,15 +171,15 @@ bool checkIfMoveIsIllegalDueCheck(const Board &b,
 
 
 bool hasMoveToField(const Board &board, int to_field) {
-  auto opposite = board.to_move_ == Color::WHITE ? -1 : 1;
+  auto color = board.to_move_ == Color::WHITE ? 1 : -1;
   int x = to_field % 8;
   int y = to_field / 8;
-  Figure pawn{opposite, WPAWN.value()};
-  Figure knight{opposite, WKNIGHT.value()};
-  Figure bishop{opposite, WBISHOP.value()};
-  Figure rook{opposite, WROOK.value()};
-  Figure queen{opposite, WQUEEN.value()};
-  Figure king{opposite, WKING.value()};
+  Figure pawn{WPAWN.value(), color};
+  Figure knight{WKNIGHT.value(), color};
+  Figure bishop{WBISHOP.value(), color};
+  Figure rook{WROOK.value(), color};
+  Figure queen{WQUEEN.value(), color};
+  Figure king{WKING.value(), color};
 
   std::vector<std::tuple<int, int, Figure>> knightmoves;
   KNIGHTMOVES::addIfMoveable(knightmoves, y, x, y - 2, x + 1, board);
@@ -192,7 +192,7 @@ bool hasMoveToField(const Board &board, int to_field) {
   KNIGHTMOVES::addIfMoveable(knightmoves, y, x, y + 1, x - 2, board);
 
   for(auto& [from, to, E] : knightmoves){
-    if(to == knight.value()){
+    if(board(to) == knight.value()){
       return true;
     }
   }
@@ -204,7 +204,7 @@ bool hasMoveToField(const Board &board, int to_field) {
   LONGRANGEPIECEMOVES::generateMoves<-1, 1>(bishopmoves, board, y, x);
 
   for(auto& [from, to, E] : bishopmoves){
-    if(to == bishop.value() || to == queen.value()){
+    if(board(to) == bishop.value() || board(to) == queen.value()){
       return true;
     }
   }
@@ -216,7 +216,7 @@ bool hasMoveToField(const Board &board, int to_field) {
   LONGRANGEPIECEMOVES::generateMoves<0, 1>(rookmoves, board, y, x);
 
   for(auto& [from, to, E] : rookmoves){
-    if(to == rook.value() || to == queen.value()){
+    if(board(to) == rook.value() || board(to) == queen.value()){
       return true;
     }
   }
@@ -232,14 +232,14 @@ bool hasMoveToField(const Board &board, int to_field) {
   KINGMOVES::generateOneSteps<0, 1>(x, y, kingmoves, board);
 
   for(auto& [from, to, E] : kingmoves){
-    if(to == king.value()){
+    if(board(to) == king.value()){
       return true;
     }
   }
 
   switch (board.to_move_) {
-    case Color::WHITE: return board[y+1][x-1] == pawn.value() || board[y+1][x+1] == pawn.value();
-    case Color::BLACK: return board[y-1][x-1] == pawn.value() || board[y-1][x+1] == pawn.value();
+    case Color::WHITE: return (inBounds(x-1,y-1) && board[y-1][x-1] == pawn.value()) || (inBounds(x-1,y-1) && board[y-1][x+1] == pawn.value());
+    case Color::BLACK: return (inBounds(x-1,y+1) && board[y+1][x-1] == pawn.value()) || (inBounds(x+1,y+1) && board[y+1][x+1] == pawn.value());
   }
 
 
@@ -253,8 +253,6 @@ bool isCheck(const Board &b, Color color_to_be_checked) {
         b.to_move_ == Color::WHITE ? Color::BLACK : Color::WHITE;
     return isCheck(passTurn, color_to_be_checked);
   } else {
-    //TODO:: Make smarter
-    generateAllMoves(moves, b);
 
     int field_num{0};
 
@@ -267,13 +265,7 @@ bool isCheck(const Board &b, Color color_to_be_checked) {
       field_num++;
     }
 
-    for (auto[from, to, f] : moves) {
-      if (to == field_num) {
-        return true;
-      }
-    }
-
-    return false;
+    return !hasMoveToField(b, field_num);
   }
 }
 

@@ -103,7 +103,7 @@ void Board::setPosition(const std::string &fen,
 Board::Board(const std::string &fen) {
   const std::vector<std::string> vector(0);
   setPosition(fen, vector);
-  intrinsic_value_ = Odin::evaluatePosition(*this);
+  //intrinsic_value_ = Odin::evaluatePosition(*this);
 }
 
 bool Board::operator==(const Board &b) const {

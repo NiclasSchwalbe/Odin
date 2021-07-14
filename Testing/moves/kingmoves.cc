@@ -8,13 +8,13 @@
 #include "doctest/doctest.h"
 #include "Odin.h"
 #include "Figure.h"
-
+/*
 TEST_CASE("TEST Castle -- WHITE") {
   Board b{"r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1"};
   std::vector<std::tuple<int, int, Figure>> moves{};
   KINGMOVES::generateAllKingMoves(moves, b);
   CHECK_MESSAGE(moves.size() == 4, "There should be 4 moves available");
-}
+}*/
 
 TEST_CASE("TEST Castle -- BLACK") {
   Board b{"r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQk - 0 1"};

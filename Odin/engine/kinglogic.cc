@@ -9,8 +9,7 @@ void KINGMOVES::generateAllCastling(int j, int i,
                          std::vector<std::tuple<int, int, Figure>> &moves,
                          const Board &board) {
   //check if King is at original position.
-  if (!((board.to_move_ == Color::BLACK && i == 7 && j == 4) ||
-      (board.to_move_ == Color::WHITE && i == 0 && j == 4))) {
+  if (!((board.to_move_ == Color::BLACK && i == 7 && j == 4) || (board.to_move_ == Color::WHITE && i == 0 && j == 4))) {
     return;
   }
 
@@ -75,7 +74,7 @@ void KINGMOVES::generateAllKingMoves(std::vector<std::tuple<int, int, Figure>> &
         KINGMOVES::generateOneSteps<0, -1>(j, i, moves, board);
         KINGMOVES::generateOneSteps<0, 1>(j, i, moves, board);
         KINGMOVES::generateAllCastling(j, i, moves, board);
-        break;
+        return;
       }
     }
   }
