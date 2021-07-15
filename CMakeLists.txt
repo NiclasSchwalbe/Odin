@@ -25,13 +25,6 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 # Include CPM dependency manager
 include(CPM)
 
-
-if(WIN64)
-SET(BOOST_ROOT "C:/Program Files (x86)/boost/boost_1_74_0")
-include_directories(${BOOST_ROOT})
-include_directories(${BOOST_ROOT}/stage/lib)
-endif()
-
 find_package(Boost 1.74.0 REQUIRED serialization)
 
 message(STATUS "---------------------")
