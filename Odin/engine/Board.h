@@ -27,7 +27,7 @@ class Board {
 
   Color to_move_{Color::WHITE};
   double intrinsic_value_;
-  std::array<std::array<int, 8>, 8> board_{};
+  std::array<std::array<char, 8>, 8> board_{};
 
   /*
    * Constructors
@@ -45,10 +45,10 @@ class Board {
   /*
    * Operators
    */
-  const std::array<int, 8> &operator[](int i) const { return board_[i]; }
-  std::array<int, 8> &operator[](int i) { return board_[i]; }
-  int &operator()(int i) { return board_[i / 8][i % 8]; }
-  const int &operator()(int i) const { return board_[i / 8][i % 8]; }
+  const std::array<char, 8> &operator[](int i) const { return board_[i]; }
+  std::array<char, 8> &operator[](int i) { return board_[i]; }
+  char &operator()(int i) { return board_[i / 8][i % 8]; }
+  const char &operator()(int i) const { return board_[i / 8][i % 8]; }
   bool operator==(const Board &b) const;
   //allows to print a Board
   friend std::ostream &operator<<(std::ostream &os, Board const &b) {
@@ -68,9 +68,9 @@ class Board {
   struct BoardIterator {
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
-    using value_type = int;
-    using pointer = int;
-    using reference = const int &;
+    using value_type = char;
+    using pointer = char;
+    using reference = const char &;
 
     BoardIterator(pointer ptr, const Board *b) : m_ptr(ptr), board_{b} {}
 

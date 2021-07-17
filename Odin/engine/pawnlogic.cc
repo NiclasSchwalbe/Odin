@@ -2,14 +2,15 @@
 // Created by Niclas Schwalbe on 30.05.21.
 //
 #include "Odin.h"
+#include "Utility.h"
 
 inline void generatePawnPromotion(std::vector<std::tuple<int, int, Figure>> &seq,
                                   const int field,
                                   const int new_field) {
-  seq.push_back(std::make_tuple(field, new_field, BKNIGHT));
-  seq.push_back(std::make_tuple(field, new_field, BBISHOP));
-  seq.push_back(std::make_tuple(field, new_field, BROOK));
-  seq.push_back(std::make_tuple(field, new_field, BQUEEN));
+  seq.push_back(std::make_tuple(field, new_field, FIGURES::BKNIGHT));
+  seq.push_back(std::make_tuple(field, new_field, FIGURES::BBISHOP));
+  seq.push_back(std::make_tuple(field, new_field, FIGURES::BROOK));
+  seq.push_back(std::make_tuple(field, new_field, FIGURES::BQUEEN));
 }
 
 void PAWNMOVES::generateAllPawnMovesWithWhite(std::vector<std::tuple<int, int, Figure>> &pawn_moves,
@@ -23,12 +24,12 @@ void PAWNMOVES::generateAllPawnMovesWithWhite(std::vector<std::tuple<int, int, F
     if (rank == 6) {
       generatePawnPromotion(pawn_moves, field_num, new_field);
     } else {
-      pawn_moves.push_back(std::make_tuple(field_num, new_field, EMPTY));
+      pawn_moves.push_back(std::make_tuple(field_num, new_field, FIGURES::EMPTY));
     }
   }
 
   if (rank == 1 && hasNoFigure(board, rank + 2, line) && hasNoFigure(board, rank + 1, line)) {
-    pawn_moves.push_back(std::make_tuple(field_num, field_num + 16, EMPTY));
+    pawn_moves.push_back(std::make_tuple(field_num, field_num + 16, FIGURES::EMPTY));
   }
 
   int left = line - 1;
@@ -39,7 +40,7 @@ void PAWNMOVES::generateAllPawnMovesWithWhite(std::vector<std::tuple<int, int, F
     if (rank == 6) {
       generatePawnPromotion(pawn_moves, field_num, new_field);
     } else {
-      pawn_moves.push_back(std::make_tuple(field_num, new_field, EMPTY));
+      pawn_moves.push_back(std::make_tuple(field_num, new_field, FIGURES::EMPTY));
     }
   }
   if (0 <= right && right < 8 && hasBlackFigure(board, rank + 1, right)) {
@@ -47,7 +48,7 @@ void PAWNMOVES::generateAllPawnMovesWithWhite(std::vector<std::tuple<int, int, F
     if (rank == 6) {
       generatePawnPromotion(pawn_moves, field_num, new_field);
     } else {
-      pawn_moves.push_back(std::make_tuple(field_num, new_field, EMPTY));
+      pawn_moves.push_back(std::make_tuple(field_num, new_field, FIGURES::EMPTY));
     }
   }
 }
@@ -63,12 +64,12 @@ void PAWNMOVES::generateAllPawnMovesWithBlack(std::vector<std::tuple<int, int, F
     if (rank == 1) {
       generatePawnPromotion(pawn_moves, field_num, new_field);
     } else {
-      pawn_moves.push_back(std::make_tuple(field_num, new_field, EMPTY));
+      pawn_moves.push_back(std::make_tuple(field_num, new_field, FIGURES::EMPTY));
     }
   }
 
   if (rank == 6 && hasNoFigure(board, rank - 2, line) && hasNoFigure(board, rank - 1, line)) {
-    pawn_moves.push_back(std::make_tuple(field_num, field_num - 16, EMPTY));
+    pawn_moves.push_back(std::make_tuple(field_num, field_num - 16, FIGURES::EMPTY));
   }
 
   int left = line - 1;
@@ -79,7 +80,7 @@ void PAWNMOVES::generateAllPawnMovesWithBlack(std::vector<std::tuple<int, int, F
     if (rank == 1) {
       generatePawnPromotion(pawn_moves, field_num, new_field);
     } else {
-      pawn_moves.push_back(std::make_tuple(field_num, new_field, EMPTY));
+      pawn_moves.push_back(std::make_tuple(field_num, new_field, FIGURES::EMPTY));
     }
   }
   if (0 <= right && right < 8 && hasWhiteFigure(board, rank - 1, right)) {
@@ -87,7 +88,7 @@ void PAWNMOVES::generateAllPawnMovesWithBlack(std::vector<std::tuple<int, int, F
     if (rank == 1) {
       generatePawnPromotion(pawn_moves, field_num, new_field);
     } else {
-      pawn_moves.push_back(std::make_tuple(field_num, new_field, EMPTY));
+      pawn_moves.push_back(std::make_tuple(field_num, new_field, FIGURES::EMPTY));
     }
   }
 
@@ -96,7 +97,7 @@ void PAWNMOVES::generateAllPawnMovesWithBlack(std::vector<std::tuple<int, int, F
 
 void PAWNMOVES::generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>> &moves, const Board &board) {
 
-  auto pawn = board.to_move_ == Color::WHITE ? WPAWN : BPAWN;
+  auto pawn = board.to_move_ == Color::WHITE ? FIGURES::WPAWN : FIGURES::BPAWN;
 
   for(int fieldnum = 0; fieldnum < 64; fieldnum++){
     if(board(fieldnum) == pawn.value()){

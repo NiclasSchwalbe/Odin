@@ -2,6 +2,7 @@
 #include "Board.h"
 #include "Odin.h"
 #include "doctest/doctest.h"
+#include "Utility.h"
 
 TEST_CASE("Testing  Initalization - Board"){
   Board b("8/8/8/8/8/8/8/8");
@@ -20,9 +21,9 @@ TEST_CASE("Testing KINGS ONLY - Board") {
   for (int i = 0; i < 64; i++) {
     CAPTURE(i);
     if (i == 11) {
-      REQUIRE(b(i) == WKING.value());
+      REQUIRE(b(i) == FIGURES::WKING.value());
     } else if (i == 51) {
-      REQUIRE(b(i) == BKING.value());
+      REQUIRE(b(i) == FIGURES::BKING.value());
     } else {
       REQUIRE(b(i) == 0);
 
@@ -77,21 +78,21 @@ TEST_CASE("Testing standardposition - Board") {
     REQUIRE(i == -1);
   }
 
-  REQUIRE(b[7][0] == BROOK.value());
-  REQUIRE(b[7][7] == BROOK.value());
-  REQUIRE(b[7][1] == BKNIGHT.value());
-  REQUIRE(b[7][6] == BKNIGHT.value());
-  REQUIRE(b[7][2] == BBISHOP.value());
-  REQUIRE(b[7][5] == BBISHOP.value());
-  REQUIRE(b[7][3] == BQUEEN.value());
-  REQUIRE(b[7][4] == BKING.value());
+  REQUIRE(b[7][0] == FIGURES::BROOK.value());
+  REQUIRE(b[7][7] == FIGURES::BROOK.value());
+  REQUIRE(b[7][1] == FIGURES::BKNIGHT.value());
+  REQUIRE(b[7][6] == FIGURES::BKNIGHT.value());
+  REQUIRE(b[7][2] == FIGURES::BBISHOP.value());
+  REQUIRE(b[7][5] == FIGURES::BBISHOP.value());
+  REQUIRE(b[7][3] == FIGURES::BQUEEN.value());
+  REQUIRE(b[7][4] == FIGURES::BKING.value());
 
-  REQUIRE(b[0][0] == WROOK.value());
-  REQUIRE(b[0][7] == WROOK.value());
-  REQUIRE(b[0][1] == WKNIGHT.value());
-  REQUIRE(b[0][6] == WKNIGHT.value());
-  REQUIRE(b[0][2] == WBISHOP.value());
-  REQUIRE(b[0][5] == WBISHOP.value());
-  REQUIRE(b[0][3] == WQUEEN.value());
-  REQUIRE(b[0][4] == WKING.value());
+  REQUIRE(b[0][0] == FIGURES::WROOK.value());
+  REQUIRE(b[0][7] == FIGURES::WROOK.value());
+  REQUIRE(b[0][1] == FIGURES::WKNIGHT.value());
+  REQUIRE(b[0][6] == FIGURES::WKNIGHT.value());
+  REQUIRE(b[0][2] == FIGURES::WBISHOP.value());
+  REQUIRE(b[0][5] == FIGURES::WBISHOP.value());
+  REQUIRE(b[0][3] == FIGURES::WQUEEN.value());
+  REQUIRE(b[0][4] == FIGURES::WKING.value());
 }

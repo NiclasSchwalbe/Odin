@@ -1,0 +1,410 @@
+//
+// Created by Niclas Schwalbe on 15.07.21.
+//
+
+#pragma once
+
+#include <list>
+#include <memory>
+#include <string>
+#include <vector>
+#include <thread>
+#include <functional>
+#include "Board.h"
+#include "Node.h"
+#include "Utility.h"
+
+namespace MOVEGENERATION {
+/* //////////////////////////////////////////////////
+* Move Generation
+*///////////////////////////////////////////////////
+
+extern Board makeMove(const Board &b, std::tuple<int, int, Figure>);
+/*
+ * Checks if king could be "captured" in the next move and would therefore be in
+ * check.
+ */
+extern bool isCheck(const Board &board, Color to_be_checked);
+
+//all moves disregardingCheck
+extern void generateAllMoves(std::vector<std::tuple<int, int, Figure>> &moves, const Board &board);
+//Checks if any move, can reach this field
+extern bool hasMoveToField(std::vector<std::tuple<int, int, Figure>> &moves, const Board &board, int to_field);
+//all moves regarding check
+extern void generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>> &moves, const Board &board);
+/*
+ * filters all Moves which would be illegal, because color would check itself or
+ * not escape a check
+ */
+extern void extractLegalMoves(std::vector<std::tuple<int, int, Figure>> &moves, const Board &board,
+                       std::function<void(std::vector<std::tuple<int, int, Figure>> &, const Board &)> generator);
+
+inline bool hasNoFigure(const Board &board, const int rank, const int line) {
+  if (!inBounds(rank, line)) {
+    return false;
+  }
+  return board[rank][line] == 0;
+}
+
+inline bool hasBlackFigure(const Board &board, const int rank, const int line) {
+  if (!inBounds(rank, line)) {
+    return false;
+  }
+  return board[rank][line] < 0;
+}
+
+inline bool hasWhiteFigure(const Board &board, const int rank, const int line) {
+  if (!inBounds(rank, line)) {
+    return false;
+  }
+  return board[rank][line] > 0;
+}
+
+/*
+ * This method checks if the given move, does not make the king takeable, ensures the King is still protected.
+ */
+bool checkIfMoveIsIllegalDueCheck(const Board &b, std::tuple<int, int, Figure> move);
+
+/*
+ * This currys checkIfMoveIsIllegalDueCheck(const Board &b, std::tuple<int, int, Figure> move);
+ */
+inline std::function<bool(std::tuple<int, int, Figure>)> checkIfMoveIsIllegalDueCheck(const Board &b) {
+  return [b](std::tuple<int, int, Figure> move) -> bool {
+    return checkIfMoveIsIllegalDueCheck(b, move);
+  };
+}
+
+bool isCheckMate(const Board &b);
+bool isStaleMate(const Board &b);
+
+namespace PAWNMOVES {
+
+inline void generatePawnPromotion(std::vector<std::tuple<int, int, Figure>> &seq,
+                                  const int field,
+                                  const int new_field) {
+  seq.push_back(std::make_tuple(field, new_field, BKNIGHT));
+  seq.push_back(std::make_tuple(field, new_field, BBISHOP));
+  seq.push_back(std::make_tuple(field, new_field, BROOK));
+  seq.push_back(std::make_tuple(field, new_field, BQUEEN));
+}
+
+void generateAllPawnMovesWithWhite(std::vector<std::tuple<int, int, Figure>> &pawn_moves,
+                                   const Board &board,
+                                   int field_num) {
+  int rank = field_num / 8;
+  int line = field_num % 8;
+
+  if (hasNoFigure(board, rank + 1, line)) {
+    int new_field{field_num + 8};
+    if (rank == 6) {
+      generatePawnPromotion(pawn_moves, field_num, new_field);
+    } else {
+      pawn_moves.push_back(std::make_tuple(field_num, new_field, EMPTY));
+    }
+  }
+
+  if (rank == 1 && hasNoFigure(board, rank + 2, line) && hasNoFigure(board, rank + 1, line)) {
+    pawn_moves.push_back(std::make_tuple(field_num, field_num + 16, EMPTY));
+  }
+
+  int left = line - 1;
+  int right = line + 1;
+
+  if (0 <= left && left < 8 && hasBlackFigure(board, rank + 1, left)) {
+    int new_field{field_num + 7};
+    if (rank == 6) {
+      generatePawnPromotion(pawn_moves, field_num, new_field);
+    } else {
+      pawn_moves.push_back(std::make_tuple(field_num, new_field, EMPTY));
+    }
+  }
+  if (0 <= right && right < 8 && hasBlackFigure(board, rank + 1, right)) {
+    int new_field{field_num + 9};
+    if (rank == 6) {
+      generatePawnPromotion(pawn_moves, field_num, new_field);
+    } else {
+      pawn_moves.push_back(std::make_tuple(field_num, new_field, EMPTY));
+    }
+  }
+}
+
+void generateAllPawnMovesWithBlack(std::vector<std::tuple<int, int, Figure>> &pawn_moves,
+                                   const Board &board,
+                                   int field_num) {
+  int rank = field_num / 8;
+  int line = field_num % 8;
+
+  if (hasNoFigure(board, rank - 1, line)) {
+    int new_field{field_num - 8};
+    if (rank == 1) {
+      generatePawnPromotion(pawn_moves, field_num, new_field);
+    } else {
+      pawn_moves.push_back(std::make_tuple(field_num, new_field, EMPTY));
+    }
+  }
+
+  if (rank == 6 && hasNoFigure(board, rank - 2, line) && hasNoFigure(board, rank - 1, line)) {
+    pawn_moves.push_back(std::make_tuple(field_num, field_num - 16, EMPTY));
+  }
+
+  int left = line - 1;
+  int right = line + 1;
+
+  if (0 <= left && left < 8 && hasWhiteFigure(board, rank - 1, left)) {
+    int new_field{field_num - 9};
+    if (rank == 1) {
+      generatePawnPromotion(pawn_moves, field_num, new_field);
+    } else {
+      pawn_moves.push_back(std::make_tuple(field_num, new_field, EMPTY));
+    }
+  }
+  if (0 <= right && right < 8 && hasWhiteFigure(board, rank - 1, right)) {
+    int new_field{field_num - 7};
+    if (rank == 1) {
+      generatePawnPromotion(pawn_moves, field_num, new_field);
+    } else {
+      pawn_moves.push_back(std::make_tuple(field_num, new_field, EMPTY));
+    }
+  }
+
+}
+
+void generateAllPawnMoves(std::vector<std::tuple<int, int, Figure>> &moves, const Board &board) {
+
+  auto pawn = board.to_move_ == Color::WHITE ? WPAWN : BPAWN;
+
+  for (int fieldnum = 0; fieldnum < 64; fieldnum++) {
+    if (board(fieldnum) == pawn.value()) {
+      switch (board.to_move_) {
+        case Color::BLACK: generateAllPawnMovesWithBlack(moves, board, fieldnum);
+          break;
+        case Color::WHITE: generateAllPawnMovesWithWhite(moves, board, fieldnum);
+          break;
+      }
+    }
+  }
+
+}
+
+}
+
+namespace KNIGHTMOVES {
+//adds Knight move if moveable
+inline void addIfMoveable(std::vector<std::tuple<int, int, Figure>> &moves, const int fromi,
+                          const int fromj, const int toi, const int toj, const Board &b) {
+
+  int opposite = b.to_move_ == Color::WHITE ? -1 : 1;
+  if (!inBounds(toi, toj)) {
+    return;
+  }
+  if (opposite * b[toi][toj] >= 0) {
+    int old_field = fromi * 8 + fromj;
+    int new_field = toi * 8 + toj;
+    moves.push_back(std::make_tuple(old_field, new_field, EMPTY));
+  }
+  return;
+}
+
+void generateAllKnightMoves(std::vector<std::tuple<int, int, Figure>> &moves,
+                            const Board &board) {
+  auto piece = board.to_move_ == Color::WHITE ? WKNIGHT : BKNIGHT;
+  for (int i = 0; i < 8; i++) {
+    for (int j = 0; j < 8; j++) {
+      if (board[i][j] == piece.value()) {
+        KNIGHTMOVES::addIfMoveable(moves, i, j, i - 2, j + 1, board);
+        KNIGHTMOVES::addIfMoveable(moves, i, j, i - 2, j - 1, board);
+        KNIGHTMOVES::addIfMoveable(moves, i, j, i + 2, j + 1, board);
+        KNIGHTMOVES::addIfMoveable(moves, i, j, i + 2, j - 1, board);
+        KNIGHTMOVES::addIfMoveable(moves, i, j, i - 1, j + 2, board);
+        KNIGHTMOVES::addIfMoveable(moves, i, j, i - 1, j - 2, board);
+        KNIGHTMOVES::addIfMoveable(moves, i, j, i + 1, j + 2, board);
+        KNIGHTMOVES::addIfMoveable(moves, i, j, i + 1, j - 2, board);
+      }
+
+    }
+  }
+}
+
+}
+
+namespace LONGRANGEPIECEMOVES {
+
+/*
+* Generates long range piece moves. Where dX, dY is the direction the piece is going to.
+* A rook and a rook need 4 directions
+* A queen needs 6 directions
+*/
+template<int dX, int dY>
+void generateMoves(std::vector<std::tuple<int, int, Figure>> &moves,
+                   const Board &board, const int y, const int x) {
+  int tox = x;
+  int toy = y;
+  for (int i = 0; i < 8 && inBounds(tox + dX, toy + dY); i++) {
+    tox += dX;
+    toy += dY;
+    if (board[toy][tox] == EMPTY.value()) {
+      moves.push_back(std::make_tuple((8 * y + x), (8 * toy + tox), EMPTY));
+      continue;
+    } else if (board[toy][tox] * (static_cast<int>(board.to_move_)) <=
+        EMPTY.value()) {
+      moves.push_back(std::make_tuple((8 * y + x), (8 * toy + tox), EMPTY));
+      break;
+    }
+    break;
+  }
+}
+
+void generateAllBishopMoves(std::vector<std::tuple<int, int, Figure>> &moves,
+                            const Board &board) {
+  auto piece = board.to_move_ == Color::WHITE ? WBISHOP : BBISHOP;
+  for (int y = 0; y < 8; y++) {
+    for (int x = 0; x < 8; x++) {
+      if (board[y][x] == piece.value()) {
+        LONGRANGEPIECEMOVES::generateMoves<1, 1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<1, -1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<-1, -1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<-1, 1>(moves, board, y, x);
+      }
+    }
+  }
+}
+
+void generateAllRookMoves(std::vector<std::tuple<int, int, Figure>> &moves,
+                          const Board &board) {
+  auto piece = board.to_move_ == Color::WHITE ? WROOK : BROOK;
+  for (int y = 0; y < 8; y++) {
+    for (int x = 0; x < 8; x++) {
+      if (board[y][x] == piece.value()) {
+        LONGRANGEPIECEMOVES::generateMoves<1, 0>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<0, -1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<-1, 0>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<0, 1>(moves, board, y, x);
+      }
+    }
+  }
+}
+
+void generateAllQueenMoves(std::vector<std::tuple<int, int, Figure>> &moves,
+                           const Board &board) {
+  auto piece = board.to_move_ == Color::WHITE ? WQUEEN : BQUEEN;
+  for (int y = 0; y < 8; y++) {
+    for (int x = 0; x < 8; x++) {
+      if (board[y][x] == piece.value()) {
+        LONGRANGEPIECEMOVES::generateMoves<1, 1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<1, -1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<-1, -1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<-1, 1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<1, 0>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<0, -1>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<-1, 0>(moves, board, y, x);
+        LONGRANGEPIECEMOVES::generateMoves<0, 1>(moves, board, y, x);
+      }
+    }
+  }
+}
+
+}
+
+namespace KINGMOVES {
+/*
+* Generates a king step in any direction. Where dX, dY is the directrion.
+ * For some weird reason, I do not fully understand: generateOneSteps needs to be header defined.
+*/
+template<int dX, int dY>
+void generateOneSteps(const int j, const int i,
+                      std::vector<std::tuple<int, int, Figure>> &moves,
+                      const Board &board) {
+
+  int toi = i + dY;
+  int toj = j + dX;
+  if (!inBounds(toi, toj)) {
+    return;
+  }
+  if (board[toi][toj] == EMPTY.value()) {
+    moves.push_back(std::make_tuple((8 * i + j), (8 * toi + toj), EMPTY));
+  } else if (board[toi][toj] * (static_cast<int>(board.to_move_)) <=
+      EMPTY.value()) {
+    moves.push_back(std::make_tuple((8 * i + j), (8 * toi + toj), EMPTY));
+  }
+}
+
+/*
+* Generates all castling moves. If the king is in check after the castling, the move will be generated and can be filtered out later.
+* However, if the king would be in check while crossing, the move would not be added.
+*/
+void generateAllCastling(int j, int i,
+                         std::vector<std::tuple<int, int, Figure>> &moves,
+                         const Board &board) {
+  //check if King is at original position.
+  if (!((board.to_move_ == Color::BLACK && i == 7 && j == 4) || (board.to_move_ == Color::WHITE && i == 0 && j == 4))) {
+    return;
+  }
+
+  switch (board.to_move_) {
+    /*
+    * If the side still has castling sides, the space between king and rook is free, the rook still is at original position
+    * and the king could not be captured while moving to its desired position.
+    */
+
+
+    //case WHITE
+    case Color::WHITE:
+      if (board.long_castle_white_ &&
+          !checkIfMoveIsIllegalDueCheck(board, std::make_tuple(4, 3, EMPTY)) &&
+          board[0][1] == EMPTY.value() &&
+          board[0][2] == EMPTY.value() &&
+          board[0][3] == EMPTY.value() &&
+          board[0][0] == WROOK.value()) {
+        moves.push_back(std::make_tuple(4, 2, EMPTY));
+      }
+      if (board.short_castle_white_ &&
+          !checkIfMoveIsIllegalDueCheck(board, std::make_tuple(4, 5, EMPTY)) &&
+          board[0][5] == EMPTY.value() &&
+          board[0][6] == EMPTY.value() &&
+          board[0][7] == WROOK.value()) {
+        moves.push_back(std::make_tuple(4, 6, EMPTY));
+      }
+      break;
+      //case BLACK
+    default:
+      if (board.long_castle_black_ &&
+          !checkIfMoveIsIllegalDueCheck(board, std::make_tuple(60, 59, EMPTY)) &&
+          board[7][1] == EMPTY.value() &&
+          board[7][2] == EMPTY.value() &&
+          board[7][3] == EMPTY.value() &&
+          board[7][0] == BROOK.value()) {
+        moves.push_back(std::make_tuple(60, 58, EMPTY));
+      }
+      if (board.short_castle_black_ &&
+          !checkIfMoveIsIllegalDueCheck(board, std::make_tuple(60, 61, EMPTY)) &&
+          board[7][5] == EMPTY.value() &&
+          board[7][6] == EMPTY.value() &&
+          board[7][7] == BROOK.value()) {
+        moves.push_back(std::make_tuple(60, 62, EMPTY));
+      }
+  }
+}
+
+void generateAllKingMoves(std::vector<std::tuple<int, int, Figure>> &moves,
+                          const Board &board) {
+  auto piece = board.to_move_ == Color::WHITE ? WKING : BKING;
+  for (int i = 0; i < 8; i++) {
+    for (int j = 0; j < 8; j++) {
+      if (board[i][j] == piece.value()) {
+        KINGMOVES::generateOneSteps<1, 0>(j, i, moves, board);
+        KINGMOVES::generateOneSteps<1, 1>(j, i, moves, board);
+        KINGMOVES::generateOneSteps<1, -1>(j, i, moves, board);
+        KINGMOVES::generateOneSteps<-1, 0>(j, i, moves, board);
+        KINGMOVES::generateOneSteps<-1, -1>(j, i, moves, board);
+        KINGMOVES::generateOneSteps<-1, 1>(j, i, moves, board);
+        KINGMOVES::generateOneSteps<0, -1>(j, i, moves, board);
+        KINGMOVES::generateOneSteps<0, 1>(j, i, moves, board);
+        KINGMOVES::generateAllCastling(j, i, moves, board);
+        return;
+      }
+    }
+  }
+}
+}
+}
+

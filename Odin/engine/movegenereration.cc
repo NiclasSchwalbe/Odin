@@ -3,6 +3,7 @@
 //
 
 #include "Odin.h"
+#include "Utility.h"
 
 Board makeMove(const Board &old_b, std::tuple<int, int, Figure> t) {
   // copy Board
@@ -13,16 +14,16 @@ Board makeMove(const Board &old_b, std::tuple<int, int, Figure> t) {
 
   // value of the piece to be moved.
   int temp = new_b(from_field);
-  new_b(from_field) = EMPTY.value();
+  new_b(from_field) = FIGURES::EMPTY.value();
 
   // is the move an en passant?
-  auto pawn = old_b.to_move_ == Color::WHITE ? WPAWN : BPAWN;
+  auto pawn = old_b.to_move_ == Color::WHITE ? FIGURES::WPAWN : FIGURES::BPAWN;
   if (old_b(from_field) == pawn.value() &&
       old_b.en_passant_field_ == to_field) {
     if (old_b.to_move_ == Color::WHITE) {
-      new_b(to_field - 8) = EMPTY.value();
+      new_b(to_field - 8) = FIGURES::EMPTY.value();
     } else {
-      new_b(to_field + 8) = EMPTY.value();
+      new_b(to_field + 8) = FIGURES::EMPTY.value();
     }
   }
 
@@ -35,14 +36,14 @@ Board makeMove(const Board &old_b, std::tuple<int, int, Figure> t) {
   }
 
   // if move is castle, then set rook and remove castling rights
-  auto king = old_b.to_move_ == Color::WHITE ? WKING : BKING;
+  auto king = old_b.to_move_ == Color::WHITE ? FIGURES::WKING : FIGURES::BKING;
   if (old_b(from_field) == king.value() && abs(from_field - to_field) == 2) {
     if (to_field % 8 < 5) {
-      new_b((from_field / 8) * 8) = EMPTY.value();
-      new_b((from_field / 8) * 8 + 3) = king.color() * WROOK.value();
+      new_b((from_field / 8) * 8) = FIGURES::EMPTY.value();
+      new_b((from_field / 8) * 8 + 3) = king.color() * FIGURES::WROOK.value();
     } else {
-      new_b((from_field / 8) * 8 + 7) = EMPTY.value();
-      new_b((from_field / 8) * 8 + 5) = king.color() * WROOK.value();
+      new_b((from_field / 8) * 8 + 7) = FIGURES::EMPTY.value();
+      new_b((from_field / 8) * 8 + 5) = king.color() * FIGURES::WROOK.value();
     }
     if (old_b.to_move_ == Color::WHITE) {
       new_b.long_castle_white_ = false;
@@ -74,12 +75,12 @@ void generateAllLegalMoves(std::vector<std::tuple<int, int, Figure>> &moves,
 void generateAllMoves(std::vector<std::tuple<int, int, Figure>> &moves,
                       const Board &board) {
   bool colb = Color::WHITE == board.to_move_;
-  auto pawn = colb ? WPAWN : BPAWN;
-  auto knight = colb ? WKNIGHT : BKNIGHT;
-  auto bishop = colb ? WBISHOP : BBISHOP;
-  auto rook = colb ? WROOK : BROOK;
-  auto queen = colb ? WQUEEN : BQUEEN;
-  auto king = colb ? WKING : BKING;
+  auto pawn = colb ? FIGURES::WPAWN : FIGURES::BPAWN;
+  auto knight = colb ? FIGURES::WKNIGHT : FIGURES::BKNIGHT;
+  auto bishop = colb ? FIGURES::WBISHOP : FIGURES::BBISHOP;
+  auto rook = colb ? FIGURES::WROOK : FIGURES::BROOK;
+  auto queen = colb ? FIGURES::WQUEEN : FIGURES::BQUEEN;
+  auto king = colb ? FIGURES::WKING : FIGURES::BKING;
 
   for (int fieldnum = 0; fieldnum < 64; fieldnum++) {
     auto val = board(fieldnum);
@@ -174,12 +175,12 @@ bool hasMoveToField(const Board &old_b, int to_field) {
   auto color = old_b.to_move_ == Color::WHITE ? 1 : -1;
   int x = to_field % 8;
   int y = to_field / 8;
-  Figure pawn{WPAWN.value(), color};
-  Figure knight{WKNIGHT.value(), color};
-  Figure bishop{WBISHOP.value(), color};
-  Figure rook{WROOK.value(), color};
-  Figure queen{WQUEEN.value(), color};
-  Figure king{WKING.value(), color};
+  Figure pawn{FIGURES::WPAWN.value(), color};
+  Figure knight{FIGURES::WKNIGHT.value(), color};
+  Figure bishop{FIGURES::WBISHOP.value(), color};
+  Figure rook{FIGURES::WROOK.value(), color};
+  Figure queen{FIGURES::WQUEEN.value(), color};
+  Figure king{FIGURES::WKING.value(), color};
   Board board{old_b};
   board.to_move_ = (board.to_move_ == Color::WHITE) ? Color::BLACK : Color::WHITE;
 
@@ -258,7 +259,7 @@ bool isCheck(const Board &b, Color color_to_be_checked) {
 
     int field_num{0};
 
-    auto figure = b.to_move_ == Color::WHITE ? BKING : WKING;
+    auto figure = b.to_move_ == Color::WHITE ? FIGURES::BKING : FIGURES::WKING;
 
     for (auto p : b) {
       if (p == figure.value()) {

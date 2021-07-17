@@ -39,3 +39,4 @@ class Figure {
   int val_;
   int col_;
 };
+

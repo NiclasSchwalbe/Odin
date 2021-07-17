@@ -4,6 +4,7 @@
 
 #include "Board.h"
 #include "Odin.h"
+#include "Utility.h"
 
 Board::Board(const Board& b){
   *this = b;
@@ -23,29 +24,29 @@ void Board::setPosition(const std::string &fen,
   for (int i = 0; field < 64 && i < strList[0].length(); i++) {
     char c = strList[0].at(i);
     switch (c) {
-      case 'p':board_[rank][line] = BPAWN.value();
+      case 'p':board_[rank][line] = FIGURES::BPAWN.value();
         break;
-      case 'r':board_[rank][line] = BROOK.value();
+      case 'r':board_[rank][line] = FIGURES::BROOK.value();
         break;
-      case 'b':board_[rank][line] = BBISHOP.value();
+      case 'b':board_[rank][line] = FIGURES::BBISHOP.value();
         break;
-      case 'q':board_[rank][line] = BQUEEN.value();
+      case 'q':board_[rank][line] = FIGURES::BQUEEN.value();
         break;
-      case 'n':board_[rank][line] = BKNIGHT.value();
+      case 'n':board_[rank][line] = FIGURES::BKNIGHT.value();
         break;
-      case 'k':board_[rank][line] = BKING.value();
+      case 'k':board_[rank][line] = FIGURES::BKING.value();
         break;
-      case 'P':board_[rank][line] = WPAWN.value();
+      case 'P':board_[rank][line] = FIGURES::WPAWN.value();
         break;
-      case 'R':board_[rank][line] = WROOK.value();
+      case 'R':board_[rank][line] = FIGURES::WROOK.value();
         break;
-      case 'N':board_[rank][line] = WKNIGHT.value();
+      case 'N':board_[rank][line] = FIGURES::WKNIGHT.value();
         break;
-      case 'B':board_[rank][line] = WBISHOP.value();
+      case 'B':board_[rank][line] = FIGURES::WBISHOP.value();
         break;
-      case 'Q':board_[rank][line] = WQUEEN.value();
+      case 'Q':board_[rank][line] = FIGURES::WQUEEN.value();
         break;
-      case 'K':board_[rank][line] = WKING.value();
+      case 'K':board_[rank][line] = FIGURES::WKING.value();
         break;
       case '/':
         rank--;

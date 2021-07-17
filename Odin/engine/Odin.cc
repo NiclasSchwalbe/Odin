@@ -1,16 +1,13 @@
 //
 // Created by Niclas Schwalbe on 05.04.21.
 //
-#include "Odin.h"
 
-#include <algorithm>
 #include <chrono>
 #include <cstdlib>
-#include <list>
 #include <optional>
 #include <tuple>
-
 #include "Utility.h"
+#include "Odin.h"
 
 Odin::Odin()
     : start_node_(new Node(Board(OdinConstants::standardBoardFen), std::nullopt,
@@ -33,22 +30,31 @@ void Odin::setPosition(const std::string &fen,
 // computes next best move
 void Odin::search() {
   using namespace std::chrono_literals;
-
-  while (in_chess_ && positions_calculated_++ < 10000) {
+  auto start = std::chrono::system_clock::now();
+  auto pos_before = 0;
+  while (in_chess_ && positions_calculated_++ < 100000) {
     while (!searching_) {
       std::this_thread::sleep_for(500ms);
     }
     computeNext();
-    std::cout << positions_calculated_ << "\r";
+    if (positions_calculated_ % 100000 == 0) {
+      auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - start);
+      std::cout << 1000000.0f * (positions_calculated_ - pos_before) / (elapsed.count()) << " kN/s" << std::endl;
+      pos_before = positions_calculated_;
+      start = std::chrono::system_clock::now();
+    }
   }
 }
 
+double fast_sig(double x) {
+  return x / (1 + std::abs(x));
+}
 // calculates intrisic value of a position
 double Odin::evaluatePosition(const Board &board) {
   double val{0};
 
   if (isCheckMate(board)) {
-    return board.to_move_ == Color::WHITE ? -100 : 100;
+    return board.to_move_ == Color::WHITE ? -1 : -1;
   }
 
   if (isStaleMate(board)) {
@@ -57,41 +63,61 @@ double Odin::evaluatePosition(const Board &board) {
 
   for (int i{0}; i < 64; i++) {
     switch (board(i)) {
-      case EMPTY.value():
-        continue;
-      case WPAWN.value():
-        val += 1;
+      using namespace FIGURES;
+      case FIGURES::EMPTY.value():continue;
+      case FIGURES::WPAWN.value(): {
+        constexpr int piece = WPAWN.value();
+        val += (PIECEEVALUATONVALUES::pieceEvaluationValue(piece) + PIECEEVALUATONTABLES::TABLE<piece>[i]);
+      }
         break;
-      case WKNIGHT.value():
-        val += 3.0;
+      case FIGURES::WKNIGHT.value(): {
+        constexpr int piece = WKNIGHT.value();
+        val += (PIECEEVALUATONVALUES::pieceEvaluationValue(piece) + PIECEEVALUATONTABLES::TABLE<piece>[i]);
+      }
         break;
-      case WBISHOP.value():
-        val += 3.15;
+      case FIGURES::WBISHOP.value(): {
+        constexpr int piece = WBISHOP.value();
+        val += (PIECEEVALUATONVALUES::pieceEvaluationValue(piece) + PIECEEVALUATONTABLES::TABLE<piece>[i]);
+      }
         break;
-      case WROOK.value():
-        val += 5;
+      case FIGURES::WROOK.value(): {
+        constexpr int piece = WROOK.value();
+        val += (PIECEEVALUATONVALUES::pieceEvaluationValue(piece) + PIECEEVALUATONTABLES::TABLE<piece>[i]);
+      }
         break;
-      case WQUEEN.value():
-        val += 9;
+      case FIGURES::WQUEEN.value(): {
+        constexpr int piece = WQUEEN.value();
+        val += (PIECEEVALUATONVALUES::pieceEvaluationValue(piece) + PIECEEVALUATONTABLES::TABLE<piece>[i]);
+      }
         break;
-      case BPAWN.value():
-        val -= 1;
+      case FIGURES::BPAWN.value(): {
+        constexpr int piece = WPAWN.value();
+        val -= (PIECEEVALUATONVALUES::pieceEvaluationValue(piece) + PIECEEVALUATONTABLES::TABLE<piece>[64-i]);
+      }
         break;
-      case BKNIGHT.value():
-        val -= 3.0;
+      case FIGURES::BKNIGHT.value(): {
+        constexpr int piece = WKNIGHT.value();
+        val -= (PIECEEVALUATONVALUES::pieceEvaluationValue(piece) + PIECEEVALUATONTABLES::TABLE<piece>[64-i]);
+      }
         break;
-      case BBISHOP.value():
-        val -= 3.15;
+      case FIGURES::BBISHOP.value(): {
+        constexpr int piece = WBISHOP.value();
+        val -= (PIECEEVALUATONVALUES::pieceEvaluationValue(piece) + PIECEEVALUATONTABLES::TABLE<piece>[64-i]);
+      }
         break;
-      case BROOK.value():
-        val -= 5;
+      case FIGURES::BROOK.value(): {
+        constexpr int piece = WROOK.value();
+        val -= (PIECEEVALUATONVALUES::pieceEvaluationValue(piece) + PIECEEVALUATONTABLES::TABLE<piece>[64-i]);
+      }
         break;
-      case BQUEEN.value():
-        val -= 9;
+      case FIGURES::BQUEEN.value(): {
+        constexpr int piece = WROOK.value();
+        val -= (PIECEEVALUATONVALUES::pieceEvaluationValue(piece) + PIECEEVALUATONTABLES::TABLE<piece>[64-i]);
+      }
         break;
     }
   }
-  return val;
+  return fast_sig(val/100);
 }
 
 // computes new field and feeds it up
@@ -101,7 +127,7 @@ void Odin::setUpForCalculations() {}
 
 std::tuple<int, int, Figure> Odin::bestMove() const {
   if (start_node_->moves_.size() == 0) {
-    return std::make_tuple(-1, -1, EMPTY);
+    return std::make_tuple(-1, -1, FIGURES::EMPTY);
   }
   auto best_value{start_node_->moves_[0].ptr->value()};
   std::tuple<int, int, Figure> move = start_node_->moves_[0].move;

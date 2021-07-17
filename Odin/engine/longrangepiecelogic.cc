@@ -1,4 +1,5 @@
 #include "Odin.h"
+#include "Utility.h"
 
 /*
 * Generates long range piece moves. Where dX, dY is the direction the piece is going to.
@@ -13,12 +14,12 @@ void LONGRANGEPIECEMOVES::generateMoves(std::vector<std::tuple<int, int, Figure>
   for (int i = 0; i < 8 && inBounds(tox + dX, toy + dY); i++) {
     tox += dX;
     toy += dY;
-    if (board[toy][tox] == EMPTY.value()) {
-      moves.push_back(std::make_tuple((8 * y + x), (8 * toy + tox), EMPTY));
+    if (board[toy][tox] == FIGURES::EMPTY.value()) {
+      moves.push_back(std::make_tuple((8 * y + x), (8 * toy + tox), FIGURES::EMPTY));
       continue;
     } else if (board[toy][tox] * (static_cast<int>(board.to_move_)) <=
-        EMPTY.value()) {
-      moves.push_back(std::make_tuple((8 * y + x), (8 * toy + tox), EMPTY));
+        FIGURES::EMPTY.value()) {
+      moves.push_back(std::make_tuple((8 * y + x), (8 * toy + tox), FIGURES::EMPTY));
       break;
     }
     break;
@@ -29,7 +30,7 @@ void LONGRANGEPIECEMOVES::generateMoves(std::vector<std::tuple<int, int, Figure>
 
 void LONGRANGEPIECEMOVES::generateAllBishopMoves(std::vector<std::tuple<int, int, Figure>>& moves,
                             const Board& board) {
-  auto piece = board.to_move_ == Color::WHITE ? WBISHOP : BBISHOP;
+  auto piece = board.to_move_ == Color::WHITE ? FIGURES::WBISHOP : FIGURES::BBISHOP;
   for (int y = 0; y < 8; y++) {
     for (int x = 0; x < 8; x++) {
       if (board[y][x] == piece.value()) {
@@ -44,7 +45,7 @@ void LONGRANGEPIECEMOVES::generateAllBishopMoves(std::vector<std::tuple<int, int
 
 void LONGRANGEPIECEMOVES::generateAllRookMoves(std::vector<std::tuple<int, int, Figure>>& moves,
                           const Board& board) {
-  auto piece = board.to_move_ == Color::WHITE ? WROOK : BROOK;
+  auto piece = board.to_move_ == Color::WHITE ? FIGURES::WROOK : FIGURES::BROOK;
   for (int y = 0; y < 8; y++) {
     for (int x = 0; x < 8; x++) {
       if (board[y][x] == piece.value()) {
@@ -59,7 +60,7 @@ void LONGRANGEPIECEMOVES::generateAllRookMoves(std::vector<std::tuple<int, int, 
 
 void LONGRANGEPIECEMOVES::generateAllQueenMoves(std::vector<std::tuple<int, int, Figure>>& moves,
                           const Board& board) {
-  auto piece = board.to_move_ == Color::WHITE ? WQUEEN : BQUEEN;
+  auto piece = board.to_move_ == Color::WHITE ? FIGURES::WQUEEN : FIGURES::BQUEEN;
   for (int y = 0; y < 8; y++) {
     for (int x = 0; x < 8; x++) {
       if (board[y][x] == piece.value()) {

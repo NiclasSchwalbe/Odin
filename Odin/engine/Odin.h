@@ -11,7 +11,6 @@
 #include <functional>
 #include "Board.h"
 #include "Node.h"
-#include "Utility.h"
 
 namespace OdinConstants {
     static const std::string standardBoardFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -115,11 +114,11 @@ void generateOneSteps(const int j, const int i,
   if (!inBounds(toi, toj)) {
     return;
   }
-  if (board[toi][toj] == EMPTY.value()) {
-    moves.push_back(std::make_tuple((8 * i + j), (8 * toi + toj), EMPTY));
+  if (board[toi][toj] == FIGURES::EMPTY.value()) {
+    moves.push_back(std::make_tuple((8 * i + j), (8 * toi + toj), FIGURES::EMPTY));
   } else if (board[toi][toj] * (static_cast<int>(board.to_move_)) <=
-      EMPTY.value()) {
-    moves.push_back(std::make_tuple((8 * i + j), (8 * toi + toj), EMPTY));
+      FIGURES::EMPTY.value()) {
+    moves.push_back(std::make_tuple((8 * i + j), (8 * toi + toj), FIGURES::EMPTY));
   }
 }
 void generateAllCastling(int i, int j, std::vector<std::tuple<int, int, Figure>> &moves, const Board &board);

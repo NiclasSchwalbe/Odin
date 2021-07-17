@@ -1,5 +1,5 @@
 #include "Odin.h"
-
+#include "Utility.h"
 
 /*
 * Generates all castling moves. If the king is in check after the castling, the move will be generated and can be filtered out later.
@@ -23,37 +23,37 @@ void KINGMOVES::generateAllCastling(int j, int i,
     //case WHITE
     case Color::WHITE:
       if (board.long_castle_white_ &&
-          !checkIfMoveIsIllegalDueCheck(board, std::make_tuple(4, 3, EMPTY)) &&
-          board[0][1] == EMPTY.value() &&
-          board[0][2] == EMPTY.value() &&
-          board[0][3] == EMPTY.value() &&
-          board[0][0] == WROOK.value()) {
-        moves.push_back(std::make_tuple(4, 2, EMPTY));
+          !checkIfMoveIsIllegalDueCheck(board, std::make_tuple(4, 3, FIGURES::EMPTY)) &&
+          board[0][1] == FIGURES::EMPTY.value() &&
+          board[0][2] == FIGURES::EMPTY.value() &&
+          board[0][3] == FIGURES::EMPTY.value() &&
+          board[0][0] == FIGURES::WROOK.value()) {
+        moves.push_back(std::make_tuple(4, 2, FIGURES::EMPTY));
       }
       if (board.short_castle_white_ &&
-          !checkIfMoveIsIllegalDueCheck(board, std::make_tuple(4, 5, EMPTY)) &&
-          board[0][5] == EMPTY.value() &&
-          board[0][6] == EMPTY.value() &&
-          board[0][7] == WROOK.value()) {
-        moves.push_back(std::make_tuple(4, 6, EMPTY));
+          !checkIfMoveIsIllegalDueCheck(board, std::make_tuple(4, 5, FIGURES::EMPTY)) &&
+          board[0][5] == FIGURES::EMPTY.value() &&
+          board[0][6] == FIGURES::EMPTY.value() &&
+          board[0][7] == FIGURES::WROOK.value()) {
+        moves.push_back(std::make_tuple(4, 6, FIGURES::EMPTY));
       }
       break;
       //case BLACK
     default:
       if (board.long_castle_black_ &&
-          !checkIfMoveIsIllegalDueCheck(board, std::make_tuple(60, 59, EMPTY)) &&
-          board[7][1] == EMPTY.value() &&
-          board[7][2] == EMPTY.value() &&
-          board[7][3] == EMPTY.value() &&
-          board[7][0] == BROOK.value()) {
-        moves.push_back(std::make_tuple(60, 58, EMPTY));
+          !checkIfMoveIsIllegalDueCheck(board, std::make_tuple(60, 59, FIGURES::EMPTY)) &&
+          board[7][1] == FIGURES::EMPTY.value() &&
+          board[7][2] == FIGURES::EMPTY.value() &&
+          board[7][3] == FIGURES::EMPTY.value() &&
+          board[7][0] == FIGURES::BROOK.value()) {
+        moves.push_back(std::make_tuple(60, 58, FIGURES::EMPTY));
       }
       if (board.short_castle_black_ &&
-          !checkIfMoveIsIllegalDueCheck(board, std::make_tuple(60, 61, EMPTY)) &&
-          board[7][5] == EMPTY.value() &&
-          board[7][6] == EMPTY.value() &&
-          board[7][7] == BROOK.value()) {
-        moves.push_back(std::make_tuple(60, 62, EMPTY));
+          !checkIfMoveIsIllegalDueCheck(board, std::make_tuple(60, 61, FIGURES::EMPTY)) &&
+          board[7][5] == FIGURES::EMPTY.value() &&
+          board[7][6] == FIGURES::EMPTY.value() &&
+          board[7][7] == FIGURES::BROOK.value()) {
+        moves.push_back(std::make_tuple(60, 62, FIGURES::EMPTY));
       }
   }
 }
@@ -61,7 +61,7 @@ void KINGMOVES::generateAllCastling(int j, int i,
 
 void KINGMOVES::generateAllKingMoves(std::vector<std::tuple<int, int, Figure>> &moves,
                           const Board &board) {
-  auto piece = board.to_move_ == Color::WHITE ? WKING : BKING;
+  auto piece = board.to_move_ == Color::WHITE ? FIGURES::WKING : FIGURES::BKING;
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
       if (board[i][j] == piece.value()) {
