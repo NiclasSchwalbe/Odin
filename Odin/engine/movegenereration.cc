@@ -244,7 +244,8 @@ bool hasMoveToField(const Board &old_b, int to_field) {
     case Color::WHITE: return (inBounds(x-1,y-1) && board[y-1][x-1] == pawn.value()) || (inBounds(x+1,y-1) && board[y-1][x+1] == pawn.value());
     case Color::BLACK: return (inBounds(x-1,y+1) && board[y+1][x-1] == pawn.value()) || (inBounds(x+1,y+1) && board[y+1][x+1] == pawn.value());
   }
-
+  //cannot be reached  
+  return false;
 
 }
 
@@ -278,8 +279,8 @@ bool isCheckMate(const Board &board) {
   }
 
   //smarter way
-  if (board.is_end_position.has_value()) {
-    return board.is_end_position.value();
+  if (board.is_end_position_.has_value()) {
+    return board.is_end_position_.value();
   }  
   //else Bruteforce
   std::vector<std::tuple<int, int, Figure>> vec{};
@@ -292,8 +293,8 @@ bool isStaleMate(const Board &board) {
     return false;
   }
   //smarter way
-  if (board.is_end_position.has_value()) {
-    return board.is_end_position.value();
+  if (board.is_end_position_.has_value()) {
+    return board.is_end_position_.value();
   }  
   //else Brutforce
   std::vector<std::tuple<int, int, Figure>> vec{};

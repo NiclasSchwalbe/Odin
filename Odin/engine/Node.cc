@@ -63,6 +63,9 @@ void Node::updateValueAsChild(double val) {
  * Finds next position recusively and
  */
 void Node::evalNextPosition() {
+
+  visits_++;
+
   if (moves_.size() == 0 && !end_node_) {
     expand();
     if (parent_ != nullptr) {
@@ -70,7 +73,7 @@ void Node::evalNextPosition() {
     }
     return;
   }
-  visits_++;
+
   if (end_node_) {
     if (parent_ != nullptr) {
       parent_->updateValueAsChild(intrinsic_value_);
@@ -96,6 +99,7 @@ void Node::evalNextPosition() {
         double score =
             (child_value +
              OdinConstants::cpuct * sqrt(log2(visits_) / move.ptr->visits_));
+
         if (score > mscore) {
           mscore = score;
           opt = move;
@@ -134,9 +138,10 @@ void Node::expand() {
   generateAllLegalMoves(moves, board_);
   if (moves.size() == 0) {
     end_node_ = true;
-    board_.is_end_position = true;
+    board_.is_end_position_ = true;
+    return;
   }
-  board_.is_end_position = false;
+  board_.is_end_position_ = false;
   board_.reeval();
   intrinsic_value_ = board_.intrinsic_value_;
   for (auto& move : moves) {

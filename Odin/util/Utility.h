@@ -1,8 +1,7 @@
 //
 // Created by Niclas Schwalbe on 06.04.21.
 
-#ifndef UTILITY_H
-#define UTILITY_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -35,10 +34,10 @@ constexpr Figure WKING(6, Color::WHITE);
 namespace PIECEEVALUATONVALUES {
 
 constexpr double pieceEvaluationValue(int val){
-   if  (val < 0){
+  if  (val < 0){
     val = -val;
   }
-  switch (abs(val)) {
+  switch (val) {
     using namespace FIGURES;
     case WPAWN.value():
         return 82;
@@ -49,7 +48,7 @@ constexpr double pieceEvaluationValue(int val){
     case WROOK.value():
       return 477;
     case WQUEEN.value():
-      return 477;
+      return 1025;
     default: return 0;
   }
 
@@ -70,4 +69,3 @@ inline bool inBounds(int x, int y) {
   return x < 8 && x >= 0 && y < 8 && y >= 0;
 }
 
-#endif

@@ -13,6 +13,7 @@
 #include "Node.h"
 
 namespace OdinConstants {
+    static long max_positions_{250000};
     static const std::string standardBoardFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     static const double cpuct = 2.0f;
 }

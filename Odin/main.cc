@@ -45,16 +45,17 @@ int main(){
   using namespace std::this_thread; // sleep_for, sleep_until
   using namespace std::chrono; // nanoseconds, system_clock, seconds
   Odin odin{};
-  Board board{OdinConstants::standardBoardFen};
+  Board board{"7k/R7/5K2/8/8/8/8/8 w - - 0 1"};
+
   odin.searchOn();
-  for (int i = 0; i < 80; i++) {
+  for (int i = 0; i < 80 && !isCheckMate(board) && !isStaleMate(board); i++) {
     std::cout << board;
+    odin.setPosition(board);
     odin.search();
     std::tuple<int, int, Figure> move = odin.bestMove();
     board = makeMove(board, move);
     std::cout << "Move played:" << std::get<0>(move) << "-"
               << std::get<1>(move) << std::endl;
-    odin.setPosition(board);
     //sleep_for(seconds(2));
     }
 

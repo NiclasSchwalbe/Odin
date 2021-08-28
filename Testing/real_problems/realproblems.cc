@@ -6,10 +6,12 @@
 
 #include "Figure.h"
 #include "Odin.h"
+
+
 #include "doctest/doctest.h"
 
-
-TEST_CASE("Test Real Problem - Odin 0.0 - Problem 1") {
+/*
+    TEST_CASE("Test Real Problem - Odin 0.0 - Problem 1") {
   Board initial_board{
       "rnbqkbnr/1ppppppp/8/8/p7/PPP5/3PPPPP/RNBQKBNR w KQkq - 0 1"};
   std::vector<std::tuple<int, int, Figure>> moves{};
@@ -17,18 +19,16 @@ TEST_CASE("Test Real Problem - Odin 0.0 - Problem 1") {
   CHECK(moves.size() != 0);
 }
 
-
 TEST_CASE("Test Real Problem - Odin 0.0 - Problem 1 Partproblem 1") {
-  Board initial_board{"rnbqkbnr/1ppppppp/8/8/p7/PPPP4/4PPPP/RNBQKBNR b KQkq - 0 1"};
+  Board initial_board{
+      "rnbqkbnr/1ppppppp/8/8/p7/PPPP4/4PPPP/RNBQKBNR b KQkq - 0 1"};
   std::vector<std::tuple<int, int, Figure>> moves{};
   generateAllMoves(moves, initial_board);
   REQUIRE(moves.size() == 22);
 }
 
-
 TEST_CASE("Test Real Problem - Odin 0.0 - Problem 1 Partproblem 1.1") {
-  Board initial_board{
-      "8/8/8/8/p7/PPPP4/4P1PP/RNBQKBNR b KQ - 0 1"};
+  Board initial_board{"8/8/8/8/p7/PPPP4/4P1PP/RNBQKBNR b KQ - 0 1"};
   std::vector<std::tuple<int, int, Figure>> moves{};
   generateAllMoves(moves, initial_board);
   REQUIRE(moves.size() == 1);
@@ -36,8 +36,7 @@ TEST_CASE("Test Real Problem - Odin 0.0 - Problem 1 Partproblem 1.1") {
 }
 
 TEST_CASE("Test Real Problem - Odin 0.0 - Problem 1 Partproblem 2") {
-  Board initial_board{
-      "8/8/8/8/p7/PPPP4/4PPPP/RNBQKBNR b KQ - 0 1"};
+  Board initial_board{"8/8/8/8/p7/PPPP4/4PPPP/RNBQKBNR b KQ - 0 1"};
   std::vector<std::tuple<int, int, Figure>> moves{};
   generateAllMoves(moves, initial_board);
   REQUIRE(moves.size() == 1);
@@ -47,8 +46,7 @@ TEST_CASE("Test Real Problem - Odin 0.0 - Problem 1 Partproblem 2") {
 }
 
 TEST_CASE("Test Real Problem - Odin 0.0 - Problem 2") {
-  Board initial_board{
-      "3k4/8/8/8/8/r7/1B6/7K w - - 0 1"};
+  Board initial_board{"3k4/8/8/8/8/r7/1B6/7K w - - 0 1"};
   std::vector<std::tuple<int, int, Figure>> moves{};
   generateAllLegalMoves(moves, initial_board);
   Odin odin{};
@@ -57,21 +55,19 @@ TEST_CASE("Test Real Problem - Odin 0.0 - Problem 2") {
   odin.search();
   std::tuple<int, int, Figure> move = odin.bestMove();
   CHECK(std::get<1>(move) == 16);
-  
 }
 
 TEST_CASE("Test Real Problem - Odin 0.0 - Problem 3 - Partproblem 1") {
-  //find checkmate in 1  
+  // find checkmate in 1
   Board initial_board{"1Q1k4/8/4K3/8/8/8/8/8 b - - 0 1"};
   CHECK(isCheckMate(initial_board));
 }
 
-
 TEST_CASE("Test Real Problem - Odin 0.0 - Problem 4 - Partproblem 1") {
-  Board initial_board{"rnbqkQnr/1p2p1pp/3p4/2p5/p7/2N1P3/PPPP1PPP/R1B1KBNR b KQkq - 0 1"};
+  Board initial_board{
+      "rnbqkQnr/1p2p1pp/3p4/2p5/p7/2N1P3/PPPP1PPP/R1B1KBNR b KQkq - 0 1"};
   CHECK(!isCheckMate(initial_board));
 }
-
 
 TEST_CASE("Test Real Problem - Odin 0.0 - Problem 5 - Partproblem 1") {
   Board initial_board{
@@ -111,4 +107,12 @@ TEST_CASE("Test Real Problem - Odin 0.0 - Problem 6 - Partproblem 4") {
   std::vector<std::tuple<int, int, Figure>> moves;
   generateAllLegalMoves(moves, initial_board);
   CHECK(moves.size() == 33);
+}
+*/
+
+TEST_CASE("Test Real Problem - Odin 0.0 - Problem 8") {
+  Board inital_board{"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"};
+  Odin odin{};
+  auto a = odin.evaluatePosition(inital_board);
+  CHECK(a == 0.5);
 }
