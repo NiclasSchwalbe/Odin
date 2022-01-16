@@ -57,7 +57,7 @@ int main(){
     std::cout << "Move played:" << std::get<0>(move) << "-"
               << std::get<1>(move) << std::endl;
     //sleep_for(seconds(2));
-    }
+   }
 
 
 }

@@ -139,30 +139,37 @@ void Odin::computeNext() { start_node_->evalNextPosition(); }
 void Odin::setUpForCalculations() {}
 
 std::tuple<int, int, Figure> Odin::bestMove() const {
+  //if there cannot be made any move: return illegal tupel  
   if (start_node_->moves_.size() == 0) {
     return std::make_tuple(-1, -1, FIGURES::EMPTY);
   }
-  auto best_value{start_node_->moves_[0].ptr->value()};
+  //else get into the move "container" and get the evaluation of the resulting board
+  auto best_value{start_node_->moves_[0].ptr_to_node->value()};
+  //let move be the inital move, which is best in the moment
   std::tuple<int, int, Figure> move = start_node_->moves_[0].move;
+  //search what is the best move, white or if black do it slightly different (min,max)
   switch (start_node_->board_.to_move_) {
     case Color::WHITE:
+      //foreach possible move, check if the resulting position is better  
       for (const auto &link : start_node_->moves_) {
-        if (link.ptr->value() > best_value) {
+        if (link.ptr_to_node->value() > best_value) {
           move = link.move;
-          best_value = link.ptr->value();
+          best_value = link.ptr_to_node->value();
         }
         continue;
       }
       break;
     case Color::BLACK:
+      //analogous to first case  
       for (const auto &link : start_node_->moves_) {
-        if (link.ptr->value() < best_value) {
+        if (link.ptr_to_node->value() < best_value) {
           move = link.move;
-          best_value = link.ptr->value();
+          best_value = link.ptr_to_node->value();
         }
         continue;
       }
   }
+  //return the best move
   return move;
 }
 

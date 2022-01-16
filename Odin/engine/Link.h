@@ -14,7 +14,7 @@ class Node;
 
 class Link {
 public:
-    std::shared_ptr<Node> ptr;
+    std::shared_ptr<Node> ptr_to_node;
     std::tuple<int,int,Figure> move;
     Link(std::shared_ptr<Node> ptr,  std::tuple<int,int,Figure> move);
 };
