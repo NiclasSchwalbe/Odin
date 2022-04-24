@@ -6,27 +6,25 @@
 
 #include <cmath>
 
-Node::Node(const Board& board, std::optional<double> alpha,
-           std::optional<double> beta, Node* parent)
+Node::Node(const Board &board, std::optional<double> alpha,
+           std::optional<double> beta, Node *parent)
     : board_(board),
       beta_(beta),
       alpha_(alpha),
       parent_(parent),
       value_(std::nullopt),
       color_(board.to_move_),
-      moves_()
-{
+      moves_() {
 }
 
-Node::Node(const Board&& board, std::optional<double> alpha,
-           std::optional<double> beta, Node* parent)
+Node::Node(const Board &&board, std::optional<double> alpha,
+           std::optional<double> beta, Node *parent)
     : board_(board),
       beta_(beta),
       alpha_(alpha),
       parent_(parent),
       value_(std::nullopt),
-      color_(board.to_move_)
-{
+      color_(board.to_move_) {
 }
 
 /*
@@ -46,17 +44,21 @@ void Node::updateValueAsChild(double val) {
     case Color::BLACK:
       if (val < value_) {
         value_ = val;
+        if (parent_ != nullptr) {
+          parent_->updateValueAsChild(val);
+        }
       }
       break;
     case Color::WHITE:
       if (val > value_) {
         value_ = val;
+        if (parent_ != nullptr) {
+          parent_->updateValueAsChild(val);
+        }
       }
       break;
   }
-  if (parent_ != nullptr) {
-    parent_->updateValueAsChild(val);
-  }
+
 }
 
 /*
@@ -70,13 +72,12 @@ void Node::evalNextPosition() {
     }
     return;
   }
-  visits_++;
   if (end_node_) {
     if (parent_ != nullptr) {
       parent_->updateValueAsChild(intrinsic_value_);
     }
     return;
-  }  
+  }
 
   double mscore = moves_[0].ptr->value();
   Link opt = moves_[0];
@@ -95,7 +96,7 @@ void Node::evalNextPosition() {
         double child_value{move.ptr->value()};
         double score =
             (child_value +
-             OdinConstants::cpuct * sqrt(log2(visits_) / move.ptr->visits_));
+                OdinConstants::cpuct * sqrt(log2(visits_) / move.ptr->visits_));
         if (score > mscore) {
           mscore = score;
           opt = move;
@@ -115,7 +116,7 @@ void Node::evalNextPosition() {
         double child_value{move.ptr->value()};
         double score =
             (child_value -
-             OdinConstants::cpuct * sqrt(log2(visits_) / move.ptr->visits_));
+                OdinConstants::cpuct * sqrt(log2(visits_) / move.ptr->visits_));
         if (score < mscore) {
           mscore = score;
           opt = move;
@@ -127,6 +128,7 @@ void Node::evalNextPosition() {
 
   // Now opt has best score and will therefore be explored
   opt.ptr->evalNextPosition();
+  visits_++;
 }
 
 void Node::expand() {
@@ -139,7 +141,7 @@ void Node::expand() {
   board_.is_end_position = false;
   board_.reeval();
   intrinsic_value_ = board_.intrinsic_value_;
-  for (auto& move : moves) {
+  for (auto &move : moves) {
     moves_.push_back(
         Link{std::make_shared<Node>(makeMove(board_, move), std::nullopt,
                                     std::nullopt, this),
