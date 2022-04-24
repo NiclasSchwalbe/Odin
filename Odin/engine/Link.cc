@@ -5,6 +5,6 @@
 #include "Link.h"
 
 Link::Link(std::shared_ptr<Node> pointer, std::tuple<int, int,Figure> mv):
-    ptr{pointer},
+    ptr_to_node{pointer},
     move{mv}
 {}

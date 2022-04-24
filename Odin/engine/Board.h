@@ -23,7 +23,7 @@ class Board {
   bool short_castle_black_{false};
   int en_passant_field_{-1};
   int fifty_move_rule_info_{0};
-  std::optional<bool> is_end_position;
+  std::optional<bool> is_end_position_;
 
   Color to_move_{Color::WHITE};
   double intrinsic_value_;

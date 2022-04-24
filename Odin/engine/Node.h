@@ -34,6 +34,9 @@ public:
     void addNode(Node d);
     void updateValueAsChild(double value);
     void evalNextPosition();
+    /*
+    * Generates all possible positions which can result directly from this position in 1 move.
+    */
     void expand();
 
     double value() const {
